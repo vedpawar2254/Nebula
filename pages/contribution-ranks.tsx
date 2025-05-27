@@ -15,14 +15,14 @@ export default function ContributionRanksPage() {
         width: '100vw',
         height: '100vh',
         overflow: 'hidden',
-        backgroundImage: 'url("/nebula.png")',
+        // backgroundImage: 'url("/nebula.png")',
         backgroundSize: 'cover',
         backgroundPosition: 'center',
         backgroundRepeat: 'no-repeat',
-        filter: 'brightness(1.2)', // ✨ brightens the nebula
+        filter: 'brightness(1.1)',
       }}
     >
-      {/* dark blur overlay layer */}
+      
       <div
         style={{
           width: '100%',
@@ -32,7 +32,7 @@ export default function ContributionRanksPage() {
           WebkitBackdropFilter: 'blur(6px)',
           display: 'flex',
           flexDirection: 'column',
-          overflowY: 'auto', // scroll if leaderboard is long
+          overflowY: 'auto',
         }}
       >
         <ContributionRanks />

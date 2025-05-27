@@ -110,12 +110,9 @@ const Leaderboard: React.FC<LeaderboardProps> = ({
         transition={{ duration: 0.8 }}
         style={{ textAlign: "center" }}
       >
-        <h1 style={{ fontSize: "3rem", fontWeight: "800", marginBottom: "1.5rem" }}>
-          SAST Leaderboard
-        </h1>
       </motion.div>
 
-      <div style={{ display: "flex", justifyContent: "center", marginTop: "2rem" }}>
+      <div style={{ display: "flex", justifyContent: "center", marginTop: "0rem" }}>
         <RepoTabs
           repos={repos}
           selectedRepo={{ owner: repoOwner, name: repoName }}
@@ -123,9 +120,9 @@ const Leaderboard: React.FC<LeaderboardProps> = ({
         />
       </div>
 
-      <div style={{ marginTop: "4rem", overflowX: "auto" }}>
+      <div style={{ marginTop: "2rem", overflowX: "auto" }}>
         {isLoading ? (
-          <div style={{ display: "flex", justifyContent: "center", marginTop: "3rem" }}>
+          <div style={{ display: "flex", justifyContent: "center", marginTop: "1rem" }}>
             <div
               style={{
                 width: "80px",
@@ -206,13 +203,13 @@ const Leaderboard: React.FC<LeaderboardProps> = ({
                       borderBottom: "1px solid rgba(255, 255, 255, 0.05)",
                     }}
                   >
-                    <td style={{ padding: "0.5rem 1rem", fontWeight: "600" }}>
+                    <td style={{color:"white", padding: "0.5rem 1rem", fontWeight: "400" }}>
                       <div style={{ display: "flex", alignItems: "center", gap: "0.5rem" }}>
                         {getMedalIcon(user.rank)}
                         <span>{user.rank}</span>
                       </div>
                     </td>
-                    <td style={{ padding: "0.5rem 1rem", fontWeight: "600" }}>
+                    <td style={{color:"white", padding: "0.5rem 1rem", fontWeight: "400" }}>
                       <div style={{ display: "flex", alignItems: "center", gap: "0.5rem" }}>
                         <img
                           src={user.avatar_url}
@@ -240,9 +237,9 @@ const Leaderboard: React.FC<LeaderboardProps> = ({
                         )}
                       </div>
                     </td>
-                    <td style={{ padding: "0.5rem 1rem" }}>{user.role}</td>
-                    <td style={{ padding: "0.5rem 1rem" }}>{user.commits}</td>
-                    <td style={{ padding: "0.5rem 1rem" }}>{user.prs} PRs</td>
+                    <td style={{color:"white", padding: "0.5rem 1rem" }}>{user.role}</td>
+                    <td style={{color:"white", padding: "0.5rem 1rem" }}>{user.commits}</td>
+                    <td style={{color:"white", padding: "0.5rem 1rem" }}>{user.prs} PRs</td>
                   </motion.tr>
                 ))}
               </tbody>

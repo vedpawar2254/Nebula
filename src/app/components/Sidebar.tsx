@@ -1,14 +1,12 @@
 "use client";
 
 import React, { useEffect, useRef, useState } from "react";
-import { useRouter } from "next/navigation";
 
 interface SidebarProps {
-  setActiveSection: (section: string) => void;
+  setActiveSection: (section: "home" | "ranks") => void;
 }
 
 const Sidebar: React.FC<SidebarProps> = ({ setActiveSection }) => {
-  const router = useRouter();
   const sidebarRef = useRef<HTMLDivElement | null>(null);
   const [isVisible, setIsVisible] = useState(false);
 
@@ -38,7 +36,10 @@ const Sidebar: React.FC<SidebarProps> = ({ setActiveSection }) => {
     textAlign: "left",
   };
 
-  const handleHover = (e: React.MouseEvent<HTMLButtonElement>, hover = true) => {
+  const handleHover = (
+    e: React.MouseEvent<HTMLButtonElement | HTMLAnchorElement>,
+    hover = true
+  ) => {
     e.currentTarget.style.background = hover
       ? "rgba(255, 255, 255, 0.07)"
       : "rgba(255, 255, 255, 0.03)";
@@ -65,7 +66,7 @@ const Sidebar: React.FC<SidebarProps> = ({ setActiveSection }) => {
       }}
     >
       <button
-        onClick={() => router.push("/")}
+        onClick={() => setActiveSection("home")}
         style={baseStyle}
         onMouseEnter={(e) => handleHover(e, true)}
         onMouseLeave={(e) => handleHover(e, false)}
@@ -79,7 +80,7 @@ const Sidebar: React.FC<SidebarProps> = ({ setActiveSection }) => {
         onMouseEnter={(e) => handleHover(e, true)}
         onMouseLeave={(e) => handleHover(e, false)}
       >
-        🏆 Contribution Ranks
+        🏆 Leaderboard
       </button>
     </div>
   );

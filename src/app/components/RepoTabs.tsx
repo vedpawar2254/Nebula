@@ -1,6 +1,8 @@
 "use client";
 
 import React, { useEffect, useRef, useState } from "react";
+import "../globals.css"
+
 
 export interface Repo {
   owner: string;

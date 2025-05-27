@@ -2,7 +2,7 @@
 
 import React, { useEffect, useState } from 'react';
 import dynamic from 'next/dynamic';
-import ContributionChart from '../components/ContributionChart';
+// import ContributionChart from '../components/ContributionChart';
 import HomeLanding from '../pages/HomeLanding';
 
 const RepoTabs = dynamic(() => import('../components/RepoTabs'));
@@ -143,9 +143,9 @@ const ContributionRanks: React.FC = () => {
                     repos={repos}
                     onSelectRepo={setSelectedRepo}
                   />
-                  <div style={{ marginTop: '1rem' }}>
+                  {/* <div style={{ marginTop: '1rem' }}>
                     <ContributionChart />
-                  </div>
+                  </div> */}
                 </div>
               </>
             )}

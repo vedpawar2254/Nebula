@@ -4,6 +4,8 @@ import React, { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import { FaCrown, FaMedal, FaRedo } from "react-icons/fa";
 import RepoTabs, { Repo } from "./RepoTabs";
+import "../globals.css"
+
 
 interface Contributor {
   id: number;

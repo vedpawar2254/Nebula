@@ -1,6 +1,8 @@
 "use client";
 
 import React, { useEffect, useRef, useState } from "react";
+import "../globals.css"
+
 
 interface SidebarProps {
   setActiveSection: (section: "home" | "ranks") => void;

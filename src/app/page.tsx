@@ -28,12 +28,11 @@ const HomePage: React.FC = () => {
         const hours = Math.floor((difference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
         const minutes = Math.floor((difference % (1000 * 60 * 60)) / (1000 * 60));
         const seconds = Math.floor((difference % (1000 * 60)) / 1000);
-        
-        setTimeRemaining(current => {
-            setPrevSeconds(current.seconds);
-            return { days, hours, minutes, seconds };
-        });
 
+        setTimeRemaining(current => {
+          setPrevSeconds(current.seconds);
+          return { days, hours, minutes, seconds };
+        });
       } else {
         setTimeRemaining({ days: 0, hours: 0, minutes: 0, seconds: 0 });
         setPrevSeconds(0);
@@ -45,14 +44,14 @@ const HomePage: React.FC = () => {
     return () => clearInterval(intervalId);
   }, [launchDate]);
 
-  const backgroundImageUrl = '/nebula.png'; 
+  const backgroundImageUrl = '/nebula.png';
 
   if (!isClient) {
-    return null; 
+    return null;
   }
 
-  const secondsKey = prevSeconds !== null && timeRemaining.seconds !== prevSeconds 
-    ? `sec-${timeRemaining.seconds}-${Date.now()}` 
+  const secondsKey = prevSeconds !== null && timeRemaining.seconds !== prevSeconds
+    ? `sec-${timeRemaining.seconds}-${Date.now()}`
     : `sec-${timeRemaining.seconds}`;
 
   return (
@@ -60,7 +59,7 @@ const HomePage: React.FC = () => {
       <Head>
         <title>NEBULA - Coming Soon</title>
         <meta name="description" content="Nebula is launching soon! Countdown to the future." />
-        <link rel="icon" href="/favicon.ico" /> {/* Example favicon, replace or remove */}
+        <link rel="icon" href="/favicon.ico" />
       </Head>
 
       <div
@@ -70,21 +69,22 @@ const HomePage: React.FC = () => {
         <div className="absolute inset-0 bg-black opacity-75"></div>
 
         <div className="absolute top-8 sm:top-12 left-0 right-0 z-20">
-            <p className="text-2xl sm:text-3xl text-gray-300 font-orbitron tracking-wider">
-                Introducing
-            </p>
+          <p className="text-2xl sm:text-3xl text-gray-300 font-orbitron tracking-wider">
+            Introducing
+          </p>
         </div>
 
         <main className="relative z-10 flex flex-col items-center w-full px-4 mt-12 sm:mt-16">
-          
           <h1 className="font-orbitron text-6xl sm:text-7xl md:text-8xl lg:text-9xl font-black uppercase tracking-widest mb-10 sm:mb-12 nebula-text-effect">
             NEBULA
           </h1>
-          
+
           {timeRemaining.days === 0 && timeRemaining.hours === 0 && timeRemaining.minutes === 0 && timeRemaining.seconds === 0 ? (
-            <p className="font-orbitron text-4xl sm:text-5xl md:text-6xl text-gray-100 font-bold animate-bounce mb-6">LAUNCHED!</p>
+            <p className="font-orbitron text-4xl sm:text-5xl md:text-6xl text-gray-100 font-bold animate-bounce mb-6">
+              LAUNCHED!
+            </p>
           ) : (
-            <div className="flex flex-col items-center">  
+            <div className="flex flex-col items-center">
               <div className="flex justify-center items-start mb-4 sm:mb-6 group">
                 <CountdownUnit value={timeRemaining.days} unit="Days" showSeparator={true} />
                 <CountdownUnit value={timeRemaining.hours} unit="Hours" showSeparator={true} />
@@ -93,17 +93,24 @@ const HomePage: React.FC = () => {
                   <CountdownUnit value={timeRemaining.seconds} unit="Seconds" showSeparator={false} />
                 </div>
               </div>
-              <p className="text-xl sm:text-2xl text-gray-300 font-orbitron tracking-wide mb-10 sm:mb-12">
+              <p className="text-xl sm:text-2xl text-gray-300 font-orbitron tracking-wide mb-6 sm:mb-8">
                 Coming Soon...
               </p>
+
+              <button
+                onClick={() => window.location.href = "/contribution-ranks"}
+                className="mt-2 px-6 py-2 rounded-full font-orbitron text-lg sm:text-xl font-semibold text-white bg-gradient-to-br from-blue-500 to-blue-700 shadow-md hover:from-blue-600 hover:to-blue-800 transition-all duration-300"
+              >
+                🚀 Contribute
+              </button>
             </div>
           )}
-          
         </main>
+
         <footer className="absolute bottom-6 sm:bottom-8 left-0 right-0 z-20 flex flex-col items-center">
-            <p className="text-2xl sm:text-3xl md:text-4xl text-gray-200 mt-1 font-orbitron tracking-wider">
-              BЧ SΛST
-            </p>
+          <p className="text-2xl sm:text-3xl md:text-4xl text-gray-200 mt-1 font-orbitron tracking-wider">
+            BЧ SΛST
+          </p>
         </footer>
       </div>
     </>

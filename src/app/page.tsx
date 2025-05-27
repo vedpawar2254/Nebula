@@ -99,9 +99,9 @@ const HomePage: React.FC = () => {
 
               <button
                 onClick={() => window.location.href = "/contribution-ranks"}
-                className="mt-2 px-6 py-2 rounded-full font-orbitron text-lg sm:text-xl font-semibold text-white bg-gradient-to-br from-blue-500 to-blue-700 shadow-md hover:from-blue-600 hover:to-blue-800 transition-all duration-300"
+                className="mt-1 mb-18 px-6 py-2 rounded-full font-orbitron text-lg sm:text-xl font-semibold text-white bg-gradient-to-br from-black to-blue-400 shadow-md hover:from-black hover:to-blue-300 transition-all duration-100"
               >
-                🚀 Contribute
+                Contribute
               </button>
             </div>
           )}

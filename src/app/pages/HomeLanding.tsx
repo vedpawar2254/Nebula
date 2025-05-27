@@ -9,10 +9,10 @@ const HomeLanding: React.FC = () => {
       style={{
         display: "flex",
         flexDirection: "column",
-        justifyContent: "center",
+        justifyContent: "start",
         alignItems: "center",
         minHeight: "100vh",
-        padding: "4rem 2rem",
+        padding: "4rem 0rem",
         textAlign: "center",
         color: "white",
       }}

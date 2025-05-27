@@ -17,8 +17,8 @@ interface Repo {
 const ContributionRanks: React.FC = () => {
   const repos: Repo[] = [
     { owner: 'SASTxNST', name: 'Website_SAST' },
-    { owner: 'SASTxNST', name: 'CubeSat_Prototype' },
-    { owner: 'SASTxNST', name: 'RocketSim' },
+    { owner: 'SASTxNST', name: 'Nebula' },
+    { owner: 'SASTxNST', name: 'Sensor Data Visualiser' },
   ];
 
   const [selectedRepo, setSelectedRepo] = useState<Repo>(repos[0]);

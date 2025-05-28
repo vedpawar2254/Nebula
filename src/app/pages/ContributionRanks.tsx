@@ -2,8 +2,9 @@
 
 import React, { useEffect, useState } from 'react';
 import dynamic from 'next/dynamic';
-// import ContributionChart from '../components/ContributionChart';
 import HomeLanding from '../pages/HomeLanding';
+import Contact from '../pages/Contact';
+import FAQ from '../pages/FAQ';
 
 const RepoTabs = dynamic(() => import('../components/RepoTabs'));
 const Leaderboard = dynamic(() => import('../components/Leaderboard'));
@@ -22,7 +23,7 @@ const ContributionRanks: React.FC = () => {
   ];
 
   const [selectedRepo, setSelectedRepo] = useState<Repo>(repos[0]);
-  const [activeSection, setActiveSection] = useState<'home' | 'ranks'>('home');
+  const [activeSection, setActiveSection] = useState<'home' | 'ranks' | 'contact' | 'faq'>('home');
   const [snapshot, setSnapshot] = useState({ contributors: 0, commits: 0, repositories: repos.length });
 
   useEffect(() => {
@@ -149,6 +150,8 @@ const ContributionRanks: React.FC = () => {
                 </div>
               </>
             )}
+            {activeSection === 'contact' && <Contact />}
+            {activeSection === 'faq' && <FAQ />}
           </div>
         </div>
       </div>

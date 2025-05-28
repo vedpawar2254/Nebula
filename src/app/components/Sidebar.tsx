@@ -5,7 +5,7 @@ import "../globals.css"
 
 
 interface SidebarProps {
-  setActiveSection: (section: "home" | "ranks") => void;
+  setActiveSection: (section: "home" | "ranks" | "contact" | "faq") => void;
 }
 
 const Sidebar: React.FC<SidebarProps> = ({ setActiveSection }) => {
@@ -83,6 +83,24 @@ const Sidebar: React.FC<SidebarProps> = ({ setActiveSection }) => {
         onMouseLeave={(e) => handleHover(e, false)}
       >
         🏆 Leaderboard
+      </button>
+      
+      <button
+        onClick={() => setActiveSection("contact")}
+        style={baseStyle}
+        onMouseEnter={(e) => handleHover(e, true)}
+        onMouseLeave={(e) => handleHover(e, false)}
+      >
+        📧 Contact
+      </button>
+      
+      <button
+        onClick={() => setActiveSection("faq")}
+        style={baseStyle}
+        onMouseEnter={(e) => handleHover(e, true)}
+        onMouseLeave={(e) => handleHover(e, false)}
+      >
+        ❓ FAQ
       </button>
     </div>
   );

@@ -241,12 +241,12 @@ const ContributionRanks: React.FC = () => {
                       <p className="mb-6 text-lg text-center">
                         {isLogin ? 'Sign in to continue your journey.' : 'Create an account and start your adventure.'}
                       </p>
-                      <img
+                      {/* <img
                         src="https://placehold.co/400x300/00B2FF/FFFFFF?text=Illustration"
                         alt="Illustration"
                         className="w-3/4 h-auto rounded-lg shadow-lg"
                         onError={(e: React.SyntheticEvent<HTMLImageElement, Event>) => { e.currentTarget.onerror = null; e.currentTarget.src = 'https://placehold.co/400x300/00B2FF/FFFFFF?text=Image+Error'; }}
-                      />
+                      /> */}
                     </div>
 
                     <div className="flex flex-col items-center justify-center p-8 md:w-1/2">

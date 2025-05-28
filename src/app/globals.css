@@ -1,2 +1,5 @@
 @import "tailwindcss";
-
+@font-face {
+    font-family: 'Nebula';
+    src: url('../Assets/Fonts/Nebula-Regular.otf');
+}

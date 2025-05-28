@@ -3,6 +3,8 @@
 import React, { useEffect, useState } from 'react';
 import dynamic from 'next/dynamic';
 import HomeLanding from '../pages/HomeLanding';
+import Contact from '../pages/Contact';
+import FAQ from '../pages/FAQ';
 
 const RepoTabs = dynamic(() => import('../components/RepoTabs'));
 const Leaderboard = dynamic(() => import('../components/Leaderboard'));
@@ -19,8 +21,9 @@ const ContributionRanks = () => {
     { owner: 'SASTxNST', name: 'Sensor Data Visualiser' },
   ];
 
-  const [selectedRepo, setSelectedRepo] = useState(repos[0]);
-  const [activeSection, setActiveSection] = useState('home');
+  const [selectedRepo, setSelectedRepo] = useState<Repo>(repos[0]);
+  const [activeSection, setActiveSection] = useState<'home' | 'ranks' | 'contact' | 'faq'>('home');
+
   const [snapshot, setSnapshot] = useState({ contributors: 0, commits: 0, repositories: repos.length });
 
   useEffect(() => {
@@ -151,6 +154,8 @@ const ContributionRanks = () => {
                 </div>
               </>
             )}
+            {activeSection === 'contact' && <Contact />}
+            {activeSection === 'faq' && <FAQ />}
           </div>
         </div>
       </div>

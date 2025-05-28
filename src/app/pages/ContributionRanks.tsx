@@ -2,27 +2,25 @@
 
 import React, { useEffect, useState } from 'react';
 import dynamic from 'next/dynamic';
-// import ContributionChart from '../components/ContributionChart';
 import HomeLanding from '../pages/HomeLanding';
 
 const RepoTabs = dynamic(() => import('../components/RepoTabs'));
 const Leaderboard = dynamic(() => import('../components/Leaderboard'));
 const Sidebar = dynamic(() => import('../components/Sidebar'));
 
-interface Repo {
-  owner: string;
-  name: string;
-}
+const fontStyle = {
+  fontFamily: "'Orbitron', sans-serif",
+};
 
-const ContributionRanks: React.FC = () => {
-  const repos: Repo[] = [
+const ContributionRanks = () => {
+  const repos = [
     { owner: 'SASTxNST', name: 'Website_SAST' },
     { owner: 'SASTxNST', name: 'Nebula' },
     { owner: 'SASTxNST', name: 'Sensor Data Visualiser' },
   ];
 
-  const [selectedRepo, setSelectedRepo] = useState<Repo>(repos[0]);
-  const [activeSection, setActiveSection] = useState<'home' | 'ranks'>('home');
+  const [selectedRepo, setSelectedRepo] = useState(repos[0]);
+  const [activeSection, setActiveSection] = useState('home');
   const [snapshot, setSnapshot] = useState({ contributors: 0, commits: 0, repositories: repos.length });
 
   useEffect(() => {
@@ -56,19 +54,28 @@ const ContributionRanks: React.FC = () => {
   return (
     <div
       style={{
-        
+        minHeight: '100vh',
+        backgroundImage: `
+          linear-gradient(to right, rgba(0,0,0,0.8), rgba(0,0,0,0.4)),
+          url("https://i.postimg.cc/BnBLwG3h/2816786.jpg")
+        `,
+        backgroundSize: 'cover',
+        backgroundPosition: 'center',
+        position: 'relative',
+        color: '#fff',
+        ...fontStyle,
       }}
     >
       <div
         style={{
           width: '100%',
           height: '100%',
-          backgroundColor: 'rgba(0, 0, 0, 0.7)',
           backdropFilter: 'blur(6px)',
           WebkitBackdropFilter: 'blur(6px)',
+          position: 'relative',
         }}
       >
-        <div style={{ display: 'flex', color: 'var(--color-text)' }}>
+        <div style={{ display: 'flex' }}>
           <Sidebar setActiveSection={setActiveSection} />
           <div style={{ flexGrow: 1, padding: '2rem', minHeight: '100vh' }}>
             {activeSection === 'home' && <HomeLanding />}
@@ -80,59 +87,57 @@ const ContributionRanks: React.FC = () => {
                     borderRadius: '24px',
                     padding: '2rem',
                     position: 'relative',
-                    background: 'rgba(255, 255, 255, 0.05)',
+                    background: 'rgba(255, 0, 64, 0)',
                     backdropFilter: 'blur(20px)',
                     WebkitBackdropFilter: 'blur(20px)',
-                    border: '1px solid rgba(255, 255, 255, 0.1)',
-                    boxShadow:
-                      '0 8px 32px rgba(0, 0, 0, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.1)',
+                    border: '1px solid rgba(255, 0, 64, 0.15)',
+                    boxShadow: '0 8px 32px rgba(0,0,0,0.3), inset 0 1px 0 rgba(255,0,64,0.08)',
                   }}
                 >
                   <div
                     style={{
                       fontSize: '1.25rem',
-                      fontWeight: 300,
+                      fontWeight: 700,
                       textAlign: 'center',
                       marginBottom: '1.5rem',
-                      color: 'rgba(255, 255, 255, 0.9)',
+                      background: 'linear-gradient(90deg, #ff4e8a, #ffb199, #ff4e50)',
+                      WebkitBackgroundClip: 'text',
+                      WebkitTextFillColor: 'transparent',
                       letterSpacing: '0.5px',
                     }}
                   >
                     🚀 Contribution Activity Snapshot
                   </div>
                   <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', gap: '2rem' }}>
-                    <div style={{ textAlign: 'center' }}>
-                      <span
-                        style={{ fontSize: '1.5rem', fontWeight: 700, color: '#00a1ff', marginBottom: '0.25rem', display: 'block' }}
-                      >
-                        {snapshot.contributors}
-                      </span>
-                      <span style={{ fontSize: '0.75rem', color: 'rgba(255, 255, 255, 0.6)', textTransform: 'uppercase', letterSpacing: '1px' }}>
-                        Contributors
-                      </span>
-                    </div>
-                    <div style={{ width: '1px', height: '40px', background: 'linear-gradient(to bottom, transparent, rgba(255, 255, 255, 0.2), transparent)' }} />
-                    <div style={{ textAlign: 'center' }}>
-                      <span
-                        style={{ fontSize: '1.5rem', fontWeight: 700, color: '#00a1ff', marginBottom: '0.25rem', display: 'block' }}
-                      >
-                        {snapshot.commits}
-                      </span>
-                      <span style={{ fontSize: '0.75rem', color: 'rgba(255, 255, 255, 0.6)', textTransform: 'uppercase', letterSpacing: '1px' }}>
-                        Commits
-                      </span>
-                    </div>
-                    <div style={{ width: '1px', height: '40px', background: 'linear-gradient(to bottom, transparent, rgba(255, 255, 255, 0.2), transparent)' }} />
-                    <div style={{ textAlign: 'center' }}>
-                      <span
-                        style={{ fontSize: '1.5rem', fontWeight: 700, color: '#00a1ff', marginBottom: '0.25rem', display: 'block' }}
-                      >
-                        {snapshot.repositories}
-                      </span>
-                      <span style={{ fontSize: '0.75rem', color: 'rgba(255, 255, 255, 0.6)', textTransform: 'uppercase', letterSpacing: '1px' }}>
-                        Repositories
-                      </span>
-                    </div>
+                    {[
+                      { value: snapshot.contributors, label: 'Contributors' },
+                      { value: snapshot.commits, label: 'Commits' },
+                      { value: snapshot.repositories, label: 'Repositories' },
+                    ].map(({ value, label }) => (
+                      <div key={label} style={{ textAlign: 'center' }}>
+                        <span
+                          style={{
+                            fontSize: '1.75rem',
+                            fontWeight: 700,
+                            color: '#ff4e8a',
+                            marginBottom: '0.25rem',
+                            display: 'block',
+                          }}
+                        >
+                          {value}
+                        </span>
+                        <span
+                          style={{
+                            fontSize: '0.75rem',
+                            color: '#ffd6e0',
+                            textTransform: 'uppercase',
+                            letterSpacing: '1px',
+                          }}
+                        >
+                          {label}
+                        </span>
+                      </div>
+                    ))}
                   </div>
                 </div>
 
@@ -143,9 +148,6 @@ const ContributionRanks: React.FC = () => {
                     repos={repos}
                     onSelectRepo={setSelectedRepo}
                   />
-                  {/* <div style={{ marginTop: '1rem' }}>
-                    <ContributionChart />
-                  </div> */}
                 </div>
               </>
             )}

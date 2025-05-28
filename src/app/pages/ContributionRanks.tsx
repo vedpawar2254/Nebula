@@ -1,9 +1,10 @@
 "use client";
 
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, FormEvent } from 'react';
 import dynamic from 'next/dynamic';
 // import ContributionChart from '../components/ContributionChart';
 import HomeLanding from '../pages/HomeLanding';
+import { useRouter } from 'next/router';
 
 const RepoTabs = dynamic(() => import('../components/RepoTabs'));
 const Leaderboard = dynamic(() => import('../components/Leaderboard'));
@@ -20,10 +21,18 @@ const ContributionRanks: React.FC = () => {
     { owner: 'SASTxNST', name: 'Nebula' },
     { owner: 'SASTxNST', name: 'Sensor Data Visualiser' },
   ];
-
+  const router = useRouter()
   const [selectedRepo, setSelectedRepo] = useState<Repo>(repos[0]);
-  const [activeSection, setActiveSection] = useState<'home' | 'ranks'>('home');
+  const [activeSection, setActiveSection] = useState<'home' | 'ranks' | 'login'>('home');
   const [snapshot, setSnapshot] = useState({ contributors: 0, commits: 0, repositories: repos.length });
+
+  const [isLogin, setIsLogin] = useState<boolean>(true);
+  const [username, setUsername] = useState<string>('');
+  const [email, setEmail] = useState<string>('');
+  const [githubId, setGithubId] = useState<string>('');
+  const [password, setPassword] = useState<string>('');
+  const [message, setMessage] = useState<string>('');
+  const [showMessageBox, setShowMessageBox] = useState<boolean>(false);
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -53,10 +62,78 @@ const ContributionRanks: React.FC = () => {
     fetchSnapshot();
   }, [selectedRepo]);
 
+  const showMessage = (msg: string, type: 'success' | 'error' | 'info' = 'success'): void => {
+    setMessage(msg);
+    setShowMessageBox(true);
+    setTimeout(() => {
+      setShowMessageBox(false);
+      setMessage('');
+    }, 3000);
+  };
+
+  const handleSubmit = async (e: FormEvent): Promise<void> => {
+    e.preventDefault();
+    setMessage('');
+    setShowMessageBox(false);
+
+    if (isLogin) {
+      if (!email || !password) {
+        showMessage('Please fill in all login fields.', 'error');
+        return;
+      }
+      showMessage('Login attempt (check console)', 'info');
+      console.log('Login Data:', { email, password });
+      try {
+        const response = await fetch('/api/login', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ email, password }),
+        });
+        const data = await response.json();
+        if (response.ok) {
+          showMessage(data.message || 'Login successful!');
+          localStorage.setItem('token',data.token)
+          localStorage.setItem('email',email)
+          setActiveSection('ranks')
+          router.reload()
+        } else {
+          showMessage(data.message || 'Login failed.', 'error');
+        }
+      } catch (error: any) {
+        showMessage('An error occurred during login.', 'error');
+        console.error('Login error:', error);
+      }
+    } else {
+      if (!username || !email || !password) {
+        showMessage('Please fill in all signup fields.', 'error');
+        return;
+      }
+      showMessage('Signup attempt (check console)', 'info');
+      console.log('Signup Data:', { username, email, githubId, password });
+      try {
+        const response = await fetch('/api/signup', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ username, email, githubId, password }),
+        });
+        const data = await response.json();
+        if (response.ok) {
+          showMessage(data.message || 'Signup successful! Please log in.');
+          setIsLogin(true);
+        } else {
+          showMessage(data.message || 'Signup failed.', 'error');
+        }
+      } catch (error: any) {
+        showMessage('An error occurred during signup.', 'error');
+        console.error('Signup error:', error);
+      }
+    }
+  };
+
   return (
     <div
       style={{
-        
+
       }}
     >
       <div
@@ -149,6 +226,129 @@ const ContributionRanks: React.FC = () => {
                 </div>
               </>
             )}
+            {
+              activeSection === 'login' && (
+                <div className="min-h-screen flex items-center justify-center bg-[#0C0C0C] p-4">
+                  <div className={`fixed top-5 left-1/2 -translate-x-1/2 bg-green-500 text-white py-3 px-6 rounded-lg shadow-lg z-50 transition-opacity duration-300 ${showMessageBox ? 'opacity-100 block' : 'opacity-0 hidden'}`}>
+                    {message}
+                  </div>
+
+                  <div className="flex flex-col md:flex-row bg-[#0E0E2F] rounded-xl shadow-2xl overflow-hidden max-w-4xl w-full">
+                    <div className="md:w-1/2 p-8 flex flex-col justify-center items-center bg-gradient-to-br from-[#0088CC] to-[#00B2FF] text-white">
+                      <h2 className="mb-4 text-4xl font-bold text-center">
+                        {isLogin ? 'Welcome Back!' : 'Join Us!'}
+                      </h2>
+                      <p className="mb-6 text-lg text-center">
+                        {isLogin ? 'Sign in to continue your journey.' : 'Create an account and start your adventure.'}
+                      </p>
+                      <img
+                        src="https://placehold.co/400x300/00B2FF/FFFFFF?text=Illustration"
+                        alt="Illustration"
+                        className="w-3/4 h-auto rounded-lg shadow-lg"
+                        onError={(e: React.SyntheticEvent<HTMLImageElement, Event>) => { e.currentTarget.onerror = null; e.currentTarget.src = 'https://placehold.co/400x300/00B2FF/FFFFFF?text=Image+Error'; }}
+                      />
+                    </div>
+
+                    <div className="flex flex-col items-center justify-center p-8 md:w-1/2">
+                      <h3 className="mb-6 text-3xl font-bold text-gray-200">
+                        {isLogin ? 'Login' : 'Signup'}
+                      </h3>
+
+                      <form onSubmit={handleSubmit} className="w-full max-w-sm">
+                        {!isLogin && (
+                          <div className="mb-4">
+                            <label htmlFor="username" className="block mb-2 text-sm font-semibold text-gray-300">
+                              Username
+                            </label>
+                            <input
+                              type="text"
+                              id="username"
+                              className="shadow-sm appearance-none border border-gray-700 rounded-lg w-full py-3 px-4 text-gray-200 leading-tight focus:outline-none focus:ring-2 focus:ring-[#00B2FF] focus:border-transparent transition duration-200 bg-[#0E0E2F]"
+                              placeholder="Your username"
+                              value={username}
+                              onChange={(e: React.ChangeEvent<HTMLInputElement>) => setUsername(e.target.value)}
+                              required={!isLogin}
+                            />
+                          </div>
+                        )}
+
+                        <div className="mb-4">
+                          <label htmlFor="email" className="block mb-2 text-sm font-semibold text-gray-300">
+                            Email
+                          </label>
+                          <input
+                            type="email"
+                            id="email"
+                            className="shadow-sm appearance-none border border-gray-700 rounded-lg w-full py-3 px-4 text-gray-200 leading-tight focus:outline-none focus:ring-2 focus:ring-[#00B2FF] focus:border-transparent transition duration-200 bg-[#0E0E2F]"
+                            placeholder="you@example.com"
+                            value={email}
+                            onChange={(e: React.ChangeEvent<HTMLInputElement>) => setEmail(e.target.value)}
+                            required
+                          />
+                        </div>
+
+                        {!isLogin && (
+                          <div className="mb-4">
+                            <label htmlFor="githubId" className="block mb-2 text-sm font-semibold text-gray-300">
+                              GitHub ID (Optional)
+                            </label>
+                            <input
+                              type="text"
+                              id="githubId"
+                              className="shadow-sm appearance-none border border-gray-700 rounded-lg w-full py-3 px-4 text-gray-200 leading-tight focus:outline-none focus:ring-2 focus:ring-[#00B2FF] focus:border-transparent transition duration-200 bg-[#0E0E2F]"
+                              placeholder="Your GitHub ID"
+                              value={githubId}
+                              onChange={(e: React.ChangeEvent<HTMLInputElement>) => setGithubId(e.target.value)}
+                            />
+                          </div>
+                        )}
+
+                        <div className="mb-6">
+                          <label htmlFor="password" className="block mb-2 text-sm font-semibold text-gray-300">
+                            Password
+                          </label>
+                          <input
+                            type="password"
+                            id="password"
+                            className="shadow-sm appearance-none border border-gray-700 rounded-lg w-full py-3 px-4 text-gray-200 leading-tight focus:outline-none focus:ring-2 focus:ring-[#00B2FF] focus:border-transparent transition duration-200 bg-[#0E0E2F]"
+                            placeholder="********"
+                            value={password}
+                            onChange={(e: React.ChangeEvent<HTMLInputElement>) => setPassword(e.target.value)}
+                            required
+                          />
+                        </div>
+
+                        <button
+                          type="submit"
+                          className="w-full cursor-pointer bg-[#00B2FF] hover:bg-[#0099CC] text-white font-bold py-3 px-4 rounded-lg focus:outline-none focus:shadow-outline transition duration-300 ease-in-out transform hover:-translate-y-1 hover:scale-105 shadow-md"
+                        >
+                          {isLogin ? 'Login' : 'Signup'}
+                        </button>
+                      </form>
+
+                      <div className="mt-6 text-center">
+                        <p className="text-gray-400">
+                          {isLogin ? "Don't have an account?" : "Already have an account?"}
+                          <button
+                            onClick={() => {
+                              setIsLogin(!isLogin);
+                              setUsername('');
+                              setEmail('');
+                              setGithubId('');
+                              setPassword('');
+                              setMessage('');
+                              setShowMessageBox(false);
+                            }}
+                            className="text-[#00B2FF] cursor-pointer hover:text-[#0099CC] font-semibold ml-1 focus:outline-none"
+                          >
+                            {isLogin ? 'Signup here' : 'Login here'}
+                          </button>
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              )}
           </div>
         </div>
       </div>

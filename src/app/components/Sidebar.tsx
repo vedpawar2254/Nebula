@@ -2,15 +2,24 @@
 
 import React, { useEffect, useRef, useState } from "react";
 import "../globals.css"
+import { SignedOut, SignInButton } from "@clerk/nextjs";
 
 
 interface SidebarProps {
-  setActiveSection: (section: "home" | "ranks") => void;
+  setActiveSection: (section: "home" | "ranks" |"login") => void;
 }
 
 const Sidebar: React.FC<SidebarProps> = ({ setActiveSection }) => {
   const sidebarRef = useRef<HTMLDivElement | null>(null);
   const [isVisible, setIsVisible] = useState(false);
+  const [email, setemail] = useState("")
+
+  useEffect(()=>{
+    const email = localStorage.getItem('email')
+    if(email){
+      setemail(email)
+    }
+  },[])
 
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -83,6 +92,13 @@ const Sidebar: React.FC<SidebarProps> = ({ setActiveSection }) => {
         onMouseLeave={(e) => handleHover(e, false)}
       >
         🏆 Leaderboard
+      </button>
+      <button
+      onClick={() => email ?  (localStorage.removeItem('email'), localStorage.removeItem('token'),setemail("")) : setActiveSection("login")}
+        style={baseStyle}
+        onMouseEnter={(e) => handleHover(e, true)}
+        onMouseLeave={(e) => handleHover(e, false)}>
+        {email ? 'Logout':'→ Login'}
       </button>
     </div>
   );

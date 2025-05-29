@@ -109,11 +109,37 @@ const ContributionRanks = () => {
             padding: "2rem",
             position: "relative",
             zIndex: 1,
+            overflowY: "auto", // Enable vertical scrolling
+            maxHeight: "100vh", // Prevent overflow beyond viewport
           }}
         >
           {activeSection === "ranks" && <LeaderboardContest />}
-          {activeSection === "contact" && <Contact />}
-          {activeSection === "faq" && <FAQ />}
+          {activeSection === "contact" && (
+            <div
+              style={{
+                width: "100%",
+                height: "100%",
+                overflowY: "auto",
+                maxHeight: "100vh",
+              }}
+              className="custom-scrollbar"
+            >
+              <Contact />
+            </div>
+          )}
+          {activeSection === "faq" && (
+            <div
+              style={{
+                width: "100%",
+                height: "100%",
+                overflowY: "auto",
+                maxHeight: "100vh",
+              }}
+              className="custom-scrollbar"
+            >
+              <FAQ />
+            </div>
+          )}
 
           {activeSection === "home" && (
             <>
@@ -222,15 +248,32 @@ const ContributionRanks = () => {
                     "linear-gradient(135deg, #0d47a1, #1976d2, #4fc3f7)";
                 }}
                 onClick={() => {
-                  router.push("/leaderboard-contest");
+                  window.open("https://github.com/SASTxNST/Nebula", "_blank");
                 }}
               >
-                Show Leaderboard
+                Contribute to Github
               </button>
             </>
           )}
         </div>
       </div>
+      <style jsx global>{`
+        .custom-scrollbar {
+          scrollbar-width: thin;
+          scrollbar-color: #18182a #181820;
+        }
+        .custom-scrollbar::-webkit-scrollbar {
+          width: 10px;
+          background: #181820;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+          background: #18182a;
+          border-radius: 8px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+          background: #23233a;
+        }
+      `}</style>
     </div>
   );
 };

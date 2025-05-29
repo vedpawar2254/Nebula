@@ -5,7 +5,7 @@ import { useRouter } from "next/navigation";
 import "../globals.css";
 
 interface SidebarProps {
-  setActiveSection: (section: "home" | "ranks" | "contact" | "faq" | "login" | "profile") => void;
+  setActiveSection: (section: "home" | "ranks" | "contact" | "faq" | "profile") => void;
   isOpen?: boolean;
   onToggle?: () => void;
 }
@@ -126,23 +126,21 @@ const Sidebar: React.FC<SidebarProps> = ({
         </button>
       )}
 
-      <button
+      {
+        email && <button
         onClick={() => {
-          if (email) {
             localStorage.removeItem("email");
             localStorage.removeItem("token");
             setEmail("");
-            setActiveSection("home");
-          } else {
-            setActiveSection("login");
-          }
+            router.push('/')
         }}
         style={baseStyle}
         onMouseEnter={(e) => handleHover(e, true)}
         onMouseLeave={(e) => handleHover(e, false)}
       >
-        {email ? "Logout" : "→ Login"}
+        Logout
       </button>
+      }
 
       <button
         onClick={() => router.push("/contribution-ranks?section=contact")}

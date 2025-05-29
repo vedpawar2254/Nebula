@@ -84,7 +84,7 @@ const HomeLanding: React.FC = () => {
   };
 
   return (
-    <div style={{ position: "relative", overflow: "hidden" }}>
+    <div className="mt-10" style={{ position: "relative", overflow: "hidden" }}>
       <section
         id="home"
         ref={ref}

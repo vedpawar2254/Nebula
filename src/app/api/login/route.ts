@@ -1,18 +1,12 @@
-// src/pages/api/login.ts
-
-import type { NextApiRequest } from 'next';
 import { NextResponse } from 'next/server';
 import connectDB from '@/lib/connectDb';
 import User from '@/models/userModel';
 import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
-
-export async function POST(req: NextApiRequest) {
+export async function POST(req: Request) {
   try {
     await connectDB();
-
-    //@ts-ignore
-    const { email, password } = await req.json(); // Corrected: Use req.json() to parse the JSON body
+    const { email, password } = await req.json();
 
     if (!email || !password) {
       return NextResponse.json({ message: 'Please provide email and password' }, { status: 400 });
@@ -29,8 +23,10 @@ export async function POST(req: NextApiRequest) {
     if (!isMatch) {
       return NextResponse.json({ message: 'Invalid credentials' }, { status: 401 });
     }
-
-    const jwtSecret = process.env.JWT_SECRET || 'your_jwt_secret_key';
+    const jwtSecret = process.env.JWT_SECRET;
+    if (!jwtSecret) {
+      throw new Error('JWT_SECRET is not defined in environment variables');
+    }
 
     const token = jwt.sign(
       { id: user._id, username: user.username, email: user.email },

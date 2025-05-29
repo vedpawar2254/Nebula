@@ -106,18 +106,20 @@ const Contact: React.FC = () => {
   };
 
   return (
-    <div style={{ position: "relative", overflow: "hidden" }}>
+    // Removed `position: "relative"` and `overflow: "hidden"` from here
+    <div>
       <section
         id="contact"
         style={{
-          position: "relative",
+          position: "relative", 
           zIndex: 1,
           display: "flex",
           flexDirection: "column",
           alignItems: "center",
-          minHeight: "100vh",
           padding: "4rem 1rem",
           color: "white",
+          width:"100vw",
+          height:"100vh"
         }}
       >
         <motion.h1
@@ -399,7 +401,7 @@ const Contact: React.FC = () => {
         </div>
       </section>
 
-      {/* Background circles */}
+      {/* Background circles - keep these, as their position depends on the section being relative */}
       <motion.div
         initial={{ opacity: 0 }}
         animate={{ opacity: 0.12 }}

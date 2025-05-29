@@ -7,6 +7,11 @@ import LeaderboardContest from "./LeaderboardContest";
 import Contact from "./Contact";
 import FAQ from "./FAQ";
 
+type Repo = {
+  owner: string;
+  name: string;
+};
+
 const fontStyle = {
   fontFamily: "'Inter', sans-serif",
 };

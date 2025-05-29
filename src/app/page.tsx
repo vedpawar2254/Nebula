@@ -4,6 +4,8 @@ import React, { useState, useEffect } from 'react';
 import Head from 'next/head';
 import CountdownUnit from './components/CountdownUnit';
 
+
+
 const HomePage: React.FC = () => {
   const launchDate = new Date('2025-06-01T18:30:00Z').getTime();
 
@@ -73,6 +75,7 @@ const HomePage: React.FC = () => {
             Introducing
           </p>
         </div>
+        
 
         <main className="relative z-10 flex flex-col items-center w-full px-4 mt-12 sm:mt-16">
           <h1 className="font-orbitron text-6xl sm:text-7xl md:text-8xl lg:text-9xl font-black uppercase tracking-widest mb-10 sm:mb-12 nebula-text-effect">
@@ -99,8 +102,10 @@ const HomePage: React.FC = () => {
 
 
 <button
-  className="overflow-hidden relative w-48 px-6 py-3 h-14 border-2 border-white bg-transparent rounded-full text-lg font-orbitron font-semibold text-white cursor-pointer group transition-all duration-300 hover:border-blue-400"
+  onClick={() => window.location.href = "/contribution-ranks"}
+  className="overflow-hidden relative w-48 px-6 py-3 h-14 border-2 border-white bg-transparent rounded-full text-lg font-orbitron font-semibold text-white cursor-pointer group transition-all duration-300 hover:border-blue-400 mx-auto my-4 md:my-6 lg:my-8"
 >
+  {/* Animated background layers */}
   <span
     className="absolute w-full h-full top-0 left-0 bg-blue-600 rounded-full transform scale-x-0 group-hover:scale-x-100 transition-transform duration-500 origin-left"
   ></span>
@@ -110,6 +115,8 @@ const HomePage: React.FC = () => {
   <span
     className="absolute w-full h-full top-0 left-0 bg-blue-400 rounded-full transform scale-x-0 group-hover:scale-x-100 transition-transform duration-900 origin-left delay-150"
   ></span>
+  
+  {/* Text container */}
   <div className="relative z-20 flex items-center justify-center h-full w-full">
     <span className="group-hover:opacity-0 transition-opacity duration-300">
       Contribute

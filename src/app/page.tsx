@@ -1,11 +1,11 @@
-"use client";
+"use client"
 
-import React, { useState, useEffect } from "react";
-import Head from "next/head";
-import CountdownUnit from "./components/CountdownUnit";
+import React, { useState, useEffect } from 'react';
+import Head from 'next/head';
+import CountdownUnit from './components/CountdownUnit';
 
 const HomePage: React.FC = () => {
-  const launchDate = new Date("2025-06-01T18:30:00Z").getTime();
+  const launchDate = new Date('2025-06-01T18:30:00Z').getTime();
 
   const [timeRemaining, setTimeRemaining] = useState({
     days: 0,
@@ -25,15 +25,11 @@ const HomePage: React.FC = () => {
 
       if (difference > 0) {
         const days = Math.floor(difference / (1000 * 60 * 60 * 24));
-        const hours = Math.floor(
-          (difference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)
-        );
-        const minutes = Math.floor(
-          (difference % (1000 * 60 * 60)) / (1000 * 60)
-        );
+        const hours = Math.floor((difference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+        const minutes = Math.floor((difference % (1000 * 60 * 60)) / (1000 * 60));
         const seconds = Math.floor((difference % (1000 * 60)) / 1000);
 
-        setTimeRemaining((current) => {
+        setTimeRemaining(current => {
           setPrevSeconds(current.seconds);
           return { days, hours, minutes, seconds };
         });
@@ -48,25 +44,21 @@ const HomePage: React.FC = () => {
     return () => clearInterval(intervalId);
   }, [launchDate]);
 
-  const backgroundImageUrl = "/nebula.png";
+  const backgroundImageUrl = '/nebula.png';
 
   if (!isClient) {
     return null;
   }
 
-  const secondsKey =
-    prevSeconds !== null && timeRemaining.seconds !== prevSeconds
-      ? `sec-${timeRemaining.seconds}-${Date.now()}`
-      : `sec-${timeRemaining.seconds}`;
+  const secondsKey = prevSeconds !== null && timeRemaining.seconds !== prevSeconds
+    ? `sec-${timeRemaining.seconds}-${Date.now()}`
+    : `sec-${timeRemaining.seconds}`;
 
   return (
     <>
       <Head>
         <title>NEBULA - Coming Soon</title>
-        <meta
-          name="description"
-          content="Nebula is launching soon! Countdown to the future."
-        />
+        <meta name="description" content="Nebula is launching soon! Countdown to the future." />
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
@@ -87,42 +79,18 @@ const HomePage: React.FC = () => {
             NEBULA
           </h1>
 
-          {timeRemaining.days === 0 &&
-          timeRemaining.hours === 0 &&
-          timeRemaining.minutes === 0 &&
-          timeRemaining.seconds === 0 ? (
+          {timeRemaining.days === 0 && timeRemaining.hours === 0 && timeRemaining.minutes === 0 && timeRemaining.seconds === 0 ? (
             <p className="font-orbitron text-4xl sm:text-5xl md:text-6xl text-gray-100 font-bold animate-bounce mb-6">
               LAUNCHED!
             </p>
           ) : (
             <div className="flex flex-col items-center">
               <div className="flex justify-center items-start mb-4 sm:mb-6 group">
-                <CountdownUnit
-                  value={timeRemaining.days}
-                  unit="Days"
-                  showSeparator={true}
-                />
-                <CountdownUnit
-                  value={timeRemaining.hours}
-                  unit="Hours"
-                  showSeparator={true}
-                />
-                <CountdownUnit
-                  value={timeRemaining.minutes}
-                  unit="Minutes"
-                  showSeparator={true}
-                />
-                <div
-                  className={
-                    timeRemaining.seconds !== prevSeconds ? "digit-change" : ""
-                  }
-                  key={secondsKey}
-                >
-                  <CountdownUnit
-                    value={timeRemaining.seconds}
-                    unit="Seconds"
-                    showSeparator={false}
-                  />
+                <CountdownUnit value={timeRemaining.days} unit="Days" showSeparator={true} />
+                <CountdownUnit value={timeRemaining.hours} unit="Hours" showSeparator={true} />
+                <CountdownUnit value={timeRemaining.minutes} unit="Minutes" showSeparator={true} />
+                <div className={timeRemaining.seconds !== prevSeconds ? 'digit-change' : ''} key={secondsKey}>
+                  <CountdownUnit value={timeRemaining.seconds} unit="Seconds" showSeparator={false} />
                 </div>
               </div>
               <p className="text-xl sm:text-2xl text-gray-300 font-orbitron tracking-wide mb-6 sm:mb-8">
@@ -130,15 +98,13 @@ const HomePage: React.FC = () => {
               </p>
 
               <button
-                onClick={() => (window.location.href = "/contribution-ranks")}
+                onClick={() => window.location.href = "/contribution-ranks"}
                 className="mt-1 mb-18 px-6 py-2 rounded-full font-orbitron text-lg sm:text-xl font-semibold text-white bg-gradient-to-br from-black to-blue-400 shadow-md hover:from-black hover:to-blue-300 transition-all duration-100"
               >
                 Contribute
               </button>
             </div>
           )}
-
-          <div className="mt-20 w-full"></div>
         </main>
 
         <footer className="absolute bottom-6 sm:bottom-8 left-0 right-0 z-20 flex flex-col items-center">

@@ -253,10 +253,7 @@ const ContributionRanks = () => {
                     "linear-gradient(135deg, #0d47a1, #1976d2, #4fc3f7)";
                 }}
                 onClick={() => {
-                  window.open(
-                    "https://github.com/SASTxNST/Website_SAST",
-                    "_blank"
-                  );
+                  window.open("https://github.com/SASTxNST/Nebula", "_blank");
                 }}
               >
                 Contribute to Github

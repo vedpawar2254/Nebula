@@ -2,18 +2,24 @@
 
 import React, { useEffect, useState, FormEvent } from 'react';
 import dynamic from 'next/dynamic';
-// import ContributionChart from '../components/ContributionChart';
 import HomeLanding from '../pages/HomeLanding';
+import Contact from '../pages/Contact';
+import FAQ from '../pages/FAQ';
 import { useRouter } from 'next/router';
-
-const RepoTabs = dynamic(() => import('../components/RepoTabs'));
-const Leaderboard = dynamic(() => import('../components/Leaderboard'));
-const Sidebar = dynamic(() => import('../components/Sidebar'));
+import Profile from './Profile';
 
 interface Repo {
   owner: string;
   name: string;
 }
+
+interface ProfileProps {
+  repositories: Repo[];
+}
+
+const RepoTabs = dynamic(() => import('../components/RepoTabs'));
+const Leaderboard = dynamic(() => import('../components/Leaderboard'));
+const Sidebar = dynamic(() => import('../components/Sidebar'));
 
 const ContributionRanks: React.FC = () => {
   const repos: Repo[] = [
@@ -21,9 +27,9 @@ const ContributionRanks: React.FC = () => {
     { owner: 'SASTxNST', name: 'Nebula' },
     { owner: 'SASTxNST', name: 'Sensor Data Visualiser' },
   ];
-  const router = useRouter()
+  const router = useRouter();
   const [selectedRepo, setSelectedRepo] = useState<Repo>(repos[0]);
-  const [activeSection, setActiveSection] = useState<'home' | 'ranks' | 'login'>('home');
+  const [activeSection, setActiveSection] = useState<'home' | 'ranks' | 'contact' | 'faq' | 'login' | 'profile'>('home');
   const [snapshot, setSnapshot] = useState({ contributors: 0, commits: 0, repositories: repos.length });
 
   const [isLogin, setIsLogin] = useState<boolean>(true);
@@ -81,7 +87,7 @@ const ContributionRanks: React.FC = () => {
         showMessage('Please fill in all login fields.', 'error');
         return;
       }
-      showMessage('Login attempt (check console)', 'info');
+      showMessage('Logging in..', 'info');
       console.log('Login Data:', { email, password });
       try {
         const response = await fetch('/api/login', {
@@ -92,10 +98,10 @@ const ContributionRanks: React.FC = () => {
         const data = await response.json();
         if (response.ok) {
           showMessage(data.message || 'Login successful!');
-          localStorage.setItem('token',data.token)
-          localStorage.setItem('email',email)
-          setActiveSection('ranks')
-          router.reload()
+          localStorage.setItem('token', data.token);
+          localStorage.setItem('email', email);
+          setActiveSection('ranks');
+          router.reload();
         } else {
           showMessage(data.message || 'Login failed.', 'error');
         }
@@ -131,11 +137,7 @@ const ContributionRanks: React.FC = () => {
   };
 
   return (
-    <div
-      style={{
-
-      }}
-    >
+    <div style={{}}>
       <div
         style={{
           width: '100%',
@@ -220,33 +222,24 @@ const ContributionRanks: React.FC = () => {
                     repos={repos}
                     onSelectRepo={setSelectedRepo}
                   />
-                  {/* <div style={{ marginTop: '1rem' }}>
-                    <ContributionChart />
-                  </div> */}
                 </div>
               </>
             )}
             {
               activeSection === 'login' && (
-                <div className="min-h-screen flex items-center justify-center bg-[#0C0C0C] p-4">
-                  <div className={`fixed top-5 left-1/2 -translate-x-1/2 bg-green-500 text-white py-3 px-6 rounded-lg shadow-lg z-50 transition-opacity duration-300 ${showMessageBox ? 'opacity-100 block' : 'opacity-0 hidden'}`}>
+                <div className="flex items-center justify-center min-h-screen p-4 bg-[#0C0C0C]">
+                  <div className={`fixed left-1/2 top-5 -translate-x-1/2 bg-green-500 text-white py-3 px-6 rounded-lg shadow-lg z-50 transition-opacity duration-300 ${showMessageBox ? 'block opacity-100' : 'hidden opacity-0'}`}>
                     {message}
                   </div>
 
-                  <div className="flex flex-col md:flex-row bg-[#0E0E2F] rounded-xl shadow-2xl overflow-hidden max-w-4xl w-full">
-                    <div className="md:w-1/2 p-8 flex flex-col justify-center items-center bg-gradient-to-br from-[#0088CC] to-[#00B2FF] text-white">
+                  <div className="flex flex-col overflow-hidden bg-[#0E0E2F] rounded-xl shadow-2xl md:flex-row max-w-4xl w-full">
+                    <div className="flex flex-col items-center justify-center p-8 text-white bg-gradient-to-br from-[#0088CC] to-[#00B2FF] md:w-1/2">
                       <h2 className="mb-4 text-4xl font-bold text-center">
                         {isLogin ? 'Welcome Back!' : 'Join Us!'}
                       </h2>
                       <p className="mb-6 text-lg text-center">
                         {isLogin ? 'Sign in to continue your journey.' : 'Create an account and start your adventure.'}
                       </p>
-                      {/* <img
-                        src="https://placehold.co/400x300/00B2FF/FFFFFF?text=Illustration"
-                        alt="Illustration"
-                        className="w-3/4 h-auto rounded-lg shadow-lg"
-                        onError={(e: React.SyntheticEvent<HTMLImageElement, Event>) => { e.currentTarget.onerror = null; e.currentTarget.src = 'https://placehold.co/400x300/00B2FF/FFFFFF?text=Image+Error'; }}
-                      /> */}
                     </div>
 
                     <div className="flex flex-col items-center justify-center p-8 md:w-1/2">
@@ -263,7 +256,7 @@ const ContributionRanks: React.FC = () => {
                             <input
                               type="text"
                               id="username"
-                              className="shadow-sm appearance-none border border-gray-700 rounded-lg w-full py-3 px-4 text-gray-200 leading-tight focus:outline-none focus:ring-2 focus:ring-[#00B2FF] focus:border-transparent transition duration-200 bg-[#0E0E2F]"
+                              className="w-full px-4 py-3 leading-tight text-gray-200 transition duration-200 bg-[#0E0E2F] border border-gray-700 rounded-lg shadow-sm appearance-none focus:outline-none focus:ring-2 focus:ring-[#00B2FF] focus:border-transparent"
                               placeholder="Your username"
                               value={username}
                               onChange={(e: React.ChangeEvent<HTMLInputElement>) => setUsername(e.target.value)}
@@ -279,7 +272,7 @@ const ContributionRanks: React.FC = () => {
                           <input
                             type="email"
                             id="email"
-                            className="shadow-sm appearance-none border border-gray-700 rounded-lg w-full py-3 px-4 text-gray-200 leading-tight focus:outline-none focus:ring-2 focus:ring-[#00B2FF] focus:border-transparent transition duration-200 bg-[#0E0E2F]"
+                            className="w-full px-4 py-3 leading-tight text-gray-200 transition duration-200 bg-[#0E0E2F] border border-gray-700 rounded-lg shadow-sm appearance-none focus:outline-none focus:ring-2 focus:ring-[#00B2FF] focus:border-transparent"
                             placeholder="you@example.com"
                             value={email}
                             onChange={(e: React.ChangeEvent<HTMLInputElement>) => setEmail(e.target.value)}
@@ -295,7 +288,7 @@ const ContributionRanks: React.FC = () => {
                             <input
                               type="text"
                               id="githubId"
-                              className="shadow-sm appearance-none border border-gray-700 rounded-lg w-full py-3 px-4 text-gray-200 leading-tight focus:outline-none focus:ring-2 focus:ring-[#00B2FF] focus:border-transparent transition duration-200 bg-[#0E0E2F]"
+                              className="w-full px-4 py-3 leading-tight text-gray-200 transition duration-200 bg-[#0E0E2F] border border-gray-700 rounded-lg shadow-sm appearance-none focus:outline-none focus:ring-2 focus:ring-[#00B2FF] focus:border-transparent"
                               placeholder="Your GitHub ID"
                               value={githubId}
                               onChange={(e: React.ChangeEvent<HTMLInputElement>) => setGithubId(e.target.value)}
@@ -310,7 +303,7 @@ const ContributionRanks: React.FC = () => {
                           <input
                             type="password"
                             id="password"
-                            className="shadow-sm appearance-none border border-gray-700 rounded-lg w-full py-3 px-4 text-gray-200 leading-tight focus:outline-none focus:ring-2 focus:ring-[#00B2FF] focus:border-transparent transition duration-200 bg-[#0E0E2F]"
+                            className="w-full px-4 py-3 leading-tight text-gray-200 transition duration-200 bg-[#0E0E2F] border border-gray-700 rounded-lg shadow-sm appearance-none focus:outline-none focus:ring-2 focus:ring-[#00B2FF] focus:border-transparent"
                             placeholder="********"
                             value={password}
                             onChange={(e: React.ChangeEvent<HTMLInputElement>) => setPassword(e.target.value)}
@@ -339,7 +332,7 @@ const ContributionRanks: React.FC = () => {
                               setMessage('');
                               setShowMessageBox(false);
                             }}
-                            className="text-[#00B2FF] cursor-pointer hover:text-[#0099CC] font-semibold ml-1 focus:outline-none"
+                            className="ml-1 font-semibold text-[#00B2FF] cursor-pointer focus:outline-none hover:text-[#0099CC]"
                           >
                             {isLogin ? 'Signup here' : 'Login here'}
                           </button>
@@ -349,6 +342,13 @@ const ContributionRanks: React.FC = () => {
                   </div>
                 </div>
               )}
+            {
+              activeSection === 'profile' && (
+                <Profile repositories={repos} />
+              )
+            }
+            {activeSection === 'contact' && <Contact />}
+            {activeSection === 'faq' && <FAQ />}
           </div>
         </div>
       </div>

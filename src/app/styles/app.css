@@ -1,17 +1,21 @@
 @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&display=swap');
+@font-face {
+  font-family: 'Nebula';
+  src: url('./../../Assets/Fonts/Nebula-Regular.otf');
+}
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
 
 body {
-    font-family: 'Inter', sans-serif; /* Default body font */
+    font-family: 'Nebula', sans-serif; /* Default body font */
     margin: 0; /* Reset default margin */
     background-color: #000; /* Optional: default background for pages if not overridden */
 }
 
 .font-orbitron {
-  font-family: 'Orbitron', sans-serif;
+  font-family: 'Nebula', sans-serif;
 }
 
 .nebula-text-effect {

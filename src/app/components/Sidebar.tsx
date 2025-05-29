@@ -2,11 +2,10 @@
 
 import React, { useEffect, useRef, useState } from "react";
 import "../globals.css"
-import { SignedOut, SignInButton } from "@clerk/nextjs";
 
 
 interface SidebarProps {
-  setActiveSection: (section: "home" | "ranks" |"login") => void;
+  setActiveSection: (section: "home" | "ranks" | "contact" | "faq" | 'login' | 'profile') => void;
 }
 
 const Sidebar: React.FC<SidebarProps> = ({ setActiveSection }) => {
@@ -14,12 +13,12 @@ const Sidebar: React.FC<SidebarProps> = ({ setActiveSection }) => {
   const [isVisible, setIsVisible] = useState(false);
   const [email, setemail] = useState("")
 
-  useEffect(()=>{
+  useEffect(() => {
     const email = localStorage.getItem('email')
-    if(email){
+    if (email) {
       setemail(email)
     }
-  },[])
+  }, [])
 
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -93,12 +92,41 @@ const Sidebar: React.FC<SidebarProps> = ({ setActiveSection }) => {
       >
         🏆 Leaderboard
       </button>
+      {
+        email && (
+          <button
+            onClick={() => setActiveSection("profile")}
+            style={baseStyle}
+            onMouseEnter={(e) => handleHover(e, true)}
+            onMouseLeave={(e) => handleHover(e, false)}
+          >
+            👤 Profile
+          </button>
+        )
+      }
       <button
-      onClick={() => email ?  (localStorage.removeItem('email'), localStorage.removeItem('token'),setemail("")) : setActiveSection("login")}
+        onClick={() => email ? (localStorage.removeItem('email'), localStorage.removeItem('token'), setemail(""),setActiveSection('home')) : setActiveSection("login")}
         style={baseStyle}
         onMouseEnter={(e) => handleHover(e, true)}
         onMouseLeave={(e) => handleHover(e, false)}>
-        {email ? 'Logout':'→ Login'}
+        {email ? 'Logout' : '→ Login'}
+      </button>
+      <button
+        onClick={() => setActiveSection("contact")}
+        style={baseStyle}
+        onMouseEnter={(e) => handleHover(e, true)}
+        onMouseLeave={(e) => handleHover(e, false)}
+      >
+        📧 Contact
+      </button>
+
+      <button
+        onClick={() => setActiveSection("faq")}
+        style={baseStyle}
+        onMouseEnter={(e) => handleHover(e, true)}
+        onMouseLeave={(e) => handleHover(e, false)}
+      >
+        ❓ FAQ
       </button>
     </div>
   );

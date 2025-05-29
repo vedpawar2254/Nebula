@@ -43,11 +43,17 @@ const HomeLanding: React.FC = () => {
       });
 
     Promise.all([
-      fetch("https://api.github.com/repos/SASTxNST/Website_SAST").then((res) => res.json()),
-      fetch("https://api.github.com/repos/SASTxNST/Nebula").then((res) => res.json()),
-      fetch("https://api.github.com/repos/SASTxNST/Sensor-Data-Visualiser").then((res) => res.json()),
+      fetch("https://api.github.com/repos/SASTxNST/Website_SAST").then((res) =>
+        res.json()
+      ),
+      fetch("https://api.github.com/repos/SASTxNST/Nebula").then((res) =>
+        res.json()
+      ),
+      fetch(
+        "https://api.github.com/repos/SASTxNST/Sensor-Data-Visualiser"
+      ).then((res) => res.json()),
     ])
-    .then((data) => {
+      .then((data) => {
         if (Array.isArray(data)) {
           setFeaturedRepos(data);
         } else {
@@ -116,7 +122,11 @@ const HomeLanding: React.FC = () => {
           }}
         >
           <Typewriter
-            words={["Launch Into Open Source", "Build together with SAST", "Contribute. Collaborate. Create."]}
+            words={[
+              "Launch Into Open Source",
+              "Build together with SAST",
+              "Contribute. Collaborate. Create.",
+            ]}
             loop={0}
             cursor
             cursorStyle="_"
@@ -125,38 +135,6 @@ const HomeLanding: React.FC = () => {
             delaySpeed={1500}
           />
         </motion.h1>
-
-        <motion.p
-          variants={fadeUpVariants}
-          initial="hidden"
-          animate={controls}
-          style={{ fontSize: "1.2rem", maxWidth: "700px", color: "#cccccc", marginBottom: "5rem" }}
-        >
-          Join our mission to build something amazing. Contribute to real-world space tech projects on GitHub with the SAST community.
-        </motion.p>
-
-        <motion.a
-          variants={fadeUpVariants}
-          initial="hidden"
-          animate={controls}
-          href="https://github.com/SASTxNST/Website_SAST"
-          target="_blank"
-          rel="noopener noreferrer"
-          style={{
-            padding: "0.8rem 2rem",
-            borderRadius: "9999px",
-            fontWeight: "bold",
-            fontSize: "1.1rem",
-            background: "linear-gradient(to right, #00a1ff, #0050b3)",
-            color: "#fff",
-            textDecoration: "none",
-            transition: "transform 0.2s ease-in-out",
-          }}
-          onMouseEnter={(e) => (e.currentTarget.style.transform = "scale(1.05)")}
-          onMouseLeave={(e) => (e.currentTarget.style.transform = "scale(1)")}
-        >
-          🌟 Contribute on GitHub
-        </motion.a>
 
         {isDesktop && (
           <div
@@ -171,66 +149,110 @@ const HomeLanding: React.FC = () => {
               padding: "0 1rem",
             }}
           >
-            {["Fix Bugs", "Improve UI", "Write Docs", "Add Features"].map((task) => (
-              <div
-                key={task}
-                style={{
-                  width: "200px",
-                  padding: "1.2rem",
-                  borderRadius: "24px",
-                  background: "rgba(255, 255, 255, 0.05)",
-                  backdropFilter: "blur(20px)",
-                  WebkitBackdropFilter: "blur(20px)",
-                  border: "1px solid rgba(255, 255, 255, 0.1)",
-                  boxShadow: "0 8px 32px rgba(0, 0, 0, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.05)",
-                  textAlign: "center",
-                }}
-              >
-                <div style={{ fontSize: "1.1rem", fontWeight: "600", marginBottom: "0.5rem", color: "#00a1ff" }}>
-                  {task}
+            {["Fix Bugs", "Improve UI", "Write Docs", "Add Features"].map(
+              (task) => (
+                <div
+                  key={task}
+                  style={{
+                    width: "200px",
+                    padding: "1.2rem",
+                    borderRadius: "24px",
+                    background: "rgba(255, 255, 255, 0.05)",
+                    backdropFilter: "blur(20px)",
+                    WebkitBackdropFilter: "blur(20px)",
+                    border: "1px solid rgba(255, 255, 255, 0.1)",
+                    boxShadow:
+                      "0 8px 32px rgba(0, 0, 0, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.05)",
+                    textAlign: "center",
+                  }}
+                >
+                  <div
+                    style={{
+                      fontSize: "1.1rem",
+                      fontWeight: "600",
+                      marginBottom: "0.5rem",
+                      color: "#00a1ff",
+                    }}
+                  >
+                    {task}
+                  </div>
+                  <p
+                    style={{
+                      fontSize: "0.85rem",
+                      color: "rgba(255, 255, 255, 0.7)",
+                    }}
+                  >
+                    Explore GitHub issues for this task
+                  </p>
                 </div>
-                <p style={{ fontSize: "0.85rem", color: "rgba(255, 255, 255, 0.7)" }}>
-                  Explore GitHub issues for this task
-                </p>
-              </div>
-            ))}
+              )
+            )}
           </div>
         )}
       </section>
 
-      <h2 style={{ textAlign: 'center', fontSize: '1.5rem', marginBottom: '1rem', color: '#00aaff' }}>
+      <h2
+        style={{
+          textAlign: "center",
+          fontSize: "1.5rem",
+          marginBottom: "1rem",
+          color: "#00aaff",
+        }}
+      >
         Some of our Contributors
       </h2>
-      <div style={{ display: "flex", overflowX: "auto", gap: "1rem", padding: "2rem 1rem", maxWidth: "800px", margin: "0 auto" }}>
-        {Array.isArray(contributors) && contributors.slice(0, 12).map((contributor) => (
-          <a
-            key={contributor.id}
-            href={contributor.html_url}
-            target="_blank"
-            rel="noopener noreferrer"
-            title={contributor.login}
-            style={{
-              background: "rgba(255, 255, 255, 0.05)",
-              padding: "0.8rem",
-              borderRadius: "12px",
-              backdropFilter: "blur(12px)",
-              WebkitBackdropFilter: "blur(12px)",
-              border: "1px solid rgba(255, 255, 255, 0.1)"
-            }}
-          >
-            <img
-              src={contributor.avatar_url}
-              alt={contributor.login}
-              style={{ width: 48, height: 48, borderRadius: "50%" }}
-            />
-          </a>
-        ))}
+      <div
+        style={{
+          display: "flex",
+          overflowX: "auto",
+          gap: "1rem",
+          padding: "2rem 1rem",
+          maxWidth: "800px",
+          margin: "0 auto",
+        }}
+      >
+        {Array.isArray(contributors) &&
+          contributors.slice(0, 12).map((contributor) => (
+            <a
+              key={contributor.id}
+              href={contributor.html_url}
+              target="_blank"
+              rel="noopener noreferrer"
+              title={contributor.login}
+              style={{
+                background: "rgba(255, 255, 255, 0.05)",
+                padding: "0.8rem",
+                borderRadius: "12px",
+                backdropFilter: "blur(12px)",
+                WebkitBackdropFilter: "blur(12px)",
+                border: "1px solid rgba(255, 255, 255, 0.1)",
+              }}
+            >
+              <img
+                src={contributor.avatar_url}
+                alt={contributor.login}
+                style={{ width: 48, height: 48, borderRadius: "50%" }}
+              />
+            </a>
+          ))}
       </div>
 
       {featuredRepos.length > 0 && (
-        <div style={{ padding: "2rem 1rem", maxWidth: "800px", margin: "0 auto" }}>
-          <h2 style={{ fontSize: "1.5rem", marginBottom: "1rem", color: "#00aaff" }}>🚀 Featured Repositories</h2>
-          <div style={{ display: "flex", flexDirection: "column", gap: "1rem" }}>
+        <div
+          style={{ padding: "2rem 1rem", maxWidth: "800px", margin: "0 auto" }}
+        >
+          <h2
+            style={{
+              fontSize: "1.5rem",
+              marginBottom: "1rem",
+              color: "#00aaff",
+            }}
+          >
+            🚀 Featured Repositories
+          </h2>
+          <div
+            style={{ display: "flex", flexDirection: "column", gap: "1rem" }}
+          >
             {featuredRepos.map((repo) => (
               <a
                 key={repo.id}
@@ -245,13 +267,24 @@ const HomeLanding: React.FC = () => {
                   WebkitBackdropFilter: "blur(12px)",
                   border: "1px solid rgba(255, 255, 255, 0.1)",
                   textDecoration: "none",
-                  color: "white"
+                  color: "white",
                 }}
               >
-                <div style={{ fontWeight: "600", color: "#66ccff" }}>{repo.name}</div>
-                <div style={{ fontSize: "0.9rem", color: "#ccc", marginBottom: "0.5rem" }}>{repo.description}</div>
+                <div style={{ fontWeight: "600", color: "#66ccff" }}>
+                  {repo.name}
+                </div>
+                <div
+                  style={{
+                    fontSize: "0.9rem",
+                    color: "#ccc",
+                    marginBottom: "0.5rem",
+                  }}
+                >
+                  {repo.description}
+                </div>
                 <div style={{ fontSize: "0.8rem", color: "#999" }}>
-                  ⭐ {repo.stargazers_count} &nbsp; | &nbsp; 🍴 {repo.forks_count}
+                  ⭐ {repo.stargazers_count} &nbsp; | &nbsp; 🍴{" "}
+                  {repo.forks_count}
                 </div>
               </a>
             ))}

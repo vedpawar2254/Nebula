@@ -78,9 +78,9 @@ const Sidebar: React.FC<SidebarProps> = ({
         opacity: isVisible ? 1 : 0,
         transition: "all 0.3s ease-out",
         overflow: "hidden",
-        borderRight: "1px solid rgba(255,255,255,0.1)",
-        fontWeight: "bold", // Ensure sidebar container is bold
-        fontFamily: "'Orbitron', 'Inter', sans-serif", // Match font
+        borderRight: "0.5px solid rgba(255,255,255,0.1)",
+        fontWeight: "bold",
+        fontFamily: "'Orbitron', 'Inter', sans-serif",
       }}
     >
       <button

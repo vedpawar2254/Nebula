@@ -3,6 +3,7 @@
 import React, { useState, useEffect } from 'react';
 import Head from 'next/head';
 import CountdownUnit from './components/CountdownUnit';
+import About from './components/About';
 
 const HomePage: React.FC = () => {
   const launchDate = new Date('2025-06-01T18:30:00Z').getTime();

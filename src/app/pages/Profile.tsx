@@ -135,7 +135,7 @@ const Profile: React.FC<ProfileProps> = ({ repositories }) => {
       {error && <p className="mb-4 text-center text-red-500">{error}</p>}
 
       {user ? (
-        <div className="bg-[#0E0E2F] p-6 rounded-lg shadow-md mb-8">
+        <div className="bg-[#111111] border border-[#2D2D2D] p-6 rounded-xl shadow-md mb-8">
           <h3 className="text-2xl font-semibold text-[#00B2FF] mb-4">Profile Details</h3>
           <p className="mb-2 text-lg"><strong>Username:</strong> {user.username}</p>
           <p className="mb-2 text-lg"><strong>Email:</strong> {user.email}</p>
@@ -146,12 +146,12 @@ const Profile: React.FC<ProfileProps> = ({ repositories }) => {
         <p className="text-center text-gray-400">Loading user data or user not found...</p>
       )}
 
-      <div className="bg-[#0E0E2F] p-6 rounded-lg shadow-md mb-8">
+      <div className="bg-[#111111] border border-[#2D2D2D] p-6 rounded-lg shadow-md mb-8">
         <h3 className="text-2xl font-semibold text-[#00B2FF] mb-4">Managed Repositories</h3>
         {repositories.length > 0 ? (
           <ul className="grid grid-cols-1 gap-4 md:grid-cols-2">
             {repositories.map((repo, index) => (
-              <li key={index} className="bg-[#1A1A3A] p-3 rounded-md shadow-sm">
+              <li key={index} className="p-3 border border-gray-700 rounded-md shadow-lg bg-white/5 backdrop-blur-lg">
                 <span className="font-medium text-white">{repo.owner}/</span>
                 <span className="font-medium text-[#00B2FF]">{repo.name}</span>
               </li>
@@ -163,7 +163,7 @@ const Profile: React.FC<ProfileProps> = ({ repositories }) => {
       </div>
 
       {user?.githubId && (
-        <div className="bg-[#0E0E2F] p-6 rounded-lg shadow-md">
+        <div className="bg-[#111111] border border-[#2D2D2D] p-6 rounded-lg shadow-md">
           <h3 className="text-2xl font-semibold text-[#00B2FF] mb-4">GitHub Activity</h3>
           {loadingGithubActivity ? (
             <p className="text-gray-400">Loading GitHub activity...</p>
@@ -174,7 +174,7 @@ const Profile: React.FC<ProfileProps> = ({ repositories }) => {
                   <h4 className="mb-3 text-xl font-semibold text-white">Commits:</h4>
                   <div className="grid grid-cols-1 gap-4">
                     {commitDetails.map((commit, index) => (
-                      <div key={index} className="bg-[#1A1A3A] p-4 rounded-lg shadow-sm border border-gray-700">
+                      <div key={index} className="p-4 border border-gray-700 rounded-lg shadow-sm bg-white/5 backdrop-blur-lg">
                         <p className="mb-1 text-sm text-gray-400">
                           <span className="font-medium text-[#00B2FF]">{commit.repoName}</span>
                         </p>

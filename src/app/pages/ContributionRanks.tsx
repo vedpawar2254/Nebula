@@ -87,12 +87,12 @@ const ContributionRanks: React.FC = () => {
     };
     fetchSnapshot();
   }, [selectedRepo]);
-  useEffect(()=>{
+  useEffect(() => {
     const token = localStorage.getItem('token')
-    if(!token){
+    if (!token) {
       router.push('/')
     }
-  },[])
+  }, [])
 
   const showMessage = (msg: string, type: 'success' | 'error' | 'info' = 'success'): void => {
     setMessage(msg);
@@ -174,6 +174,7 @@ const ContributionRanks: React.FC = () => {
         backgroundSize: "cover",
         backgroundPosition: "center",
         position: "relative",
+        width:"full",
         color: "#fff",
         ...fontStyle,
       }}
@@ -208,7 +209,6 @@ const ContributionRanks: React.FC = () => {
             maxHeight: "100vh", // Prevent overflow beyond viewport
           }}
         >
-          {/* All section renderings should be at the same level */}
           {activeSection === "ranks" && <LeaderboardContest />}
           {/* {activeSection === "contact" && (
             <div
@@ -238,16 +238,16 @@ const ContributionRanks: React.FC = () => {
           )}
 
           {activeSection === "home" && (
-            <>
+            <div className="relative flex flex-col items-center justify-center w-full h-full min-h-screen py-16"> {/* Added padding top and bottom */}
               <div
                 style={{
                   fontSize: "14rem",
                   fontWeight: "900",
                   opacity: 0.05,
-                  position: "absolute",
-                  top: "4%",
-                  left: "50%",
-                  transform: "translateX(-50%)",
+                  position: "fixed",
+                  top: "50%", 
+                  left: "64%",
+                  transform: "translate(-50%, -50%)", 
                   zIndex: 0,
                   fontFamily: "'Orbitron', sans-serif",
                 }}
@@ -255,110 +255,110 @@ const ContributionRanks: React.FC = () => {
                 SAST
               </div>
 
-              <div
-                style={{
-                  fontSize: "2rem",
-                  fontWeight: 700,
-                  zIndex: 1,
-                }}
-              >
-                <span style={{ color: "#4fc3f7" }}>...better</span> than missing
-                out on innovation.
-              </div>
-
-              <div
-                style={{
-                  fontSize: "1.25rem",
-                  marginTop: "1rem",
-                  zIndex: 1,
-                  maxWidth: "700px",
-                }}
-              >
-                Join our open-source journey — collaborate, learn, and grow with
-                a passionate community.
-              </div>
-
-              <div
-                style={{
-                  display: "flex",
-                  flexWrap: "wrap",
-                  justifyContent: "center",
-                  gap: "1rem",
-                  marginTop: "2rem",
-                  zIndex: 1,
-                }}
-              >
-                {[
-                  "Build Together",
-                  "Build Real Projects",
-                  "Improve Your GitHub",
-                  "Grow Your Network",
-                ].map((item) => (
-                  <div
-                    key={item}
-                    style={{
-                      padding: "0.75rem 1.5rem",
-                      background: "rgba(255, 255, 255, 0.1)",
-                      borderRadius: "12px",
-                      backdropFilter: "blur(8px)",
-                      display: "flex",
-                      alignItems: "center",
-                      gap: "0.5rem",
-                      fontSize: "0.95rem",
-                    }}
-                  >
-                    <span style={{ color: "#00e676", fontWeight: "bold" }}>
-                      ✔
-                    </span>{" "}
-                    {item}
-                  </div>
-                ))}
-              </div>
-
-              <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
-                <Leaderboard
-                  // @ts-ignore - Consider defining LeaderboardProps to avoid this
-                  repoOwner={selectedRepo.owner}
-                  repoName={selectedRepo.name}
-                  repos={repos}
-                  onSelectRepo={setSelectedRepo}
-                />
-
-                <button
+              {/* Main content wrapper for z-index and spacing */}
+              <div className="relative z-10 flex flex-col items-center justify-center w-full px-4 space-y-6"> {/* Added max-width and padding */}
+                <div
                   style={{
-                    marginTop: "3rem",
-                    padding: "1rem 2.5rem",
-                    fontSize: "1.1rem",
-                    fontFamily: "'Orbitron', sans-serif",
-                    fontWeight: 600,
-                    background: "linear-gradient(135deg, #0d47a1, #1976d2, #4fc3f7)",
-                    color: "#fff",
-                    border: "none",
-                    borderRadius: "14px",
-                    cursor: "pointer",
-                    transition:
-                      "box-shadow 0.3s ease-in-out, background 0.3s ease-in-out",
-                  }}
-                  onMouseOver={(e) => {
-                    e.currentTarget.style.boxShadow =
-                      "0 0 18px rgba(79, 195, 247, 0.5)";
-                    e.currentTarget.style.background =
-                      "linear-gradient(135deg, #1565c0, #42a5f5, #81d4fa)";
-                  }}
-                  onMouseOut={(e) => {
-                    e.currentTarget.style.boxShadow =
-                      "0 0 12px rgba(79, 195, 247, 0.3)";
-                    e.currentTarget.style.background =
-                      "linear-gradient(135deg, #0d47a1, #1976d2, #4fc3f7)";
-                  }}
-                  onClick={() => {
-                    window.open("https://github.com/SASTxNST/Nebula", "_blank");
+                    fontSize: "2rem",
+                    fontWeight: 700,
                   }}
                 >
-                  Contribute to Github
-                </button>
+                  <span style={{ color: "#4fc3f7" }}>...better</span> than missing
+                  out on innovation.
+                </div>
+
+                <div
+                  style={{
+                    fontSize: "1.25rem",
+                    marginTop: "1rem",
+                    maxWidth: "700px",
+                  }}
+                >
+                  Join our open-source journey — collaborate, learn, and grow with
+                  a passionate community.
+                </div>
+
+                <div
+                  style={{
+                    display: "flex",
+                    flexWrap: "wrap",
+                    justifyContent: "center",
+                    gap: "1rem",
+                    marginTop: "2rem",
+                  }}
+                >
+                  {[
+                    "Build Together",
+                    "Build Real Projects",
+                    "Improve Your GitHub",
+                    "Grow Your Network",
+                  ].map((item) => (
+                    <div
+                      key={item}
+                      style={{
+                        padding: "0.75rem 1.5rem",
+                        background: "rgba(255, 255, 255, 0.1)",
+                        borderRadius: "12px",
+                        backdropFilter: "blur(8px)",
+                        display: "flex",
+                        alignItems: "center",
+                        gap: "0.5rem",
+                        fontSize: "0.95rem",
+                      }}
+                    >
+                      <span style={{ color: "#00e676", fontWeight: "bold" }}>
+                        ✔
+                      </span>{" "}
+                      {item}
+                    </div>
+                  ))}
+                </div>
+
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem', width: '100%', alignItems: 'center' }}>
+                  <Leaderboard
+                    // @ts-ignore - Consider defining LeaderboardProps to avoid this
+                    repoOwner={selectedRepo.owner}
+                    repoName={selectedRepo.name}
+                    repos={repos}
+                    onSelectRepo={setSelectedRepo}
+                  />
+
+                  <button
+                    style={{
+                      marginTop: "3rem", // Increased margin-top
+                      padding: "1rem 2.5rem",
+                      fontSize: "1.1rem",
+                      fontFamily: "'Orbitron', sans-serif",
+                      fontWeight: 600,
+                      background: "linear-gradient(135deg, #0d47a1, #1976d2, #4fc3f7)",
+                      color: "#fff",
+                      border: "none",
+                      borderRadius: "14px",
+                      cursor: "pointer",
+                      transition:
+                        "box-shadow 0.3s ease-in-out, background 0.3s ease-in-out",
+                    }}
+                    onMouseOver={(e) => {
+                      e.currentTarget.style.boxShadow =
+                        "0 0 18px rgba(79, 195, 247, 0.5)";
+                      e.currentTarget.style.background =
+                        "linear-gradient(135deg, #1565c0, #42a5f5, #81d4fa)";
+                    }}
+                    onMouseOut={(e) => {
+                      e.currentTarget.style.boxShadow =
+                        "0 0 12px rgba(79, 195, 247, 0.3)";
+                      e.currentTarget.style.background =
+                        "linear-gradient(135deg, #0d47a1, #1976d2, #4fc3f7)";
+                    }}
+                    onClick={() => {
+                      window.open("https://github.com/SASTxNST/Nebula", "_blank");
+                    }}
+                  >
+                    Contribute to Github
+                  </button>
+                </div>
               </div>
-            </>
+            </div>
           )}
 
           {/* Moved these out of the 'home' conditional block */}

@@ -87,12 +87,12 @@ const ContributionRanks: React.FC = () => {
     };
     fetchSnapshot();
   }, [selectedRepo]);
-  useEffect(()=>{
-    const token = localStorage.getItem('token')
-    if(!token){
-      router.push('/')
-    }
-  },[])
+  // useEffect(()=>{
+  //   const token = localStorage.getItem('token')
+  //   if(!token){
+  //     router.push('/')
+  //   }
+  // },[])
 
   const showMessage = (msg: string, type: 'success' | 'error' | 'info' = 'success'): void => {
     setMessage(msg);

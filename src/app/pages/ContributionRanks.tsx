@@ -237,17 +237,17 @@ const ContributionRanks: React.FC = () => {
             </div>
           )}
 
-          {activeSection === "home" && (
-            <div className="relative flex flex-col items-center justify-center w-full h-full min-h-screen py-16"> {/* Added padding top and bottom */}
+{activeSection === "home" && (
+            <>
               <div
                 style={{
                   fontSize: "14rem",
                   fontWeight: "900",
                   opacity: 0.05,
-                  position: "fixed",
-                  top: "50%", 
-                  left: "64%",
-                  transform: "translate(-50%, -50%)", 
+                  position: "absolute",
+                  top: "4%",
+                  left: "50%",
+                  transform: "translateX(-50%)",
                   zIndex: 0,
                   fontFamily: "'Orbitron', sans-serif",
                 }}
@@ -255,110 +255,104 @@ const ContributionRanks: React.FC = () => {
                 SAST
               </div>
 
-              {/* Main content wrapper for z-index and spacing */}
-              <div className="relative z-10 flex flex-col items-center justify-center w-full px-4 space-y-6"> {/* Added max-width and padding */}
-                <div
-                  style={{
-                    fontSize: "2rem",
-                    fontWeight: 700,
-                  }}
-                >
-                  <span style={{ color: "#4fc3f7" }}>...better</span> than missing
-                  out on innovation.
-                </div>
+              <div
+                style={{
+                  fontSize: "2rem",
+                  fontWeight: 700,
+                  zIndex: 1,
+                }}
+              >
+                <span style={{ color: "#4fc3f7" }}>...better</span> than missing
+                out on innovation.
+              </div>
 
-                <div
-                  style={{
-                    fontSize: "1.25rem",
-                    marginTop: "1rem",
-                    maxWidth: "700px",
-                  }}
-                >
-                  Join our open-source journey — collaborate, learn, and grow with
-                  a passionate community.
-                </div>
+              <div
+                style={{
+                  fontSize: "1.25rem",
+                  marginTop: "1rem",
+                  zIndex: 1,
+                  maxWidth: "700px",
+                }}
+              >
+                Join our open-source journey — collaborate, learn, and grow with
+                a passionate community.
+              </div>
 
-                <div
-                  style={{
-                    display: "flex",
-                    flexWrap: "wrap",
-                    justifyContent: "center",
-                    gap: "1rem",
-                    marginTop: "2rem",
-                  }}
-                >
-                  {[
-                    "Build Together",
-                    "Build Real Projects",
-                    "Improve Your GitHub",
-                    "Grow Your Network",
-                  ].map((item) => (
-                    <div
-                      key={item}
-                      style={{
-                        padding: "0.75rem 1.5rem",
-                        background: "rgba(255, 255, 255, 0.1)",
-                        borderRadius: "12px",
-                        backdropFilter: "blur(8px)",
-                        display: "flex",
-                        alignItems: "center",
-                        gap: "0.5rem",
-                        fontSize: "0.95rem",
-                      }}
-                    >
-                      <span style={{ color: "#00e676", fontWeight: "bold" }}>
-                        ✔
-                      </span>{" "}
-                      {item}
-                    </div>
-                  ))}
-                </div>
-
-                <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem', width: '100%', alignItems: 'center' }}>
-                  <Leaderboard
-                    // @ts-ignore - Consider defining LeaderboardProps to avoid this
-                    repoOwner={selectedRepo.owner}
-                    repoName={selectedRepo.name}
-                    repos={repos}
-                    onSelectRepo={setSelectedRepo}
-                  />
-
-                  <button
+              <div
+                style={{
+                  display: "flex",
+                  flexWrap: "wrap",
+                  justifyContent: "center",
+                  gap: "1rem",
+                  marginTop: "2rem",
+                  zIndex: 1,
+                }}
+              >
+                {[
+                  "Build Together",
+                  "Build Real Projects",
+                  "Improve Your GitHub",
+                  "Grow Your Network",
+                ].map((item) => (
+                  <div
+                    key={item}
                     style={{
-                      marginTop: "3rem", // Increased margin-top
-                      padding: "1rem 2.5rem",
-                      fontSize: "1.1rem",
-                      fontFamily: "'Orbitron', sans-serif",
-                      fontWeight: 600,
-                      background: "linear-gradient(135deg, #0d47a1, #1976d2, #4fc3f7)",
-                      color: "#fff",
-                      border: "none",
-                      borderRadius: "14px",
-                      cursor: "pointer",
-                      transition:
-                        "box-shadow 0.3s ease-in-out, background 0.3s ease-in-out",
-                    }}
-                    onMouseOver={(e) => {
-                      e.currentTarget.style.boxShadow =
-                        "0 0 18px rgba(79, 195, 247, 0.5)";
-                      e.currentTarget.style.background =
-                        "linear-gradient(135deg, #1565c0, #42a5f5, #81d4fa)";
-                    }}
-                    onMouseOut={(e) => {
-                      e.currentTarget.style.boxShadow =
-                        "0 0 12px rgba(79, 195, 247, 0.3)";
-                      e.currentTarget.style.background =
-                        "linear-gradient(135deg, #0d47a1, #1976d2, #4fc3f7)";
-                    }}
-                    onClick={() => {
-                      window.open("https://github.com/SASTxNST/Nebula", "_blank");
+                      padding: "0.75rem 1.5rem",
+                      background: "rgba(255, 255, 255, 0.1)",
+                      borderRadius: "12px",
+                      backdropFilter: "blur(8px)",
+                      display: "flex",
+                      alignItems: "center",
+                      gap: "0.5rem",
+                      fontSize: "0.95rem",
                     }}
                   >
-                    Contribute to Github
-                  </button>
-                </div>
+                    <span style={{ color: "#00e676", fontWeight: "bold" }}>
+                      ✔
+                    </span>{" "}
+                    {item}
+                  </div>
+                ))}
               </div>
-            </div>
+
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+                
+
+                <button
+                  style={{
+                    marginTop: "3rem",
+                    padding: "1rem 2.5rem",
+                    fontSize: "1.1rem",
+                    fontFamily: "'Orbitron', sans-serif",
+                    fontWeight: 600,
+                    background: "linear-gradient(135deg, #0d47a1, #1976d2, #4fc3f7)",
+                    color: "#fff",
+                    border: "none",
+                    borderRadius: "14px",
+                    cursor: "pointer",
+                    transition:
+                      "box-shadow 0.3s ease-in-out, background 0.3s ease-in-out",
+                  }}
+                  onMouseOver={(e) => {
+                    e.currentTarget.style.boxShadow =
+                      "0 0 18px rgba(79, 195, 247, 0.5)";
+                    e.currentTarget.style.background =
+                      "linear-gradient(135deg, #1565c0, #42a5f5, #81d4fa)";
+                  }}
+                  onMouseOut={(e) => {
+                    e.currentTarget.style.boxShadow =
+                      "0 0 12px rgba(79, 195, 247, 0.3)";
+                    e.currentTarget.style.background =
+                      "linear-gradient(135deg, #0d47a1, #1976d2, #4fc3f7)";
+                  }}
+                  onClick={() => {
+                    window.open("https://github.com/SASTxNST/Nebula", "_blank");
+                  }}
+                >
+                  Contribute to Github
+                </button>
+              </div>
+            </>
           )}
 
           {activeSection === 'login' && (
@@ -480,7 +474,6 @@ const ContributionRanks: React.FC = () => {
 
           {activeSection === 'profile' && <Profile repositories={repos} />}
           {activeSection === 'contact' && <Contact />}
-          {activeSection === 'faq' && <FAQ />}
         </div>
       </div>
       <style jsx global>{`

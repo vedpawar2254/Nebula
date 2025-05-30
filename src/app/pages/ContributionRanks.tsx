@@ -361,7 +361,6 @@ const ContributionRanks: React.FC = () => {
             </div>
           )}
 
-          {/* Moved these out of the 'home' conditional block */}
           {activeSection === 'login' && (
             <div className="flex items-center justify-center min-h-screen p-4 bg-[#0C0C0C]">
               <div className={`fixed left-1/2 top-5 -translate-x-1/2 bg-green-500 text-white py-3 px-6 rounded-lg shadow-lg z-50 transition-opacity duration-300 ${showMessageBox ? 'block opacity-100' : 'hidden opacity-0'}`}>

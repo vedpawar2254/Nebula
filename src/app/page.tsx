@@ -9,7 +9,7 @@ import LoginFormPopup from './components/LoginFormPopup';
 const HomePage: React.FC = () => {
   const launchDate = new Date('2025-06-01T18:30:00Z').getTime();
   const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const [showLoginPopup, setShowLoginPopup] = useState(false); // State to control popup visibility
+  const [showLoginPopup, setShowLoginPopup] = useState(false);
 
   const [timeRemaining, setTimeRemaining] = useState({
     days: 0,
@@ -22,15 +22,8 @@ const HomePage: React.FC = () => {
   const router = useRouter();
 
   useEffect(() => {
-    localStorage.setItem('token', 'hello');
-    localStorage.setItem('email', 'test@example.com');
-  
     const token = localStorage.getItem('token');
-    if (token) {
-      setIsLoggedIn(true);
-    } else {
-      setIsLoggedIn(false);
-    }
+    setIsLoggedIn(!!token);
   }, []);
 
   useEffect(() => {
@@ -73,9 +66,7 @@ const HomePage: React.FC = () => {
     ? `sec-${timeRemaining.seconds}-${Date.now()}`
     : `sec-${timeRemaining.seconds}`;
 
-  if (!isClient) {
-    return null;
-  }
+  if (!isClient) return null;
 
   const backgroundImageUrl = '/nebula.png';
 
@@ -91,8 +82,9 @@ const HomePage: React.FC = () => {
         className="flex flex-col items-center justify-center min-h-screen p-4 overflow-hidden text-center bg-center bg-cover selection:bg-gray-300 selection:text-black"
         style={{ backgroundImage: `url(${backgroundImageUrl})` }}
       >
-        {/* Blurred overlay for the background */}
-        {showLoginPopup && <div className="fixed inset-0 z-40 bg-opacity-20 bg-white/5 backdrop-blur-2xl"></div>}
+        {showLoginPopup && (
+          <div className="fixed inset-0 z-40 bg-opacity-20 bg-white/5 backdrop-blur-2xl"></div>
+        )}
 
         <div className="absolute inset-0 bg-black opacity-75"></div>
 
@@ -107,7 +99,10 @@ const HomePage: React.FC = () => {
             NEBULA
           </h1>
 
-          {timeRemaining.days === 0 && timeRemaining.hours === 0 && timeRemaining.minutes === 0 && timeRemaining.seconds === 0 ? (
+          {timeRemaining.days === 0 &&
+          timeRemaining.hours === 0 &&
+          timeRemaining.minutes === 0 &&
+          timeRemaining.seconds === 0 ? (
             <p className="mb-6 text-4xl font-bold text-gray-100 font-orbitron sm:text-5xl md:text-6xl animate-bounce">
               LAUNCHED!
             </p>
@@ -121,27 +116,26 @@ const HomePage: React.FC = () => {
                   <CountdownUnit value={timeRemaining.seconds} unit="Seconds" showSeparator={false} />
                 </div>
               </div>
+
               <p className="mb-6 text-xl tracking-wide text-gray-300 sm:text-2xl font-orbitron sm:mb-8">
                 Coming Soon...
               </p>
 
               <button
-  onClick={handleContributeClick}
-  className="overflow-hidden relative w-48 px-6 py-3 h-14 border-2 border-white bg-transparent rounded-full text-lg font-orbitron font-semibold text-white cursor-pointer group transition-all duration-300 hover:border-blue-400 mx-auto my-4 md:my-6 lg:my-8"
->
-  <span className="absolute top-0 left-0 w-full h-full transition-transform duration-500 origin-left transform scale-x-0 bg-blue-600 rounded-full group-hover:scale-x-100"></span>
-  <span className="absolute top-0 left-0 w-full h-full transition-transform duration-700 delay-75 origin-left transform scale-x-0 bg-blue-500 rounded-full group-hover:scale-x-100"></span>
-  <span className="absolute top-0 left-0 w-full h-full transition-transform delay-150 origin-left transform scale-x-0 bg-blue-400 rounded-full group-hover:scale-x-100 duration-900"></span>
+                onClick={handleContributeClick}
+                className="relative w-48 px-6 py-3 mx-auto my-4 overflow-hidden text-lg font-semibold text-white transition-all duration-300 bg-transparent border-2 border-white rounded-full cursor-pointer h-14 font-orbitron group hover:border-blue-400 md:my-6 lg:my-8"
+              >
+                <span className="absolute top-0 left-0 w-full h-full transition-transform duration-500 origin-left transform scale-x-0 bg-blue-600 rounded-full group-hover:scale-x-100"></span>
+                <span className="absolute top-0 left-0 w-full h-full transition-transform duration-700 delay-75 origin-left transform scale-x-0 bg-blue-500 rounded-full group-hover:scale-x-100"></span>
+                <span className="absolute top-0 left-0 w-full h-full transition-transform delay-150 origin-left transform scale-x-0 bg-blue-400 rounded-full group-hover:scale-x-100 duration-900"></span>
 
-  <div className="relative z-20 flex items-center justify-center w-full h-full">
-    <span className="transition-opacity duration-300 group-hover:opacity-0">
-      Contribute
-    </span>
-    <span className="absolute transition-opacity duration-300 opacity-0 group-hover:opacity-100">
-      Let's Go!
-    </span>
-  </div>
-</button>
+                <div className="relative z-20 flex items-center justify-center w-full h-full">
+                  <span className="transition-opacity duration-300 group-hover:opacity-0">Contribute</span>
+                  <span className="absolute transition-opacity duration-300 opacity-0 group-hover:opacity-100">
+                    Let's Go!
+                  </span>
+                </div>
+              </button>
             </div>
           )}
         </main>
@@ -153,14 +147,13 @@ const HomePage: React.FC = () => {
         </footer>
       </div>
 
-      {/* Login Form Popup */}
       {showLoginPopup && (
         <LoginFormPopup
-          onClose={() => setShowLoginPopup(false)} // Pass a function to close the popup
-          onLoginSuccess={(token:any,email:string) => {
+          onClose={() => setShowLoginPopup(false)}
+          onLoginSuccess={(token: any, email: string) => {
             setIsLoggedIn(true);
-            localStorage.setItem("token",token)
-            localStorage.setItem("email",email)
+            localStorage.setItem('token', token);
+            localStorage.setItem('email', email);
             setShowLoginPopup(false);
             router.push('/contribution-ranks');
           }}

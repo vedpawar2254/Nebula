@@ -474,6 +474,7 @@ const ContributionRanks: React.FC = () => {
 
           {activeSection === 'profile' && <Profile repositories={repos} />}
           {activeSection === 'contact' && <Contact />}
+          
         </div>
       </div>
       <style jsx global>{`

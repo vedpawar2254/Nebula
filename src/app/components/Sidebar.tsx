@@ -5,7 +5,7 @@ import { useRouter } from "next/navigation";
 import "../globals.css";
 
 interface SidebarProps {
-  setActiveSection: (section: "home" | "ranks" | "contact" | "faq") => void;
+  setActiveSection: (section: "home" | "ranks" | "contact" | "faq" | "profile") => void;
   isOpen?: boolean;
   onToggle?: () => void;
 }
@@ -17,7 +17,13 @@ const Sidebar: React.FC<SidebarProps> = ({
 }) => {
   const sidebarRef = useRef<HTMLDivElement | null>(null);
   const [isVisible, setIsVisible] = useState(false);
+  const [email, setEmail] = useState("");
   const router = useRouter();
+
+  useEffect(() => {
+    const storedEmail = localStorage.getItem("email");
+    if (storedEmail) setEmail(storedEmail);
+  }, []);
 
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -34,7 +40,7 @@ const Sidebar: React.FC<SidebarProps> = ({
     padding: isOpen ? "0.75rem 1rem" : "0.75rem",
     borderRadius: "9999px",
     fontWeight: "bold",
-    fontFamily: "'Orbitron', 'Inter', sans-serif", // Make font bold and modern
+    fontFamily: "'Orbitron', 'Inter', sans-serif",
     background: "rgba(255, 255, 255, 0.03)",
     color: "#cccccc",
     border: "0.5px solid rgba(255,255,255,0.1)",
@@ -79,8 +85,8 @@ const Sidebar: React.FC<SidebarProps> = ({
         transition: "all 0.3s ease-out",
         overflow: "hidden",
         borderRight: "1px solid rgba(255,255,255,0.1)",
-        fontWeight: "bold", // Ensure sidebar container is bold
-        fontFamily: "'Orbitron', 'Inter', sans-serif", // Match font
+        fontWeight: "bold",
+        fontFamily: "'Orbitron', 'Inter', sans-serif",
       }}
     >
       <button
@@ -109,10 +115,35 @@ const Sidebar: React.FC<SidebarProps> = ({
         🏆 Leaderboard
       </button>
 
-      <button
+      {email && (
+        <button
+          onClick={() => setActiveSection("profile")}
+          style={baseStyle}
+          onMouseEnter={(e) => handleHover(e, true)}
+          onMouseLeave={(e) => handleHover(e, false)}
+        >
+          👤 Profile
+        </button>
+      )}
+
+      {
+        email && <button
         onClick={() => {
-          router.push("/contribution-ranks?section=contact");
+            localStorage.removeItem("email");
+            localStorage.removeItem("token");
+            setEmail("");
+            router.push('/')
         }}
+        style={baseStyle}
+        onMouseEnter={(e) => handleHover(e, true)}
+        onMouseLeave={(e) => handleHover(e, false)}
+      >
+        Logout
+      </button>
+      }
+
+      <button
+        onClick={() => router.push("/contribution-ranks?section=contact")}
         style={baseStyle}
         onMouseEnter={(e) => handleHover(e, true)}
         onMouseLeave={(e) => handleHover(e, false)}
@@ -121,9 +152,7 @@ const Sidebar: React.FC<SidebarProps> = ({
       </button>
 
       <button
-        onClick={() => {
-          router.push("/contribution-ranks?section=faq");
-        }}
+        onClick={() => router.push("/contribution-ranks?section=faq")}
         style={baseStyle}
         onMouseEnter={(e) => handleHover(e, true)}
         onMouseLeave={(e) => handleHover(e, false)}

@@ -204,8 +204,8 @@ const ContributionRanks: React.FC = () => {
             padding: "2rem",
             position: "relative",
             zIndex: 1,
-            overflowY: "auto", // Enable vertical scrolling
-            maxHeight: "100vh", // Prevent overflow beyond viewport
+            overflowY: "auto",
+            maxHeight: "100vh",
           }}
         >
           {/* All section renderings should be at the same level */}
@@ -237,129 +237,136 @@ const ContributionRanks: React.FC = () => {
             </div>
           )}
 
-          {activeSection === "home" && (
-            <>
-              <div
-                style={{
-                  fontSize: "14rem",
-                  fontWeight: "900",
-                  opacity: 0.05,
-                  position: "absolute",
-                  top: "4%",
-                  left: "50%",
-                  transform: "translateX(-50%)",
-                  zIndex: 0,
-                  fontFamily: "'Orbitron', sans-serif",
-                }}
-              >
-                SAST
-              </div>
+{activeSection === "home" && (
+  <>
+    <div
+      style={{
+        fontSize: "14rem",
+        fontWeight: "900",
+        opacity: 0.05,
+        position: "absolute",
+        top: "4%",
+        left: "50%",
+        transform: "translateX(-50%)",
+        zIndex: 0,
+        fontFamily: "'Orbitron', sans-serif",
+      }}
+    >
+      SAST
+    </div>
 
-              <div
-                style={{
-                  fontSize: "2rem",
-                  fontWeight: 700,
-                  zIndex: 1,
-                }}
-              >
-                <span style={{ color: "#4fc3f7" }}>...better</span> than missing
-                out on innovation.
-              </div>
+    <div
+      style={{
+        fontSize: "2rem",
+        fontWeight: 700,
+        zIndex: 1,
+      }}
+    >
+      <span style={{ color: "#4fc3f7" }}>...Better</span> than missing
+      out on innovation.
+    </div>
 
-              <div
-                style={{
-                  fontSize: "1.25rem",
-                  marginTop: "1rem",
-                  zIndex: 1,
-                  maxWidth: "700px",
-                }}
-              >
-                Join our open-source journey — collaborate, learn, and grow with
-                a passionate community.
-              </div>
+    <div
+      style={{
+        fontSize: "1.25rem",
+        marginTop: "1rem",
+        zIndex: 1,
+        maxWidth: "700px",
+      }}
+    >
+      Join our Open Source Journey — Collaborate, Learn, and Grow with
+      a Passionate Community.
+    </div>
 
-              <div
-                style={{
-                  display: "flex",
-                  flexWrap: "wrap",
-                  justifyContent: "center",
-                  gap: "1rem",
-                  marginTop: "2rem",
-                  zIndex: 1,
-                }}
-              >
-                {[
-                  "Build Together",
-                  "Build Real Projects",
-                  "Improve Your GitHub",
-                  "Grow Your Network",
-                ].map((item) => (
-                  <div
-                    key={item}
-                    style={{
-                      padding: "0.75rem 1.5rem",
-                      background: "rgba(255, 255, 255, 0.1)",
-                      borderRadius: "12px",
-                      backdropFilter: "blur(8px)",
-                      display: "flex",
-                      alignItems: "center",
-                      gap: "0.5rem",
-                      fontSize: "0.95rem",
-                    }}
-                  >
-                    <span style={{ color: "#00e676", fontWeight: "bold" }}>
-                      ✔
-                    </span>{" "}
-                    {item}
-                  </div>
-                ))}
-              </div>
+    {/* ✅ Task Cards */}
+    <div
+      style={{
+        width: "100%",
+        maxWidth: "900px",
+        display: "flex",
+        flexWrap: "wrap",
+        justifyContent: "center",
+        gap: "1rem",
+        marginTop: "3rem",
+        padding: "0 1rem",
+        zIndex: 1,
+      }}
+    >
+      {["Fix Bugs", "Improve UI", "Write Docs", "Add Features"].map((task) => (
+        <div
+          key={task}
+          style={{
+            width: "200px",
+            padding: "1.2rem",
+            borderRadius: "24px",
+            background: "rgba(255, 255, 255, 0.05)",
+            backdropFilter: "blur(20px)",
+            WebkitBackdropFilter: "blur(20px)",
+            border: "1px solid rgba(255, 255, 255, 0.1)",
+            boxShadow:
+              "0 8px 32px rgba(0, 0, 0, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.05)",
+            textAlign: "center",
+          }}
+        >
+          <div
+            style={{
+              fontSize: "1.1rem",
+              fontWeight: "600",
+              marginBottom: "0.5rem",
+              color: "#00a1ff",
+            }}
+          >
+            {task}
+          </div>
+          <p
+            style={{
+              fontSize: "0.85rem",
+              color: "rgba(255, 255, 255, 0.7)",
+            }}
+          >
+            Explore GitHub issues for this task
+          </p>
+        </div>
+      ))}
+    </div>
 
-              <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
-                <Leaderboard
-                  // @ts-ignore - Consider defining LeaderboardProps to avoid this
-                  repoOwner={selectedRepo.owner}
-                  repoName={selectedRepo.name}
-                  repos={repos}
-                  onSelectRepo={setSelectedRepo}
-                />
+    {/* ✅ GitHub Button */}
+    <button
+      style={{
+        marginTop: "3rem",
+        padding: "1rem 2.5rem",
+        fontSize: "1.1rem",
+        fontFamily: "'Orbitron', sans-serif",
+        fontWeight: 600,
+        background: "linear-gradient(135deg, #0d47a1, #1976d2, #4fc3f7)",
+        color: "#fff",
+        border: "none",
+        borderRadius: "14px",
+        cursor: "pointer",
+        transition:
+          "box-shadow 0.3s ease-in-out, background 0.3s ease-in-out",
+      }}
+      onMouseOver={(e) => {
+        e.currentTarget.style.boxShadow =
+          "0 0 18px rgba(79, 195, 247, 0.5)";
+        e.currentTarget.style.background =
+          "linear-gradient(135deg, #1565c0, #42a5f5, #81d4fa)";
+      }}
+      onMouseOut={(e) => {
+        e.currentTarget.style.boxShadow =
+          "0 0 12px rgba(79, 195, 247, 0.3)";
+        e.currentTarget.style.background =
+          "linear-gradient(135deg, #0d47a1, #1976d2, #4fc3f7)";
+      }}
+      onClick={() => {
+        window.open("https://github.com/SASTxNST/Nebula", "_blank");
+      }}
+    >
+      Contribute to Github
+    </button>
+  </>
+)}
 
-                <button
-                  style={{
-                    marginTop: "3rem",
-                    padding: "1rem 2.5rem",
-                    fontSize: "1.1rem",
-                    fontFamily: "'Orbitron', sans-serif",
-                    fontWeight: 600,
-                    background: "linear-gradient(135deg, #0d47a1, #1976d2, #4fc3f7)",
-                    color: "#fff",
-                    border: "none",
-                    borderRadius: "14px",
-                    cursor: "pointer",
-                    transition:
-                      "box-shadow 0.3s ease-in-out, background 0.3s ease-in-out",
-                  }}
-                  onMouseOver={(e) => {
-                    e.currentTarget.style.boxShadow =
-                      "0 0 18px rgba(79, 195, 247, 0.5)";
-                    e.currentTarget.style.background =
-                      "linear-gradient(135deg, #1565c0, #42a5f5, #81d4fa)";
-                  }}
-                  onMouseOut={(e) => {
-                    e.currentTarget.style.boxShadow =
-                      "0 0 12px rgba(79, 195, 247, 0.3)";
-                    e.currentTarget.style.background =
-                      "linear-gradient(135deg, #0d47a1, #1976d2, #4fc3f7)";
-                  }}
-                  onClick={() => {
-                    window.open("https://github.com/SASTxNST/Nebula", "_blank");
-                  }}
-                >
-                  Contribute to Github
-                </button>
-              </div>
-            </>
-          )}
 
           {/* Moved these out of the 'home' conditional block */}
           {activeSection === 'login' && (
@@ -481,7 +488,6 @@ const ContributionRanks: React.FC = () => {
 
           {activeSection === 'profile' && <Profile repositories={repos} />}
           {activeSection === 'contact' && <Contact />}
-          {activeSection === 'faq' && <FAQ />}
         </div>
       </div>
       <style jsx global>{`

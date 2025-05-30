@@ -119,6 +119,7 @@ const HomePage: React.FC = () => {
                   }else{
                     router.push('/login')
                   }
+                  // router.push('/contribution-ranks')
                 }}
                 className="overflow-hidden relative w-48 px-6 py-3 h-14 border-2 border-white bg-transparent rounded-full text-lg font-orbitron font-semibold text-white cursor-pointer group transition-all duration-300 hover:border-blue-400 mx-auto my-4 md:my-6 lg:my-8"
               >

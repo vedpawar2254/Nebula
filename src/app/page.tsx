@@ -3,10 +3,16 @@
 import React, { useState, useEffect } from 'react';
 import Head from 'next/head';
 import CountdownUnit from './components/CountdownUnit';
+
 import About from './components/About';
+import { useRouter } from 'next/navigation';
+
+
+
 
 const HomePage: React.FC = () => {
   const launchDate = new Date('2025-06-01T18:30:00Z').getTime();
+  const [isLoggedIn, setIsLoggedIn] = useState(false)
 
   const [timeRemaining, setTimeRemaining] = useState({
     days: 0,
@@ -16,6 +22,16 @@ const HomePage: React.FC = () => {
   });
   const [isClient, setIsClient] = useState(false);
   const [prevSeconds, setPrevSeconds] = useState<number | null>(null);
+  const router = useRouter()
+  useEffect(() => {
+    const token = localStorage.getItem('token')
+    if (!token) {
+      setIsLoggedIn(false)
+    }
+    else {
+      setIsLoggedIn(true)
+    }
+  }, [])
 
   useEffect(() => {
     setIsClient(true);
@@ -54,7 +70,6 @@ const HomePage: React.FC = () => {
   const secondsKey = prevSeconds !== null && timeRemaining.seconds !== prevSeconds
     ? `sec-${timeRemaining.seconds}-${Date.now()}`
     : `sec-${timeRemaining.seconds}`;
-
   return (
     <>
       <Head>
@@ -74,6 +89,7 @@ const HomePage: React.FC = () => {
             Introducing
           </p>
         </div>
+
 
         <main className="relative z-10 flex flex-col items-center w-full px-4 mt-12 sm:mt-16">
           <h1 className="font-orbitron text-6xl sm:text-7xl md:text-8xl lg:text-9xl font-black uppercase tracking-widest mb-10 sm:mb-12 nebula-text-effect">
@@ -98,19 +114,46 @@ const HomePage: React.FC = () => {
                 Coming Soon...
               </p>
 
+
               <button
-                onClick={() => window.location.href = "/contribution-ranks"}
-                className="mt-1 mb-18 px-6 py-2 rounded-full font-orbitron text-lg sm:text-xl font-semibold text-white bg-gradient-to-br from-black to-blue-400 shadow-md hover:from-black hover:to-blue-300 transition-all duration-100"
+                onClick={()=>{
+                  if(isLoggedIn){
+                    router.push('/contribution-ranks')
+                  }else{
+                    router.push('/login')
+                  }
+                }}
+                className="overflow-hidden relative w-48 px-6 py-3 h-14 border-2 border-white bg-transparent rounded-full text-lg font-orbitron font-semibold text-white cursor-pointer group transition-all duration-300 hover:border-blue-400 mx-auto my-4 md:my-6 lg:my-8"
               >
-                Contribute
+                {/* Animated background layers */}
+                <span
+                  className="absolute w-full h-full top-0 left-0 bg-blue-600 rounded-full transform scale-x-0 group-hover:scale-x-100 transition-transform duration-500 origin-left"
+                ></span>
+                <span
+                  className="absolute w-full h-full top-0 left-0 bg-blue-500 rounded-full transform scale-x-0 group-hover:scale-x-100 transition-transform duration-700 origin-left delay-75"
+                ></span>
+                <span
+                  className="absolute w-full h-full top-0 left-0 bg-blue-400 rounded-full transform scale-x-0 group-hover:scale-x-100 transition-transform duration-900 origin-left delay-150"
+                ></span>
+
+                {/* Text container */}
+                <div className="relative z-20 flex items-center justify-center h-full w-full" >
+                  <span className="group-hover:opacity-0 transition-opacity duration-300">
+                    Contribute
+                  </span>
+                  <span className="absolute opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                    Let's Go!
+                  </span>
+                </div>
               </button>
+
             </div>
           )}
         </main>
 
         <footer className="absolute bottom-6 sm:bottom-8 left-0 right-0 z-20 flex flex-col items-center">
           <p className="text-2xl sm:text-3xl md:text-4xl text-gray-200 mt-1 font-orbitron tracking-wider">
-            BЧ SΛST
+            By SAST
           </p>
         </footer>
       </div>

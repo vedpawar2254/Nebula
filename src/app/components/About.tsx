@@ -14,7 +14,7 @@ const About: React.FC = () => {
       role: "President & Vice President",
       members: [
         { name: "Neelanshu Karn", image: "/members/neelanshu.jpeg" },
-        { name: "Kaavya Katal", image: "/members/kavya.jpeg" }
+        { name: "Kavya Katal", image: "/members/kavya.jpeg" }
       ]
     },
     {
@@ -72,11 +72,11 @@ const About: React.FC = () => {
   return (
     
     <section className="min-h-screen w-full py-12 sm:py-16 md:py-20 px-4 sm:px-6 lg:px-8 " style={{
-      backgroundImage: "url(/nebula.png)",
-      backgroundSize: "cover",
-      backgroundPosition: "center",
-      backgroundRepeat: "no-repeat",
-      backgroundAttachment: "fixed"
+      // backgroundImage: "url(/nebula.png)",
+      // backgroundSize: "cover",
+      // backgroundPosition: "center",
+      // backgroundRepeat: "no-repeat",
+      // backgroundAttachment: "fixed"
     }}>
         <div className="max-w-7xl mx-auto">
           <header className="text-center mb-16">

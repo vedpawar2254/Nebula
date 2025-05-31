@@ -1,4 +1,4 @@
-name: Greet First-Time PR Merge
+name: Greet First-Time PR Merger
 
 on:
   pull_request:
@@ -9,13 +9,23 @@ jobs:
     if: github.event.pull_request.merged == true
     runs-on: ubuntu-latest
     steps:
-      - name: Comment on the PR
+      - name: Greet first-time contributor
         uses: actions/github-script@v7
         with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |
-            github.rest.issues.createComment({
-              issue_number: context.issue.number,
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              body: "🎉 Welcome @${{ github.actor }}! Thanks for your first contribution! We're excited to have you 🚀"
-            })
+            const username = context.payload.pull_request.user.login;
+
+            const { data: prs } = await github.rest.search.issuesAndPullRequests({
+            q: `repo:${context.repo.owner}/${context.repo.repo} is:pr author:${username} is:merged`,
+            });
+
+            if (prs.total_count === 1 || prs.total_count === 3) {
+            const issue_number = context.payload.pull_request.number;
+            await github.rest.issues.createComment({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: issue_number,
+                body: `🎉 Congratulations @${username} on your first merged PR! Thank you for your contribution! 🙌`,
+            });
+            }

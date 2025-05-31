@@ -7,6 +7,9 @@ import About from './components/About';
 import { useRouter } from 'next/navigation';
 import LoginFormPopup from './components/LoginFormPopup';
 
+import { useInView } from 'react-intersection-observer';
+import { motion } from 'framer-motion';
+
 const HomePage: React.FC = () => {
   const launchDate = new Date('2025-06-01T18:30:00Z').getTime();
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -21,6 +24,10 @@ const HomePage: React.FC = () => {
   const [isClient, setIsClient] = useState(false);
   const [prevSeconds, setPrevSeconds] = useState<number | null>(null);
   const router = useRouter();
+  const { ref: aboutRef, inView: aboutInView } = useInView({
+    triggerOnce: true,
+    threshold: 0.2,
+  });
 
   useEffect(() => {
     const token = localStorage.getItem('token');
@@ -97,6 +104,24 @@ const HomePage: React.FC = () => {
         {/* All content above the overlay */}
         <div className="relative z-10">
 
+        <div className="absolute top-6 right-6 sm:top-8 sm:right-10 z-20">
+          <button
+            onClick={() => setShowLoginPopup(true)}
+            className="relative w-28 px-4 py-2 overflow-hidden text-sm font-semibold text-white transition-all duration-300 bg-transparent border-2 border-white rounded-full cursor-pointer h-12 font-orbitron group hover:border-blue-400"
+          >
+            <span className="absolute top-0 left-0 w-full h-full transition-transform duration-500 origin-left transform scale-x-0 bg-blue-600 rounded-full group-hover:scale-x-100"></span>
+            <span className="absolute top-0 left-0 w-full h-full transition-transform duration-700 delay-75 origin-left transform scale-x-0 bg-blue-500 rounded-full group-hover:scale-x-100"></span>
+            <span className="absolute top-0 left-0 w-full h-full transition-transform delay-150 origin-left transform scale-x-0 bg-blue-400 rounded-full group-hover:scale-x-100 duration-900"></span>
+
+            <div className="relative z-20 flex items-center justify-center w-full h-full">
+              <span className="transition-opacity duration-300 group-hover:opacity-0">Login</span>
+              <span className="absolute transition-opacity duration-300 opacity-0 group-hover:opacity-100">
+                Welcome!
+              </span>
+            </div>
+          </button>
+        </div>
+
           {/* 🟦 Countdown Section */}
           <section className="w-full h-screen flex flex-col items-center justify-center text-center">
             {showLoginPopup && (
@@ -161,7 +186,14 @@ const HomePage: React.FC = () => {
 
           {/* 🟨 About Section - no background */}
           <section className="w-full px-6 sm:px-12 py-20">
-            <About />
+            <motion.div
+              ref={aboutRef}
+              initial={{ opacity: 0, y: 50 }}
+              animate={aboutInView ? { opacity: 1, y: 0 } : {}}
+              transition={{ duration: 0.8, ease: 'easeOut' }}
+            >
+              <About />cs
+            </motion.div>
           </section>
 
            {/* Footer */}

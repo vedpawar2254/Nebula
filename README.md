@@ -1,4 +1,4 @@
-# Project Nebula ✨
+# Project Nebula ✨ 
 The flagship open-source initiative of the Society for Astrophysics and Space Technology (SAST)
 
 ## Overview 

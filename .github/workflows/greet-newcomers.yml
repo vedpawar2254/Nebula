@@ -1,31 +1,51 @@
-name: Greet First-Time PR Merger
+name: Greetings
 
 on:
   pull_request:
-    types: [closed]
+    types: [opened, closed]
+  issues:
+    types: [opened]
 
 jobs:
-  greet:
-    if: github.event.pull_request.merged == true
+  first-interaction:
     runs-on: ubuntu-latest
+    if: github.event.action == 'opened'
     steps:
-      - name: Greet first-time contributor
+      - uses: actions/first-interaction@v1
+        with:
+          repo-token: ${{ secrets.GITHUB_TOKEN }}
+          issue-message: |
+            🎉 **Thanks for opening your first issue!**
+
+            We're super excited to have you involved in this project!
+            Feel free to ask questions, suggest ideas, or even just say hi!
+
+          pr-message: |
+            🛠️ **Thanks for submitting your first PR!**
+
+            You're making the project better — we appreciate your effort! 🙌  
+            We'll review it as soon as possible.
+
+  pr-merge-greeting:
+    runs-on: ubuntu-latest
+    if: github.event.pull_request.merged == true
+    steps:
+      - name: Comment on merged PR
         uses: actions/github-script@v7
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |
-            const username = context.payload.pull_request.user.login;
+            const pr = context.payload.pull_request;
+            const commentBody = `
+            🥳 **Congrats on your first merged PR!**
 
-            const { data: prs } = await github.rest.search.issuesAndPullRequests({
-            q: `repo:${context.repo.owner}/${context.repo.repo} is:pr author:${username} is:merged`,
-            });
-
-            if (prs.total_count === 1 || prs.total_count === 3) {
-            const issue_number = context.payload.pull_request.number;
+            Your contribution just made this project better!
+            You're now officially a contributor — thank you! 🙌  
+            We can't wait to see what you build next!
+            `;
             await github.rest.issues.createComment({
-                owner: context.repo.owner,
-                repo: context.repo.repo,
-                issue_number: issue_number,
-                body: `🎉 Congratulations @${username} on your first merged PR! Thank you for your contribution! 🙌`,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: pr.number,
+              body: commentBody
             });
-            }

@@ -24,12 +24,6 @@ jobs:
             We're super excited to have you involved in this project!
             Feel free to ask questions, suggest ideas, or even just say hi!
 
-          pr-message: |
-            🛠️ **Thanks for submitting your first PR!**
-
-            You're making the project better — we appreciate your effort! 🙌  
-            We'll review it as soon as possible.
-
   pr-merge-greeting:
     runs-on: ubuntu-latest
     if: github.event.pull_request.merged == true

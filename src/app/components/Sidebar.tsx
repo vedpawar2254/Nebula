@@ -128,7 +128,7 @@ const Sidebar: React.FC<SidebarProps> = ({
         </button>
       )}
 
-      {email && (
+      {/* {email && (
         <button
           onClick={() => {
             localStorage.removeItem("email");
@@ -142,7 +142,7 @@ const Sidebar: React.FC<SidebarProps> = ({
         >
           🚪 Logout
         </button>
-      )}
+      )} */}
 
       <button
         onClick={() => router.push("/contribution-ranks?section=contact")}

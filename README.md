@@ -1,7 +1,7 @@
 # Project Nebula ✨ 
 The flagship open-source initiative of the Society for Astrophysics and Space Technology (SAST)
 
-## Overview
+## Overview 
 Project Nebula is envisioned to be a collaborative platform that blends innovation, learning, and real-world development. At its core, Nebula aims to empower SAST members—especially juniors—by immersing them in the world of open-source contribution and full-stack development.
 
 The project begins with the development of the SAST website, gradually evolving into an ecosystem of interconnected modules. This includes backend systems, interactive robotics dashboards, and project-specific tools. Nebula is designed not only to build impactful digital solutions but also to nurture a culture of continuous learning and technical collaboration within the SAST community.

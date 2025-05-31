@@ -5,7 +5,9 @@ import { useRouter } from "next/navigation";
 import "../globals.css";
 
 interface SidebarProps {
-  setActiveSection: (section: "home" | "ranks" | "contact" | "faq" | "profile") => void;
+  setActiveSection: (
+    section: "home" | "ranks" | "contact" | "faq" | "profile"
+  ) => void;
   isOpen?: boolean;
   onToggle?: () => void;
 }
@@ -126,21 +128,21 @@ const Sidebar: React.FC<SidebarProps> = ({
         </button>
       )}
 
-      {
-        email && <button
-        onClick={() => {
+      {/* {email && (
+        <button
+          onClick={() => {
             localStorage.removeItem("email");
             localStorage.removeItem("token");
             setEmail("");
-            router.push('/')
-        }}
-        style={baseStyle}
-        onMouseEnter={(e) => handleHover(e, true)}
-        onMouseLeave={(e) => handleHover(e, false)}
-      >
-        Logout
-      </button>
-      }
+            router.push("/");
+          }}
+          style={baseStyle}
+          onMouseEnter={(e) => handleHover(e, true)}
+          onMouseLeave={(e) => handleHover(e, false)}
+        >
+          🚪 Logout
+        </button>
+      )} */}
 
       <button
         onClick={() => router.push("/contribution-ranks?section=contact")}
@@ -160,6 +162,17 @@ const Sidebar: React.FC<SidebarProps> = ({
         ❓ FAQ
       </button>
 
+      {/* ✅ New Idea Box Button */}
+      <button
+        onClick={() => router.push("/ideabox")}
+        style={baseStyle}
+        onMouseEnter={(e) => handleHover(e, true)}
+        onMouseLeave={(e) => handleHover(e, false)}
+      >
+        💡 Idea Box
+      </button>
+
+      {/* Sidebar toggle button */}
       <button
         onClick={onToggle}
         style={{

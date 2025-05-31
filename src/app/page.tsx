@@ -9,6 +9,7 @@ import LoginFormPopup from './components/LoginFormPopup';
 
 import { useInView } from 'react-intersection-observer';
 import { motion } from 'framer-motion';
+import Profile from './pages/Profile';
 
 const HomePage: React.FC = () => {
   const launchDate = new Date('2025-06-01T18:30:00Z').getTime();
@@ -204,6 +205,8 @@ const HomePage: React.FC = () => {
         </div>
       </div>
 
+      {/* <Profile repositories={[]}/> */}
+
       
 
       {showLoginPopup && (
@@ -221,5 +224,7 @@ const HomePage: React.FC = () => {
     </>
   );
 };
+
+
 
 export default HomePage;

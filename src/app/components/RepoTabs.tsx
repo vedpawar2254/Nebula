@@ -1,8 +1,7 @@
 "use client";
 
 import React, { useEffect, useRef, useState } from "react";
-import "../globals.css"
-
+import "../globals.css";
 
 export interface Repo {
   owner: string;
@@ -15,7 +14,11 @@ interface RepoTabsProps {
   onSelect: (repo: Repo) => void;
 }
 
-const RepoTabs: React.FC<RepoTabsProps> = ({ repos, selectedRepo, onSelect }) => {
+const RepoTabs: React.FC<RepoTabsProps> = ({
+  repos,
+  selectedRepo,
+  onSelect,
+}) => {
   const tabsRef = useRef<HTMLDivElement | null>(null);
   const [isVisible, setIsVisible] = useState(false);
 
@@ -65,13 +68,17 @@ const RepoTabs: React.FC<RepoTabsProps> = ({ repos, selectedRepo, onSelect }) =>
               color: isActive ? "#ffffff" : "#cccccc",
               backdropFilter: "blur(10px)",
               transition: "all 0.3s ease-in-out",
-              boxShadow: isActive ? "0px 4px 12px rgba(0, 161, 255, 0.2)" : "none",
+              boxShadow: isActive
+                ? "0px 4px 12px rgba(0, 161, 255, 0.2)"
+                : "none",
             }}
             onMouseEnter={(e) => {
-              if (!isActive) e.currentTarget.style.background = "rgba(255,255,255,0.05)";
+              if (!isActive)
+                e.currentTarget.style.background = "rgba(255,255,255,0.05)";
             }}
             onMouseLeave={(e) => {
-              if (!isActive) e.currentTarget.style.background = "rgba(255, 255, 255, 0.03)";
+              if (!isActive)
+                e.currentTarget.style.background = "rgba(255, 255, 255, 0.03)";
             }}
           >
             {repo.name}

@@ -2,6 +2,7 @@
 
 import React, { useState } from "react";
 import dynamic from "next/dynamic";
+import Image from "next/image";
 
 const Sidebar = dynamic(() => import("../components/Sidebar"), { ssr: false });
 
@@ -37,7 +38,7 @@ const IdeaForm = () => {
   };
 
   return (
-    <div className="flex min-h-screen text-white">
+    <div className="flex min-h-screen bg-black text-white">
       {/* Sidebar */}
       <Sidebar setActiveSection={function (section: "home" | "ranks" | "contact" | "faq" | "profile"): void {
         throw new Error("Function not implemented.");

@@ -14,33 +14,33 @@ const About: React.FC = () => {
       role: "President & Vice President",
       members: [
         { name: "Neelanshu Karn", image: "/members/neelanshu.jpeg" },
-        { name: "Kavya Katal", image: "/members/kavya.jpeg" }
+        { name: "Kavya Katal", image: "/members/kavya.jpeg" },
       ]
     },
     {
       role: "UI/UX",
       members: [
-        { name: "Pratya Silla", image: "" }
+        { name: "Pratya Silla", image: "" },
       ]
     },
     {
       role: "Community Manager & Documentation",
       members: [
         { name: "Rashmi Anand", image: "/members/rashmi.jpeg" },
-        { name: "Pratiti Paul", image: "/members/pratiti.jpeg" }
+        { name: "Pratiti Paul", image: "/members/pratiti.jpeg" },
       ]
     },
     {
       role: "Social Media/Outreach",
       members: [
-        { name: "Rashmi Anand", image: "/members/rashmi.jpeg" }
+        { name: "Rashmi Anand", image: "/members/rashmi.jpeg" },
         { name: "Shaurya Sharma", image: "" },
       ]
     },
     {
       role: "Code Review/PR",
       members: [
-        { name: "Kavya Katal", image:"/members/kavya.jpeg" }
+        { name: "Kavya Katal", image:"/members/kavya.jpeg" },
         { name: "Abhinav Bajpai", image: "/members/abhinav.jpeg" },
         { name: "Rudraksh Sharma", image: "/members/rudraksh.jpeg" },
       ]
@@ -51,7 +51,7 @@ const About: React.FC = () => {
         { name: "Abhinav Bajpai", image: "/members/abhinav.jpeg" },
         { name: "Rudraksh Sharma", image: "/members/rudraksh.jpeg"},
         { name: "Kavya Katal", image: "/members/kavya.jpeg" },
-        { name: "Param Khodiyar", image: "/members/param.jpeg" }
+        { name: "Param Khodiyar", image: "/members/param.jpeg" },
       ]
     },
     {
@@ -72,11 +72,7 @@ const About: React.FC = () => {
   return (
     
     <section className="min-h-screen w-full py-12 sm:py-16 md:py-20 px-4 sm:px-6 lg:px-8 " style={{
-      // backgroundImage: "url(/nebula.png)",
-      // backgroundSize: "cover",
-      // backgroundPosition: "center",
-      // backgroundRepeat: "no-repeat",
-      // backgroundAttachment: "fixed"
+      
     }}>
         <div className="max-w-7xl mx-auto">
           <header className="text-center mb-16">

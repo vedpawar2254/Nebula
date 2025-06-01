@@ -4,6 +4,9 @@ import React, { useEffect, useState } from "react";
 import { motion, useAnimation } from "framer-motion";
 import { useInView } from "react-intersection-observer";
 import { Typewriter } from "react-simple-typewriter";
+import NebulaHero from "../components/NebulaHero";
+import About from "../components/About";
+import Timeline from "../components/Timeline";
 
 const HomeLanding: React.FC = () => {
   const controls = useAnimation();
@@ -33,14 +36,10 @@ const HomeLanding: React.FC = () => {
         if (Array.isArray(data)) {
           setContributors(data);
         } else {
-          console.warn("Contributors response not array:", data);
           setContributors([]);
         }
       })
-      .catch((err) => {
-        console.error("Error fetching contributors:", err);
-        setContributors([]);
-      });
+      .catch(() => setContributors([]));
 
     Promise.all([
       fetch("https://api.github.com/repos/SASTxNST/Website_SAST").then((res) =>
@@ -57,14 +56,10 @@ const HomeLanding: React.FC = () => {
         if (Array.isArray(data)) {
           setFeaturedRepos(data);
         } else {
-          console.warn("Unexpected repo response:", data);
           setFeaturedRepos([]);
         }
       })
-      .catch((err) => {
-        console.error("Error fetching featured repos:", err);
-        setFeaturedRepos([]);
-      });
+      .catch(() => setFeaturedRepos([]));
   }, []);
 
   useEffect(() => {
@@ -84,113 +79,162 @@ const HomeLanding: React.FC = () => {
   };
 
   return (
-    <div className="mt-10" style={{ position: "relative", overflow: "hidden" }}>
-      <section
-        id="home"
-        ref={ref}
-        style={{
-          position: "relative",
-          zIndex: 1,
-          display: "flex",
-          flexDirection: "column",
-          alignItems: "center",
-          minHeight: "100vh",
-          padding: "4rem 1rem",
-          textAlign: "center",
-          color: "white",
-        }}
-      >
-        {/* {stars !== null && (
-          <p style={{ color: "#88ccff", fontSize: "1.1rem", marginBottom: "1rem" }}>
-            ⭐ {stars}+ Stars on GitHub – Join the mission!
-          </p>
-        )} */}
-
-        <motion.h1
-          variants={fadeUpVariants}
-          initial="hidden"
-          animate={controls}
+    <div style={{ backgroundColor: "black", overflow: "hidden" }}>
+      {/* 🪐 Hero Section with Orbit */}
+      <div style={{ position: "relative" }}>
+        <NebulaHero />
+        <div
           style={{
-            fontSize: "3.2rem",
-            fontWeight: "900",
-            marginBottom: "1.5rem",
-            letterSpacing: "0.05em",
-            background: "linear-gradient(90deg, #00aaff, #66ccff)",
-            WebkitBackgroundClip: "text",
-            WebkitTextFillColor: "transparent",
-            minHeight: "4rem",
+            position: "absolute",
+            top: "50%",
+            left: "50%",
+            transform: "translate(-50%, -50%)",
+            textAlign: "center",
+            zIndex: 20,
+            padding: "0 1rem",
           }}
         >
-          <Typewriter
-            words={[
-              "Launch Into Open Source",
-              "Build together with SAST",
-              "Contribute. Collaborate. Create.",
-            ]}
-            loop={0}
-            cursor
-            cursorStyle="_"
-            typeSpeed={70}
-            deleteSpeed={50}
-            delaySpeed={1500}
-          />
-        </motion.h1>
-
-        {isDesktop && (
-          <div
+          <motion.h1
+            variants={fadeUpVariants}
+            initial="hidden"
+            animate={controls}
             style={{
-              width: "100%",
-              maxWidth: "900px",
-              display: "flex",
-              flexWrap: "wrap",
-              justifyContent: "center",
-              gap: "1rem",
-              marginTop: "3rem",
-              padding: "0 1rem",
+              fontSize: "3.2rem",
+              fontWeight: "900",
+              letterSpacing: "0.05em",
+              background: "linear-gradient(90deg, #00aaff, #66ccff)",
+              WebkitBackgroundClip: "text",
+              WebkitTextFillColor: "transparent",
+              marginBottom: "1.5rem",
             }}
           >
-            {["Fix Bugs", "Improve UI", "Write Docs", "Add Features"].map(
-              (task) => (
+            <Typewriter
+              words={[
+                "Launch Into Open Source",
+                "Build together with SAST",
+                "Contribute. Collaborate. Create.",
+              ]}
+              loop={0}
+              cursor
+              cursorStyle="_"
+              typeSpeed={70}
+              deleteSpeed={50}
+              delaySpeed={1500}
+            />
+          </motion.h1>
+        </div>
+      </div>
+
+      {/* 🛠️ Contribution Tasks */}
+      {isDesktop && (
+        <div
+          style={{
+            width: "100%",
+            maxWidth: "1000px",
+            margin: "4rem auto",
+            display: "flex",
+            flexWrap: "wrap",
+            justifyContent: "center",
+            gap: "1.5rem",
+            padding: "0 1rem",
+          }}
+        >
+          {["Fix Bugs", "Improve UI", "Write Docs", "Add Features"].map(
+            (task) => (
+              <div
+                key={task}
+                style={{
+                  width: "220px",
+                  padding: "1.5rem",
+                  borderRadius: "20px",
+                  background: "rgba(255, 255, 255, 0.05)",
+                  backdropFilter: "blur(20px)",
+                  WebkitBackdropFilter: "blur(20px)",
+                  border: "1px solid rgba(255, 255, 255, 0.12)",
+                  textAlign: "center",
+                  boxShadow: "0 8px 32px rgba(0, 0, 0, 0.4)",
+                }}
+              >
                 <div
-                  key={task}
                   style={{
-                    width: "200px",
-                    padding: "1.2rem",
-                    borderRadius: "24px",
-                    background: "rgba(255, 255, 255, 0.05)",
-                    backdropFilter: "blur(20px)",
-                    WebkitBackdropFilter: "blur(20px)",
-                    border: "1px solid rgba(255, 255, 255, 0.1)",
-                    boxShadow:
-                      "0 8px 32px rgba(0, 0, 0, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.05)",
-                    textAlign: "center",
+                    fontSize: "1.2rem",
+                    fontWeight: "600",
+                    marginBottom: "0.5rem",
+                    color: "#00aaff",
                   }}
                 >
-                  <div
-                    style={{
-                      fontSize: "1.1rem",
-                      fontWeight: "600",
-                      marginBottom: "0.5rem",
-                      color: "#00a1ff",
-                    }}
-                  >
-                    {task}
-                  </div>
-                  <p
-                    style={{
-                      fontSize: "0.85rem",
-                      color: "rgba(255, 255, 255, 0.7)",
-                    }}
-                  >
-                    Explore GitHub issues for this task
-                  </p>
+                  {task}
                 </div>
-              )
-            )}
-          </div>
-        )}
+                <p
+                  style={{
+                    fontSize: "0.85rem",
+                    color: "rgba(255, 255, 255, 0.75)",
+                  }}
+                >
+                  Explore GitHub issues for this task
+                </p>
+              </div>
+            )
+          )}
+        </div>
+      )}
+
+      {/* 🌌 What is NEBULA? */}
+      <section className="w-full px-6 sm:px-12 py-24">
+        <div className="max-w-7xl mx-auto text-center mb-16">
+          <h2 className="text-4xl sm:text-5xl font-bold text-white font-orbitron">
+            What is <span className="text-blue-400">NEBULA</span>?
+            <span className="block mt-2 text-xl text-gray-300 font-light">
+              Everything you need to know
+            </span>
+          </h2>
+        </div>
+
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-10 max-w-6xl mx-auto">
+          {[
+            {
+              title: "Pick your challenge",
+              description:
+                "Browse through curated open-source issues that match your skills and interests.",
+              image: "/cards/pick-your-challenge.jpg",
+            },
+            {
+              title: "Contribute & Earn",
+              description:
+                "Solve issues to earn DCoins while making meaningful contributions to open-source.",
+              image: "/cards/contribute-earn.jpg",
+            },
+            {
+              title: "Build Your Reputation",
+              description:
+                "Climb the leaderboard and showcase your impact in the developer community.",
+              image: "/cards/build-reputation.jpg",
+            },
+          ].map((card, idx) => (
+            <div
+              key={idx}
+              className="bg-black/40 border border-gray-700 rounded-xl overflow-hidden shadow-xl backdrop-blur-sm hover:shadow-blue-500/30 transition duration-300"
+            >
+              <img
+                src={card.image}
+                alt={card.title}
+                className="w-full h-64 object-cover"
+              />
+              <div className="p-6">
+                <h3 className="text-xl font-semibold text-white mb-2 font-orbitron">
+                  {card.title}
+                </h3>
+                <p className="text-gray-300 text-sm">{card.description}</p>
+              </div>
+            </div>
+          ))}
+        </div>
       </section>
 
+
+      <Timeline/>
+      <About/>
+      {/* 👥 Contributors */}
       <h2
         style={{
           textAlign: "center",
@@ -236,7 +280,8 @@ const HomeLanding: React.FC = () => {
             </a>
           ))}
       </div>
-
+      
+      {/* ⭐ Featured Repos */}
       {featuredRepos.length > 0 && (
         <div
           style={{ padding: "2rem 1rem", maxWidth: "800px", margin: "0 auto" }}
@@ -246,6 +291,7 @@ const HomeLanding: React.FC = () => {
               fontSize: "1.5rem",
               marginBottom: "1rem",
               color: "#00aaff",
+              textAlign: "center",
             }}
           >
             🚀 Featured Repositories

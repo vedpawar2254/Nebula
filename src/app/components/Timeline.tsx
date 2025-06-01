@@ -33,6 +33,12 @@ const fadeInVariants = {
 };
 
 const Timeline = () => {
+  const refs = timelineData.map(() => React.useRef(null));
+  const inViews = refs.map((ref) => {
+    const [inViewRef, inView] = useInView({ threshold: 0.2, triggerOnce: true });
+    return { inViewRef, inView };
+  });
+
   return (
     <section
       className="w-full px-6 sm:px-12 py-20 bg-black/80 backdrop-blur-xl border-t border-gray-700"
@@ -46,11 +52,12 @@ const Timeline = () => {
 
       <div className="relative border-l-2 border-blue-500 ml-4">
         {timelineData.map((event, index) => {
-          const [ref, inView] = useInView({ threshold: 0.2, triggerOnce: true });
+          const { inViewRef, inView } = inViews[index];
+
           return (
             <motion.div
               key={index}
-              ref={ref}
+              ref={inViewRef}
               variants={fadeInVariants}
               initial="hidden"
               animate={inView ? "visible" : "hidden"}

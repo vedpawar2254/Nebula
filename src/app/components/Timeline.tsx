@@ -32,12 +32,16 @@ const fadeInVariants = {
   visible: { opacity: 1, y: 0, transition: { duration: 0.6, ease: "easeOut" } },
 };
 
-const Timeline = () => {
-  const refs = timelineData.map(() => React.useRef(null));
-  const inViews = refs.map((ref) => {
-    const [inViewRef, inView] = useInView({ threshold: 0.2, triggerOnce: true });
-    return { inViewRef, inView };
+// 👇 Custom hook that pre-sets refs & inView states
+const useTimelineVisibility = (length: number) => {
+  return Array.from({ length }).map(() => {
+    const [ref, inView] = useInView({ threshold: 0.2, triggerOnce: true });
+    return { ref, inView };
   });
+};
+
+const Timeline = () => {
+  const visibility = useTimelineVisibility(timelineData.length);
 
   return (
     <section
@@ -51,28 +55,24 @@ const Timeline = () => {
       </div>
 
       <div className="relative border-l-2 border-blue-500 ml-4">
-        {timelineData.map((event, index) => {
-          const { inViewRef, inView } = inViews[index];
-
-          return (
-            <motion.div
-              key={index}
-              ref={inViewRef}
-              variants={fadeInVariants}
-              initial="hidden"
-              animate={inView ? "visible" : "hidden"}
-              className="pl-6 py-10 relative"
-            >
-              <div className="absolute w-4 h-4 bg-blue-500 rounded-full left-[-10px] top-10 shadow-lg" />
-              <h3 className="text-xl font-semibold text-white mb-1 font-orbitron">
-                {event.title}
-              </h3>
-              <p className="text-gray-300 text-sm max-w-lg">
-                {event.description}
-              </p>
-            </motion.div>
-          );
-        })}
+        {timelineData.map((event, index) => (
+          <motion.div
+            key={index}
+            ref={visibility[index].ref}
+            variants={fadeInVariants}
+            initial="hidden"
+            animate={visibility[index].inView ? "visible" : "hidden"}
+            className="pl-6 py-10 relative"
+          >
+            <div className="absolute w-4 h-4 bg-blue-500 rounded-full left-[-10px] top-10 shadow-lg" />
+            <h3 className="text-xl font-semibold text-white mb-1 font-orbitron">
+              {event.title}
+            </h3>
+            <p className="text-gray-300 text-sm max-w-lg">
+              {event.description}
+            </p>
+          </motion.div>
+        ))}
       </div>
     </section>
   );

@@ -80,7 +80,6 @@ const HomeLanding: React.FC = () => {
 
   return (
     <div style={{ backgroundColor: "black", minHeight: "100vh", overflowX: "hidden" }}>
-    {/* 🪐 Hero Section with Orbit */}
       <div style={{ position: "relative" }}>
         <NebulaHero />
         <div
@@ -92,6 +91,8 @@ const HomeLanding: React.FC = () => {
             textAlign: "center",
             zIndex: 20,
             padding: "0 1rem",
+            width: "100%",
+            maxWidth: "1000px",
           }}
         >
           <motion.h1
@@ -99,13 +100,14 @@ const HomeLanding: React.FC = () => {
             initial="hidden"
             animate={controls}
             style={{
-              fontSize: "3.2rem",
+              fontSize: "clamp(2rem, 6vw, 3.2rem)",
               fontWeight: "900",
               letterSpacing: "0.05em",
               background: "linear-gradient(90deg, #00aaff, #66ccff)",
               WebkitBackgroundClip: "text",
               WebkitTextFillColor: "transparent",
               marginBottom: "1.5rem",
+              wordBreak: "break-word",
             }}
           >
             <Typewriter
@@ -125,7 +127,6 @@ const HomeLanding: React.FC = () => {
         </div>
       </div>
 
-      {/* 🛠️ Contribution Tasks */}
       {isDesktop && (
         <div
           style={{
@@ -144,7 +145,8 @@ const HomeLanding: React.FC = () => {
               <div
                 key={task}
                 style={{
-                  width: "220px",
+                  width: "100%",
+                  maxWidth: "220px",
                   padding: "1.5rem",
                   borderRadius: "20px",
                   background: "rgba(255, 255, 255, 0.05)",
@@ -153,6 +155,7 @@ const HomeLanding: React.FC = () => {
                   border: "1px solid rgba(255, 255, 255, 0.12)",
                   textAlign: "center",
                   boxShadow: "0 8px 32px rgba(0, 0, 0, 0.4)",
+                  flex: "1 1 200px",
                 }}
               >
                 <div
@@ -179,7 +182,6 @@ const HomeLanding: React.FC = () => {
         </div>
       )}
 
-      {/* 🌌 What is NEBULA? */}
       <section className="w-full px-6 sm:px-12 py-24">
         <div className="max-w-7xl mx-auto text-center mb-16">
           <h2 className="text-4xl sm:text-5xl font-bold text-white font-orbitron">
@@ -231,10 +233,13 @@ const HomeLanding: React.FC = () => {
         </div>
       </section>
 
+      
+      {/* Timeline section (native layout to be made responsive later) */}
+      <div>
+        <Timeline />
+      </div>
+      <About />
 
-      <Timeline/>
-      <About/>
-      {/* 👥 Contributors */}
       <h2
         style={{
           textAlign: "center",
@@ -251,7 +256,7 @@ const HomeLanding: React.FC = () => {
           overflowX: "auto",
           gap: "1rem",
           padding: "2rem 1rem",
-          maxWidth: "800px",
+          maxWidth: "100%",
           margin: "0 auto",
         }}
       >
@@ -280,8 +285,7 @@ const HomeLanding: React.FC = () => {
             </a>
           ))}
       </div>
-      
-      {/* ⭐ Featured Repos */}
+
       {featuredRepos.length > 0 && (
         <div
           style={{ padding: "2rem 1rem", maxWidth: "800px", margin: "0 auto" }}
@@ -329,8 +333,7 @@ const HomeLanding: React.FC = () => {
                   {repo.description}
                 </div>
                 <div style={{ fontSize: "0.8rem", color: "#999" }}>
-                  ⭐ {repo.stargazers_count} &nbsp; | &nbsp; 🍴{" "}
-                  {repo.forks_count}
+                  ⭐ {repo.stargazers_count} &nbsp; | &nbsp; 🍴 {repo.forks_count}
                 </div>
               </a>
             ))}

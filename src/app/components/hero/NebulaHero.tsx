@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from "react";
+import React, { useRef, useEffect } from "react";
 import "./NebulaHero.css";
 
 const NebulaHero: React.FC = () => {
@@ -8,56 +8,26 @@ const NebulaHero: React.FC = () => {
   const dot4Ref = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    let animationFrameId: number;
-    let progress1 = 0;
-    let progress2 = Math.PI;
-    let progress3 = Math.PI / 2;
-    let progress4 = (3 * Math.PI) / 2;
+    const animateDot = (dot: HTMLDivElement | null, radius: number, duration: number) => {
+      if (!dot) return;
+      let start = performance.now();
 
-    const animate = () => {
-      progress1 += 0.01;
-      progress2 += 0.01;
-      progress3 += 0.01;
-      progress4 += 0.01;
-
-      const a1 = window.innerWidth * 0.3;
-      const b1 = window.innerWidth * 0.1;
-      const angle1 = (-40 * Math.PI) / 180;
-
-      const a2 = a1 * 0.9; // slightly smaller second ring
-      const b2 = b1 * 1.2; // slightly taller
-      const angle2 = (-20 * Math.PI) / 180; // different tilt
-
-const setDotPosition = (
-  ref: React.RefObject<HTMLDivElement | null>,
-  t: number,
-  a: number,
-  b: number,
-  angle: number
-) => {
-
-        const x = a * Math.cos(t);
-        const y = b * Math.sin(t);
-
-        const rotatedX = x * Math.cos(angle) - y * Math.sin(angle);
-        const rotatedY = x * Math.sin(angle) + y * Math.cos(angle);
-
-        if (ref.current) {
-          ref.current.style.transform = `translate(calc(-50% + ${rotatedX}px), calc(-50% + ${rotatedY}px))`;
-        }
+      const animate = (time: number) => {
+        let elapsed = time - start;
+        let angle = (elapsed / duration) * 2 * Math.PI;
+        let x = radius * Math.cos(angle);
+        let y = radius * Math.sin(angle);
+        dot.style.transform = `translate(${x}px, ${y}px)`;
+        requestAnimationFrame(animate);
       };
 
-      setDotPosition(dot1Ref, progress1, a1, b1, angle1);
-      setDotPosition(dot2Ref, progress2, a1, b1, angle1);
-
-      setDotPosition(dot3Ref, progress3, a2, b2, angle2);
-      setDotPosition(dot4Ref, progress4, a2, b2, angle2);
-
-      animationFrameId = requestAnimationFrame(animate);
+      requestAnimationFrame(animate);
     };
 
-    animate();
-    return () => cancelAnimationFrame(animationFrameId);
+    animateDot(dot1Ref.current, 100, 4000);
+    animateDot(dot2Ref.current, 100, 6000);
+    animateDot(dot3Ref.current, 150, 5000);
+    animateDot(dot4Ref.current, 150, 7000);
   }, []);
 
   return (
@@ -70,8 +40,19 @@ const setDotPosition = (
         <div ref={dot3Ref} className="orbit-dot ring2" />
         <div ref={dot4Ref} className="orbit-dot ring2" />
       </div>
+
+      {/* LIVE Button */}
+      <div className="live-button-wrapper">
+        <button className="live-button">
+          <span className="green-dot" />
+          <span className="live-text">Live</span>
+          <span className="live-date">02/06/2025</span>
+        </button>
+      </div>
+
       <h1 className="nebula-text">
-        <span className="nebula-highlight"></span>NEBULA</h1>
+        <span className="nebula-highlight"></span>NEBULA
+      </h1>
     </div>
   );
 };

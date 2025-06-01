@@ -80,12 +80,12 @@ const HomeLanding: React.FC = () => {
 
   return (
     <div
-        className="ml-[260px] w-full px-4 sm:px-6 lg:px-8"
-        style={{ minHeight: "100vh", overflowX: "hidden" }}
+        className="ml-[10px] w-full px-4 sm:px-6 lg:px-8"
+        style={{ minHeight: "100vh", overflowX: "hidden", marginRight:"10px" }}
         >  
-    <div style={{ position: "relative" }}>
-        <NebulaHero />
-    </div>
+        <div style={{ position: "relative" }}>
+            <NebulaHero />
+        </div>
 
       {isDesktop && (
         <div

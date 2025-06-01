@@ -1,23 +1,63 @@
-"use client";
+"use client"
 
-import React, { useState, useEffect } from 'react';
+import { useEffect, useRef, useState } from "react";
+import fullpage from "fullpage.js";
+import "fullpage.js/dist/fullpage.min.css";
 import Head from 'next/head';
 import CountdownUnit from './components/CountdownUnit';
-import About from './components/About';
 import { useRouter } from 'next/navigation';
 import LoginFormPopup from './components/LoginFormPopup';
 
 import { useInView } from 'react-intersection-observer';
-import { motion } from 'framer-motion';
-import Profile from './pages/Profile';
-import HomeLanding from './pages/HomeLanding';
-import Timeline from './components/Timeline';
-import IdeaForm from './ideabox/page';
 
-const HomePage: React.FC = () => {
-  const launchDate = new Date('2025-06-01T18:30:00Z').getTime();
+import NebulaHero from "./components/hero/NebulaHero";
+import About from "./components/hero/About";
+import GitHubShowcase from "./components/hero/GitHubShowcase";
+import EventsSection from "./components/hero/EventsSection";
+import TeamPage from "./components/hero/TeamPage";
+import AutoScrollingTestimonials from "./components/hero/AutoScrollingTestimonials";
+import FloatingNavbar from "./components/hero/FloatingNavbar";
+import VisualDiary from "./components/hero/VisualDiary";
+
+function Page() {
+  const fullpageRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+  let fpInstance: any;
+
+  const loadFullpage = async () => {
+    if (fullpageRef.current) {
+      const fullpage = (await import("fullpage.js")).default;
+      fpInstance = new fullpage(fullpageRef.current, {
+        autoScrolling: true,
+        navigation: true,
+        anchors: [
+          "home",
+          "about",
+          "showcase",
+          "testimonials",
+          "events",
+          "team",
+        ],
+        menu: "#navbar-menu",
+      });
+    }
+  };
+
+  loadFullpage();
+
+  return () => {
+    if (fpInstance) {
+      fpInstance.destroy("all");
+    }
+  };
+}, []);
+
+  const launchDate = new Date('2025-06-01T06:30:00Z').getTime();
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [showLoginPopup, setShowLoginPopup] = useState(false);
+
+  console.log(process);
 
   const [timeRemaining, setTimeRemaining] = useState({
     days: 0,
@@ -81,152 +121,38 @@ const HomePage: React.FC = () => {
 
   if (!isClient) return null;
 
-  const backgroundImageUrl = '/nebula.png';
+  return (<>
+    <div className="relative">
+      {/* Always-floating navbar at the top of the screen */}
+      <FloatingNavbar showLoginState={{setShowLoginPopup}} />
 
-  return (
-    <>
-      <Head>
-        <title>NEBULA - Coming Soon</title>
-        <meta name="description" content="Nebula is launching soon! Countdown to the future." />
-        <link rel="icon" href="/favicon.ico" />
-      </Head>
-
-      {/* 🔧 Common background and dark overlay */}
-      <div
-        className="relative w-full min-h-screen bg-cover bg-center text-gray-200"
-        style={{
-          backgroundImage: "url(/nebula.png)",
-          backgroundSize: "cover",
-          backgroundPosition: "center",
-          backgroundRepeat: "no-repeat",
-          backgroundAttachment: "fixed"
-        }}
-      >
-        {/* Black overlay covering both sections */}
-        <div className="absolute inset-0 bg-black/65 z-0" />
-
-        {/* All content above the overlay */}
-        <div className="relative z-10">
-
-        <div className="absolute top-6 right-6 sm:top-8 sm:right-10 z-20">
-          <button
-            onClick={() => setShowLoginPopup(true)}
-            className="relative w-28 px-4 py-2 overflow-hidden text-sm font-semibold text-white transition-all duration-300 bg-transparent border-2 border-white rounded-full cursor-pointer h-12 font-orbitron group hover:border-blue-400"
-          >
-            <span className="absolute top-0 left-0 w-full h-full transition-transform duration-500 origin-left transform scale-x-0 bg-blue-600 rounded-full group-hover:scale-x-100"></span>
-            <span className="absolute top-0 left-0 w-full h-full transition-transform duration-700 delay-75 origin-left transform scale-x-0 bg-blue-500 rounded-full group-hover:scale-x-100"></span>
-            <span className="absolute top-0 left-0 w-full h-full transition-transform delay-150 origin-left transform scale-x-0 bg-blue-400 rounded-full group-hover:scale-x-100 duration-900"></span>
-
-            <div className="relative z-20 flex items-center justify-center w-full h-full">
-              <span className="transition-opacity duration-300 group-hover:opacity-0">Login</span>
-              <span className="absolute transition-opacity duration-300 opacity-0 group-hover:opacity-100">
-                Welcome!
-              </span>
-            </div>
-          </button>
+      {/* Fullpage.js container */}
+      <div ref={fullpageRef} id="fullpage">
+        <div className="section">
+          <NebulaHero />
         </div>
-
-          {/* 🟦 Countdown Section */}
-          <section className="w-full h-screen flex flex-col items-center justify-center text-center">
-            {showLoginPopup && (
-              <div className="fixed inset-0 z-40 bg-opacity-20 bg-white/5 backdrop-blur-2xl"></div>
-            )}
-
-            <div className="absolute left-0 right-0 top-8 sm:top-12">
-              <p className="text-2xl tracking-wider text-gray-300 sm:text-3xl font-orbitron">
-                Introducing
-              </p>
-            </div>
-
-            <main className="z-10 flex flex-col items-center w-full px-4 mt-12 sm:mt-16">
-              <h1 className="mb-10 text-6xl font-black tracking-widest uppercase font-orbitron sm:text-7xl md:text-8xl lg:text-9xl sm:mb-12 nebula-text-effect">
-                NEBULA
-              </h1>
-
-              {timeRemaining.days === 0 &&
-              timeRemaining.hours === 0 &&
-              timeRemaining.minutes === 0 &&
-              timeRemaining.seconds === 0 ? (
-                <p className="mb-6 text-4xl font-bold text-gray-100 font-orbitron sm:text-5xl md:text-6xl animate-bounce">
-                  LAUNCHED!
-                </p>
-              ) : (
-                <div className="flex flex-col items-center">
-                  <div className="flex items-start justify-center mb-4 sm:mb-6 group">
-                    <CountdownUnit value={timeRemaining.days} unit="Days" showSeparator={true} />
-                    <CountdownUnit value={timeRemaining.hours} unit="Hours" showSeparator={true} />
-                    <CountdownUnit value={timeRemaining.minutes} unit="Minutes" showSeparator={true} />
-                    <div
-                      className={timeRemaining.seconds !== prevSeconds ? 'digit-change' : ''}
-                      key={secondsKey}
-                    >
-                      <CountdownUnit value={timeRemaining.seconds} unit="Seconds" showSeparator={false} />
-                    </div>
-                  </div>
-
-                  <p className="mb-6 text-xl tracking-wide text-gray-300 sm:text-2xl font-orbitron sm:mb-8">
-                    Coming Soon...
-                  </p>
-
-                  <button
-                    onClick={handleContributeClick}
-                    className="relative w-48 px-6 py-3 mx-auto my-4 overflow-hidden text-lg font-semibold text-white transition-all duration-300 bg-transparent border-2 border-white rounded-full cursor-pointer h-14 font-orbitron group hover:border-blue-400 md:my-6 lg:my-8"
-                  >
-                    <span className="absolute top-0 left-0 w-full h-full transition-transform duration-500 origin-left transform scale-x-0 bg-blue-600 rounded-full group-hover:scale-x-100"></span>
-                    <span className="absolute top-0 left-0 w-full h-full transition-transform duration-700 delay-75 origin-left transform scale-x-0 bg-blue-500 rounded-full group-hover:scale-x-100"></span>
-                    <span className="absolute top-0 left-0 w-full h-full transition-transform delay-150 origin-left transform scale-x-0 bg-blue-400 rounded-full group-hover:scale-x-100 duration-900"></span>
-
-                    <div className="relative z-20 flex items-center justify-center w-full h-full">
-                      <span className="transition-opacity duration-300 group-hover:opacity-0">Contribute</span>
-                      <span className="absolute transition-opacity duration-300 opacity-0 group-hover:opacity-100">
-                        Let&apos;s Go!
-                      </span>
-                    </div>
-                  </button>
-                </div>
-              )}
-            </main>
-          </section>
-
-
-      {/* 🕒 Timeline Section */}
-      {/* <Timeline/> */}
-      
-
-      
-        {/* 🟨 About Section - no background */}
-        {/* <section className="w-full px-6 sm:px-12 py-20">
-          <motion.div
-            ref={aboutRef}
-            initial={{ opacity: 0, y: 50 }}
-            animate={aboutInView ? { opacity: 1, y: 0 } : {}}
-            transition={{ duration: 0.8, ease: 'easeOut' }}
-          >
-            <About />cs
-          </motion.div>
-        </section> */}
-
-           {/* Footer */}
-          <footer className="w-full py-6 text-center text-gray-400 z-10">
-            <p className="text-xl sm:text-2xl font-orbitron">By SAST</p>
-          </footer>
-
+        <div className="section">
+          <About />
+        </div>
+        <div className="section">
+          <GitHubShowcase />
+        </div>
+        <div className="section">
+          <AutoScrollingTestimonials />
+        </div>
+        <div className="section">
+          <VisualDiary />
+        </div>
+        <div className="section">
+          <EventsSection />
+        </div>
+        <div className="section">
+          <TeamPage />
         </div>
       </div>
+    </div>
 
-      {/* <Profile repositories={[]}/> */}
-
-      {/* <HomeLanding/> */}
-
-      {/* <IdeaForm/> */}
-
-      {/* <About/> */}
-
-
-
-      
-
-      {showLoginPopup && (
+    {showLoginPopup && (
         <LoginFormPopup
           onClose={() => setShowLoginPopup(false)}
           onLoginSuccess={(token: any, email: string) => {
@@ -238,10 +164,7 @@ const HomePage: React.FC = () => {
           }}
         />
       )}
-    </>
-  );
-};
+  </>);
+}
 
-
-
-export default HomePage;
+export default Page;

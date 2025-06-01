@@ -205,7 +205,7 @@ const HomePage: React.FC = () => {
         </div>
       </div>
 
-      <Profile repositories={[]}/>
+      {/* <Profile repositories={[]}/> */}
 
       
 

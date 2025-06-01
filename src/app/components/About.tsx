@@ -33,16 +33,16 @@ const About: React.FC = () => {
     {
       role: "Social Media/Outreach",
       members: [
-        { name: "Shaurya Sharma", image: "" },
         { name: "Rashmi Anand", image: "/members/rashmi.jpeg" }
+        { name: "Shaurya Sharma", image: "" },
       ]
     },
     {
       role: "Code Review/PR",
       members: [
+        { name: "Kavya Katal", image:"/members/kavya.jpeg" }
         { name: "Abhinav Bajpai", image: "/members/abhinav.jpeg" },
         { name: "Rudraksh Sharma", image: "/members/rudraksh.jpeg" },
-        { name: "Kavya Katal", image:"/members/kavya.jpeg" }
       ]
     },
     {
@@ -57,13 +57,13 @@ const About: React.FC = () => {
     {
       role: "Website (Nebula)",
       members: [
-        { name: "Pratyush Parida", image: "/members/pratyush.jpeg" },
-        { name: "Kavya Katal", image: "/members/kavya.jpeg" },
-        { name: "Rudraksh Sharma", image: "/members/rudraksh.jpeg" },
-        { name: "Abhinav Bajpai", image:"/members/abhinav.jpeg" },
         { name: "Ankit Pandey", image: "/members/ankit.jpeg" },
-        { name: "Param Khodiyar", image: "/members/param.jpeg" },
         { name: "Kunal Vats", image: "/members/kunal.jpeg" },
+        { name: "Abhinav Bajpai", image:"/members/abhinav.jpeg" },
+        { name: "Kavya Katal", image: "/members/kavya.jpeg" },
+        { name: "Param Khodiyar", image: "/members/param.jpeg" },
+        { name: "Rudraksh Sharma", image: "/members/rudraksh.jpeg" },
+        { name: "Pratyush Parida", image: "/members/pratyush.jpeg" },
         
       ]
     }

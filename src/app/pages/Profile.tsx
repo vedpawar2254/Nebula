@@ -3,9 +3,21 @@ import React, { useEffect, useState } from "react";
 import toast, { Toaster } from "react-hot-toast";
 import { AnimatePresence, motion } from "framer-motion";
 import dynamic from "next/dynamic";
+import {
+  BarChart,
+  Bar,
+  XAxis,
+  YAxis,
+  Tooltip,
+  ResponsiveContainer,
+  PieChart,
+  Pie,
+  Cell,
+  LineChart,
+  Line,
+} from "recharts";
 
 const ContributionGraph = dynamic(() => import("react-github-calendar"), { ssr: false });
-import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer, PieChart, Pie, Cell } from "recharts";
 
 interface Repo {
   owner: string;
@@ -58,6 +70,13 @@ const Profile: React.FC<ProfileProps> = ({ repositories }) => {
   const [lastFetched, setLastFetched] = useState<number | null>(null);
   const [nextFetchTime, setNextFetchTime] = useState<string>("");
   const [contributorRank, setContributorRank] = useState<number | null>(null);
+
+  const [lineChartType, setLineChartType] = useState<"commits" | "issues" | "prs">("commits");
+  const [lineChartData, setLineChartData] = useState({
+    commits: [] as { date: string; count: number }[],
+    issues: [] as { date: string; count: number }[],
+    prs: [] as { date: string; count: number }[],
+  });
 
   useEffect(() => {
     const email = localStorage.getItem("email");
@@ -129,8 +148,14 @@ const Profile: React.FC<ProfileProps> = ({ repositories }) => {
         const commits: CommitDetail[] = [];
         const merges: MergeDetail[] = [];
 
+        const commitMap: Record<string, number> = {};
+        const issueMap: Record<string, number> = {};
+        const prMap: Record<string, number> = {};
+
         if (Array.isArray(events)) {
           events.forEach((event: any) => {
+            const dateStr = new Date(event.created_at).toLocaleDateString();
+
             if (event.type === "PushEvent") {
               event.payload.commits.forEach((c: any) => {
                 commits.push({
@@ -140,17 +165,23 @@ const Profile: React.FC<ProfileProps> = ({ repositories }) => {
                   sha: c.sha,
                   url: `https://github.com/${event.repo.name}/commit/${c.sha}`,
                 });
+                commitMap[dateStr] = (commitMap[dateStr] || 0) + 1;
               });
-            } else if (
-              event.type === "PullRequestEvent" &&
-              event.payload.pull_request?.merged
-            ) {
+            } else if (event.type === "PullRequestEvent" && event.payload.pull_request?.merged) {
               merges.push({
                 repoName: event.repo.name,
                 title: event.payload.pull_request.title,
                 date: new Date(event.payload.pull_request.merged_at).toLocaleString(),
                 url: event.payload.pull_request.html_url,
               });
+            }
+
+            if (event.type === "IssuesEvent" && event.payload.action === "opened") {
+              issueMap[dateStr] = (issueMap[dateStr] || 0) + 1;
+            }
+
+            if (event.type === "PullRequestEvent" && event.payload.action === "opened") {
+              prMap[dateStr] = (prMap[dateStr] || 0) + 1;
             }
           });
         }
@@ -166,6 +197,15 @@ const Profile: React.FC<ProfileProps> = ({ repositories }) => {
 
         const rank = contributors.findIndex((c: any) => c.login === formData.githubId) + 1;
         setContributorRank(rank > 0 ? rank : null);
+
+        const formatMap = (map: Record<string, number>) =>
+          Object.entries(map).map(([date, count]) => ({ date, count }));
+
+        setLineChartData({
+          commits: formatMap(commitMap),
+          issues: formatMap(issueMap),
+          prs: formatMap(prMap),
+        });
       } catch (err) {
         console.error("Unexpected GitHub fetch error:", err);
         toast.error("GitHub API failed. Possibly rate-limited or user not found.");
@@ -185,7 +225,6 @@ const Profile: React.FC<ProfileProps> = ({ repositories }) => {
     acc[date] = (acc[date] || 0) + 1;
     return acc;
   }, {});
-
   const formattedChartData = Object.entries(barData).map(([date, count]) => ({ date, count }));
 
   const pieData = [
@@ -197,7 +236,6 @@ const Profile: React.FC<ProfileProps> = ({ repositories }) => {
   return (
     <div className="min-h-screen p-6 bg-[#0B0B22] text-white font-orbitron">
       <Toaster />
-
       <div className="flex justify-between items-center gap-4 mb-4">
         <div>
           <h1 className="text-2xl font-semibold">Welcome, {formData.username}</h1>
@@ -221,7 +259,6 @@ const Profile: React.FC<ProfileProps> = ({ repositories }) => {
               placeholder="Enter your name"
             />
           </label>
-
           <label className="block">
             <span className="text-sm text-gray-300">GitHub Username</span>
             <input
@@ -231,7 +268,6 @@ const Profile: React.FC<ProfileProps> = ({ repositories }) => {
               placeholder="GitHub handle"
             />
           </label>
-
           <button
             onClick={handleSave}
             className="px-4 py-2 mt-2 rounded bg-green-600 hover:bg-green-700 text-sm"
@@ -274,7 +310,7 @@ const Profile: React.FC<ProfileProps> = ({ repositories }) => {
           )}
         </div>
 
-        <div className="bg-[#3b2a530f] p-4 rounded-xl">
+        {/* <div className="bg-[#3b2a530f] p-4 rounded-xl">
           <p className="text-md font-bold text-[#9DA4F2] mb-2">Commits Per Day</p>
           <ResponsiveContainer width="100%" height={200}>
             <BarChart data={formattedChartData}>
@@ -284,7 +320,7 @@ const Profile: React.FC<ProfileProps> = ({ repositories }) => {
               <Bar dataKey="count" fill="#4fc3f7" radius={[8, 8, 0, 0]} />
             </BarChart>
           </ResponsiveContainer>
-        </div>
+        </div> */}
 
         <div className="bg-[#3b2a530f] p-4 rounded-xl">
           <p className="text-md font-bold text-[#9DA4F2] mb-2">Contribution Type Split</p>
@@ -297,6 +333,35 @@ const Profile: React.FC<ProfileProps> = ({ repositories }) => {
               </Pie>
               <Tooltip />
             </PieChart>
+          </ResponsiveContainer>
+        </div>
+
+        <div className="bg-[#3b2a530f] p-4 rounded-xl col-span-full">
+          <div className="flex justify-between items-center mb-3">
+            <p className="text-md font-bold text-[#9DA4F2]">Contribution Over Time</p>
+            <div className="space-x-2">
+              {["commits", "issues", "prs"].map((type) => (
+                <button
+                  key={type}
+                  onClick={() => setLineChartType(type as "commits" | "issues" | "prs")}
+                  className={`px-3 py-1 rounded-full text-xs ${
+                    lineChartType === type
+                      ? "bg-[#4fc3f7] text-black"
+                      : "bg-[#2a2f4a] text-white"
+                  }`}
+                >
+                  {type.toUpperCase()}
+                </button>
+              ))}
+            </div>
+          </div>
+          <ResponsiveContainer width="100%" height={250}>
+            <LineChart data={lineChartData[lineChartType]}>
+              <XAxis dataKey="date" />
+              <YAxis allowDecimals={false} />
+              <Tooltip />
+              <Line type="monotone" dataKey="count" stroke="#4fc3f7" strokeWidth={2} />
+            </LineChart>
           </ResponsiveContainer>
         </div>
       </div>

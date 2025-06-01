@@ -80,7 +80,7 @@ const HomeLanding: React.FC = () => {
 
   return (
     <div
-        className="ml-[260px] w-[calc(100%-260px)] px-4 sm:px-6 lg:px-8"
+        className="ml-[260px] w-full px-4 sm:px-6 lg:px-8"
         style={{ backgroundColor: "black", minHeight: "100vh", overflowX: "hidden" }}
         >  
     <div style={{ position: "relative" }}>

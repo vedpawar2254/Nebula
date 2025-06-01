@@ -3,6 +3,7 @@ import React, { useEffect, useState } from "react";
 import toast, { Toaster } from "react-hot-toast";
 import { AnimatePresence, motion } from "framer-motion";
 import dynamic from "next/dynamic";
+import TopStatsBlock from "../components/TopLang";
 import {
   BarChart,
   Bar,
@@ -70,6 +71,8 @@ const Profile: React.FC<ProfileProps> = ({ repositories }) => {
   const [lastFetched, setLastFetched] = useState<number | null>(null);
   const [nextFetchTime, setNextFetchTime] = useState<string>("");
   const [contributorRank, setContributorRank] = useState<number | null>(null);
+  const [topLanguages, setTopLanguages] = useState<string[]>([]);
+  const [estimatedTime, setEstimatedTime] = useState<string>("");
 
   const [lineChartType, setLineChartType] = useState<"commits" | "issues" | "prs">("commits");
   const [lineChartData, setLineChartData] = useState({
@@ -234,19 +237,24 @@ const Profile: React.FC<ProfileProps> = ({ repositories }) => {
   const pieColors = ["#4fc3f7", "#8884d8"];
 
   return (
-    <div className="min-h-screen p-6 bg-[#0B0B22] text-white font-orbitron">
+    <div className="min-h-screen p-6 text-white font-orbitron">
       <Toaster />
+
       <div className="flex justify-between items-center gap-4 mb-4">
         <div>
           <h1 className="text-2xl font-semibold">Welcome, {formData.username}</h1>
           <p className="text-sm text-gray-400">Next update at: {nextFetchTime}</p>
         </div>
+        
         <div className="flex items-center gap-2">
           <div className="text-sm bg-[#2a2f4a] px-3 py-1 rounded-full">⭐ Stars: {stars}</div>
           <div className="text-sm bg-[#2a2f4a] px-3 py-1 rounded-full">🍴 Forks: {forks}</div>
           <button onClick={handleLogout} className="ml-4 text-sm px-3 py-1 rounded bg-red-600 hover:bg-red-700">Logout</button>
         </div>
       </div>
+
+      <TopStatsBlock topLanguages={topLanguages} estimatedTime={estimatedTime} contributorRank={contributorRank} nextFetchTime={nextFetchTime} />
+
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         <div className="space-y-4">
@@ -366,6 +374,7 @@ const Profile: React.FC<ProfileProps> = ({ repositories }) => {
         </div>
       </div>
     </div>
+    
   );
 };
 

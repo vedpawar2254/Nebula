@@ -1,6 +1,9 @@
 "use client";
 
 import React, { useState } from "react";
+import dynamic from "next/dynamic";
+
+const Sidebar = dynamic(() => import("../components/Sidebar"), { ssr: false });
 
 const IdeaForm = () => {
   const [idea, setIdea] = useState<string>("");
@@ -25,91 +28,63 @@ const IdeaForm = () => {
     const result = await response.json();
 
     if (result.success) {
-      setStatus("Sent! ✅");
+      setStatus("✅ Sent successfully!");
       setIdea("");
       setEmail("");
     } else {
-      setStatus("Failed to send ❌");
+      setStatus("❌ Failed to send. Try again.");
     }
   };
 
   return (
-    <div
-      style={{
-        backgroundColor: "#121212",
-        color: "#f0f0f0",
-        fontFamily: "Arial, sans-serif", // 👈 Added simple font
-        minHeight: "100vh",
-        display: "flex",
-        justifyContent: "center",
-        alignItems: "center",
-        padding: "2rem",
-      }}
-    >
-      <form
-        onSubmit={handleSubmit}
-        style={{
-          background: "#1e1e1e",
-          border: "1px solid #333",
-          borderRadius: "12px",
-          padding: "2rem",
-          maxWidth: "500px",
-          width: "100%",
-          boxShadow: "0 0 15px rgba(0, 0, 0, 0.5)",
-          display: "flex",
-          flexDirection: "column",
-          gap: "1rem",
-        }}
-      >
-        <h2 style={{ textAlign: "center" }}>💡 Submit Your Idea</h2>
+    <div className="flex min-h-screen text-white">
+      {/* Sidebar */}
+      <Sidebar setActiveSection={function (section: "home" | "ranks" | "contact" | "faq" | "profile"): void {
+        throw new Error("Function not implemented.");
+      } } />
 
-        <textarea
-          placeholder="Your idea..."
-          value={idea}
-          onChange={(e) => setIdea(e.target.value)}
-          required
-          rows={5}
-          style={{
-            padding: "0.75rem",
-            borderRadius: "8px",
-            border: "1px solid #444",
-            backgroundColor: "#222",
-            color: "#fff",
-            fontFamily: "inherit",
-          }}
-        />
-        <input
-          type="email"
-          placeholder="Your email"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-          required
-          style={{
-            padding: "0.75rem",
-            borderRadius: "8px",
-            border: "1px solid #444",
-            backgroundColor: "#222",
-            color: "#fff",
-            fontFamily: "inherit",
-          }}
-        />
-        <button
-          type="submit"
-          style={{
-            padding: "0.75rem",
-            backgroundColor: "#00b894",
-            color: "#fff",
-            border: "none",
-            borderRadius: "8px",
-            cursor: "pointer",
-            fontWeight: "bold",
-            fontFamily: "inherit",
-          }}
+      {/* Main Content */}
+      <main className="flex-1 flex items-center justify-center px-4 py-20">
+        <form
+          onSubmit={handleSubmit}
+          className="w-full max-w-md bg-white/5 border border-white/10 backdrop-blur-xl p-8 rounded-2xl shadow-2xl flex flex-col gap-5"
         >
-          🚀 Submit Idea
-        </button>
-        <p style={{ textAlign: "center" }}>{status}</p>
-      </form>
+          <h2 className="text-2xl font-bold text-cyan-400 text-center font-orbitron">
+            💡 Submit Your Idea
+          </h2>
+
+          <textarea
+            placeholder="What's your idea?"
+            value={idea}
+            onChange={(e) => setIdea(e.target.value)}
+            required
+            rows={5}
+            className="p-4 rounded-lg bg-black/60 border border-white/20 text-white placeholder-gray-400 resize-none focus:outline-none focus:ring-2 focus:ring-cyan-500"
+          />
+
+          <input
+            type="email"
+            placeholder="Your email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            required
+            className="p-4 rounded-lg bg-black/60 border border-white/20 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-cyan-500"
+          />
+
+          <button
+            type="submit"
+            className="py-3 bg-cyan-500 hover:bg-cyan-600 transition text-white font-semibold rounded-lg"
+          >
+            🚀 Submit Idea
+          </button>
+
+          {status && (
+            <p className="text-center text-sm text-white/80 animate-pulse">
+              {status}
+            </p>
+          )}
+        </form>
+      </main>
     </div>
   );
 };

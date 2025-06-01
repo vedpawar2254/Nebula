@@ -12,6 +12,7 @@ import { motion } from 'framer-motion';
 import Profile from './pages/Profile';
 import HomeLanding from './pages/HomeLanding';
 import Timeline from './components/Timeline';
+import IdeaForm from './ideabox/page';
 
 const HomePage: React.FC = () => {
   const launchDate = new Date('2025-06-01T18:30:00Z').getTime();
@@ -216,6 +217,8 @@ const HomePage: React.FC = () => {
       {/* <Profile repositories={[]}/> */}
 
       {/* <HomeLanding/> */}
+
+      {/* <IdeaForm/> */}
 
 
 

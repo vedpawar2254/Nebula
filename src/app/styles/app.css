@@ -3,9 +3,7 @@
   font-family: 'Nebula';
   src: url('./../../Assets/Fonts/Nebula-Regular.otf');
 }
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+
 
 
 body {

@@ -32,17 +32,27 @@ const fadeInVariants = {
   visible: { opacity: 1, y: 0, transition: { duration: 0.6, ease: "easeOut" } },
 };
 
-// 👇 Custom hook that pre-sets refs & inView states
-const useTimelineVisibility = (length: number) => {
-  return Array.from({ length }).map(() => {
-    const [ref, inView] = useInView({ threshold: 0.2, triggerOnce: true });
-    return { ref, inView };
-  });
+const TimelineItem = ({ title, description }: { title: string; description: string }) => {
+  const [ref, inView] = useInView({ threshold: 0.2, triggerOnce: true });
+
+  return (
+    <motion.div
+      ref={ref}
+      variants={fadeInVariants}
+      initial="hidden"
+      animate={inView ? "visible" : "hidden"}
+      className="pl-6 py-10 relative"
+    >
+      <div className="absolute w-4 h-4 bg-blue-500 rounded-full left-[-10px] top-10 shadow-lg" />
+      <h3 className="text-xl font-semibold text-white mb-1 font-orbitron">
+        {title}
+      </h3>
+      <p className="text-gray-300 text-sm max-w-lg">{description}</p>
+    </motion.div>
+  );
 };
 
 const Timeline = () => {
-  const visibility = useTimelineVisibility(timelineData.length);
-
   return (
     <section
       className="w-full px-6 sm:px-12 py-20 bg-black/80 backdrop-blur-xl border-t border-gray-700"
@@ -56,22 +66,11 @@ const Timeline = () => {
 
       <div className="relative border-l-2 border-blue-500 ml-4">
         {timelineData.map((event, index) => (
-          <motion.div
+          <TimelineItem
             key={index}
-            ref={visibility[index].ref}
-            variants={fadeInVariants}
-            initial="hidden"
-            animate={visibility[index].inView ? "visible" : "hidden"}
-            className="pl-6 py-10 relative"
-          >
-            <div className="absolute w-4 h-4 bg-blue-500 rounded-full left-[-10px] top-10 shadow-lg" />
-            <h3 className="text-xl font-semibold text-white mb-1 font-orbitron">
-              {event.title}
-            </h3>
-            <p className="text-gray-300 text-sm max-w-lg">
-              {event.description}
-            </p>
-          </motion.div>
+            title={event.title}
+            description={event.description}
+          />
         ))}
       </div>
     </section>

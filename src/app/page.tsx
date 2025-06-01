@@ -176,7 +176,7 @@ const HomePage: React.FC = () => {
                     <div className="relative z-20 flex items-center justify-center w-full h-full">
                       <span className="transition-opacity duration-300 group-hover:opacity-0">Contribute</span>
                       <span className="absolute transition-opacity duration-300 opacity-0 group-hover:opacity-100">
-                        Let's Go!
+                        Let&apos;s Go!
                       </span>
                     </div>
                   </button>

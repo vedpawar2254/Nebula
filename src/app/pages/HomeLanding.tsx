@@ -80,9 +80,9 @@ const HomeLanding: React.FC = () => {
 
   return (
     <div
-    style={{ backgroundColor: "black", minHeight: "100vh", overflowX: "hidden" }}
-    className="flex-1 ml-[260px]"
-    >      
+        style={{ backgroundColor: "black", minHeight: "100vh", overflowX: "hidden" }}
+        className="ml-[260px] w-[calc(100%-260px)] px-4 sm:px-6 lg:px-8"
+        >    
     <div style={{ position: "relative" }}>
         <NebulaHero />
         <div

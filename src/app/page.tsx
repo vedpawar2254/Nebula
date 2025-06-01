@@ -216,7 +216,7 @@ const HomePage: React.FC = () => {
 
       {/* <Profile repositories={[]}/> */}
 
-      <HomeLanding/>
+      {/* <HomeLanding/> */}
 
       {/* <IdeaForm/> */}
 

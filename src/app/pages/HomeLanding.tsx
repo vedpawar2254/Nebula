@@ -79,8 +79,8 @@ const HomeLanding: React.FC = () => {
   };
 
   return (
-    <div style={{ backgroundColor: "black", overflow: "hidden" }}>
-      {/* 🪐 Hero Section with Orbit */}
+    <div style={{ backgroundColor: "black", minHeight: "100vh", overflowX: "hidden" }}>
+    {/* 🪐 Hero Section with Orbit */}
       <div style={{ position: "relative" }}>
         <NebulaHero />
         <div

@@ -5,7 +5,7 @@ import { AnimatePresence, motion } from "framer-motion";
 import dynamic from "next/dynamic";
 
 const ContributionGraph = dynamic(() => import("react-github-calendar"), { ssr: false });
-import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer } from "recharts";
+import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer, PieChart, Pie, Cell } from "recharts";
 
 interface Repo {
   owner: string;
@@ -48,12 +48,16 @@ const Profile: React.FC<ProfileProps> = ({ repositories }) => {
     githubId: "",
     profilePic: "",
   });
-  const [commitDetails, setCommitDetails] = useState<CommitDetail[]>([]);
-  const [mergeDetails, setMergeDetails] = useState<MergeDetail[]>([]);
+  const [commitDetails, setCommitDetails] = useState<CommitDetail[]>(
+    JSON.parse(localStorage.getItem("cachedCommits") || "[]")
+  );
+  const [mergeDetails, setMergeDetails] = useState<MergeDetail[]>(
+    JSON.parse(localStorage.getItem("cachedMerges") || "[]")
+  );
   const [repoMeta, setRepoMeta] = useState<any[]>([]);
   const [lastFetched, setLastFetched] = useState<number | null>(null);
   const [nextFetchTime, setNextFetchTime] = useState<string>("");
-  const [carouselIndex, setCarouselIndex] = useState(0);
+  const [contributorRank, setContributorRank] = useState<number | null>(null);
 
   useEffect(() => {
     const email = localStorage.getItem("email");
@@ -78,6 +82,15 @@ const Profile: React.FC<ProfileProps> = ({ repositories }) => {
       });
   }, []);
 
+  useEffect(() => {
+    if (formData.githubId) {
+      setFormData((prev) => ({
+        ...prev,
+        profilePic: `https://github.com/${formData.githubId}.png`,
+      }));
+    }
+  }, [formData.githubId]);
+
   const handleSave = () => {
     if (!formData.username || !formData.githubId) {
       toast.error("Username and GitHub ID are required.");
@@ -94,15 +107,6 @@ const Profile: React.FC<ProfileProps> = ({ repositories }) => {
     window.location.href = "/";
   };
 
-  const handleImageChange = (e: any) => {
-    const file = e.target.files[0];
-    const reader = new FileReader();
-    reader.onloadend = () => {
-      setFormData({ ...formData, profilePic: reader.result as string });
-    };
-    if (file) reader.readAsDataURL(file);
-  };
-
   useEffect(() => {
     const fetchAll = async () => {
       if (!formData.githubId) return;
@@ -110,20 +114,17 @@ const Profile: React.FC<ProfileProps> = ({ repositories }) => {
       if (lastFetched && now - lastFetched < 5 * 60 * 1000) return;
 
       try {
-        const [eventsRes, reposRes] = await Promise.all([
-          fetch(`https://api.github.com/users/${formData.githubId}/events/public`),
-          fetch(`https://api.github.com/users/${formData.githubId}/repos`),
+        const [eventsRes, repoRes, contributorsRes] = await Promise.all([
+          fetch(`https://api.github.com/repos/SASTxNST/Website_SAST/events`),
+          fetch("https://api.github.com/repos/SASTxNST/Website_SAST"),
+          fetch("https://api.github.com/repos/SASTxNST/Website_SAST/contributors"),
         ]);
 
         const events = await eventsRes.json();
-        const repos = await reposRes.json();
+        const repo = await repoRes.json();
+        const contributors = await contributorsRes.json();
 
-        if (!Array.isArray(repos)) {
-          console.error("GitHub Repos API error:", repos);
-          setRepoMeta([]);
-        } else {
-          setRepoMeta(repos);
-        }
+        setRepoMeta([repo]);
 
         const commits: CommitDetail[] = [];
         const merges: MergeDetail[] = [];
@@ -152,17 +153,19 @@ const Profile: React.FC<ProfileProps> = ({ repositories }) => {
               });
             }
           });
-        } else {
-          console.error("GitHub Events API error:", events);
-          toast.error("Could not fetch GitHub events. Please check username or try later.");
         }
 
         setCommitDetails(commits);
         setMergeDetails(merges);
+        localStorage.setItem("cachedCommits", JSON.stringify(commits));
+        localStorage.setItem("cachedMerges", JSON.stringify(merges));
         setLastFetched(now);
 
         const next = new Date(now + 5 * 60 * 1000);
         setNextFetchTime(next.toLocaleTimeString());
+
+        const rank = contributors.findIndex((c: any) => c.login === formData.githubId) + 1;
+        setContributorRank(rank > 0 ? rank : null);
       } catch (err) {
         console.error("Unexpected GitHub fetch error:", err);
         toast.error("GitHub API failed. Possibly rate-limited or user not found.");
@@ -174,12 +177,8 @@ const Profile: React.FC<ProfileProps> = ({ repositories }) => {
     return () => clearInterval(interval);
   }, [formData.githubId, lastFetched]);
 
-  const stars = Array.isArray(repoMeta)
-    ? repoMeta.reduce((acc, repo) => acc + (repo.stargazers_count || 0), 0)
-    : 0;
-  const forks = Array.isArray(repoMeta)
-    ? repoMeta.reduce((acc, repo) => acc + (repo.forks_count || 0), 0)
-    : 0;
+  const stars = repoMeta[0]?.stargazers_count || 0;
+  const forks = repoMeta[0]?.forks_count || 0;
 
   const barData = commitDetails.reduce((acc: any, commit) => {
     const date = commit.date.split(",")[0];
@@ -188,6 +187,12 @@ const Profile: React.FC<ProfileProps> = ({ repositories }) => {
   }, {});
 
   const formattedChartData = Object.entries(barData).map(([date, count]) => ({ date, count }));
+
+  const pieData = [
+    { name: "Commits", value: commitDetails.length },
+    { name: "PR Merges", value: mergeDetails.length },
+  ];
+  const pieColors = ["#4fc3f7", "#8884d8"];
 
   return (
     <div className="min-h-screen p-6 bg-[#0B0B22] text-white font-orbitron">
@@ -227,16 +232,6 @@ const Profile: React.FC<ProfileProps> = ({ repositories }) => {
             />
           </label>
 
-          <label className="block">
-            <span className="text-sm text-gray-300">Upload Profile Picture</span>
-            <input
-              type="file"
-              accept="image/*"
-              onChange={handleImageChange}
-              className="mt-1 w-full text-sm text-gray-400"
-            />
-          </label>
-
           <button
             onClick={handleSave}
             className="px-4 py-2 mt-2 rounded bg-green-600 hover:bg-green-700 text-sm"
@@ -245,15 +240,30 @@ const Profile: React.FC<ProfileProps> = ({ repositories }) => {
           </button>
         </div>
 
-        {formData.profilePic && (
-          <div className="flex justify-center">
+        <div className="bg-[#1E1E3F] p-4 rounded-xl flex flex-col items-center justify-center">
+          <p className="text-sm mb-2 text-gray-300">Profile Picture (from GitHub)</p>
+          {formData.profilePic && (
             <img
               src={formData.profilePic}
               alt="Profile Preview"
               className="w-32 h-32 rounded-full object-cover border-4 border-[#4fc3f7]"
             />
+          )}
+          <div className="mt-3 text-center">
+            <p className="text-xs text-gray-400">Public Profile:</p>
+            <a
+              href={`/public/${formData.githubId}`}
+              className="text-sm text-blue-400 underline"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              View Public Card
+            </a>
+            <p className="text-xs mt-1 text-gray-400">
+              Rank: <span className="text-white font-semibold">#{contributorRank ?? '—'}</span>
+            </p>
           </div>
-        )}
+        </div>
       </div>
 
       <div className="grid md:grid-cols-2 gap-6 mt-10">
@@ -273,6 +283,20 @@ const Profile: React.FC<ProfileProps> = ({ repositories }) => {
               <Tooltip />
               <Bar dataKey="count" fill="#4fc3f7" radius={[8, 8, 0, 0]} />
             </BarChart>
+          </ResponsiveContainer>
+        </div>
+
+        <div className="bg-[#3b2a530f] p-4 rounded-xl">
+          <p className="text-md font-bold text-[#9DA4F2] mb-2">Contribution Type Split</p>
+          <ResponsiveContainer width="100%" height={200}>
+            <PieChart>
+              <Pie data={pieData} dataKey="value" nameKey="name" cx="50%" cy="50%" outerRadius={60} label>
+                {pieData.map((entry, index) => (
+                  <Cell key={`cell-${index}`} fill={pieColors[index % pieColors.length]} />
+                ))}
+              </Pie>
+              <Tooltip />
+            </PieChart>
           </ResponsiveContainer>
         </div>
       </div>

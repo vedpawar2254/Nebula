@@ -1,5 +1,6 @@
 import React from 'react';
 import Image from 'next/image';
+import '@fontsource/orbitron/400.css';
 
 interface TeamMember {
   name: string;

@@ -18,7 +18,7 @@ const About = () => {
     <h1 className="text-5xl lg:text-6xl font-light leading-tight text-white">
       <span>Welcome to</span>
       <br />
-      <span className="text-blue-500 font-semibold">SAST's</span> own
+      <span className="text-blue-500 font-semibold">SAST&apos;s</span> own
       <br />
       <span className="font-semibold">
         <span className="text-blue-500">Open-Source</span> Contribution Challenge

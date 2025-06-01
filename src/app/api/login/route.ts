@@ -23,7 +23,7 @@ export async function POST(req: Request) {
     if (!isMatch) {
       return NextResponse.json({ message: 'Invalid credentials' }, { status: 401 });
     }
-    const jwtSecret = process.env.NEXT_PUBLIC_JWT_SECRET;
+    const jwtSecret = process.env.JWT_SECRET;
     if (!jwtSecret) {
       throw new Error('JWT_SECRET is not defined in environment variables');
     }

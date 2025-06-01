@@ -60,26 +60,87 @@ const TimelineItem = ({
 
 const Timeline = () => {
   return (
-    <section
-      className="w-full px-4 sm:px-6 md:px-12 py-20 bg-black/80 backdrop-blur-xl border-t border-gray-700"
-      id="timeline"
-    >
-      <div className="max-w-5xl mx-auto text-center mb-16 px-4">
-        <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-white font-orbitron">
-          The Journey of <span className="text-blue-400">Nebula</span>
-        </h2>
-      </div>
+    <section className="w-full px-6 sm:px-12 py-24 relative">
+        <div className="absolute inset-0  z-0" />
+        <div className="relative z-10 max-w-5xl mx-auto">
+          <h2 className="text-4xl sm:text-5xl font-bold text-center text-white font-orbitron mb-20">
+            Event Timeline
+          </h2>
 
-      <div className="relative border-l-2 border-blue-500 ml-4 sm:ml-6 md:ml-8">
-        {timelineData.map((event, index) => (
-          <TimelineItem
-            key={index}
-            title={event.title}
-            description={event.description}
-          />
-        ))}
-      </div>
-    </section>
+          <div className="relative border-l-2 border-gray-600 pl-6 ml-4">
+            {[
+              {
+                step: '0.00',
+                title: 'Hello World!',
+                date: '27 March, 2025',
+                description:
+                  'The event begins with an official announcement, introducing participants to DCoins, how they can be earned, and teaser posts about the Reverse Bug Hunt.',
+                },
+              {
+                step: '0.01',
+                title: 'Open Source Traversal',
+                date: '28 March, 2025',
+                description:
+                  'Participants engage in an open-source challenge, solving riddles, exploring repositories, and taking part in a fun quiz to earn DCoins.',
+                },
+              {
+                step: '0.02',
+                title: 'Bug Smash Arena',
+                date: '30 March, 2025',
+                description:
+                  'A real-time bug hunt where participants fix issues across selected repositories and compete to top the contributor chart.',
+                },
+              {
+                step: '0.03',
+                title: 'Mentorship AMA',
+                date: '1 April, 2025',
+                description:
+                  'Top open-source mentors share experiences and answer participant questions in a relaxed fireside AMA session.',
+                },
+              {
+                step: '0.04',
+                title: 'Final Showcase & Rewards',
+                date: '5 April, 2025',
+                description:
+                  'Final presentations, leaderboard highlights, rewards ceremony, and a sneak peek into future open-source roadmaps.',
+                },
+            ].map((event, idx) => (
+              <motion.div
+                key={idx}
+                initial={{ opacity: 0, y: 50 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.6, ease: 'easeOut', delay: idx * 0.1 }}
+                className="mb-16 relative"
+              >
+                {/* Dot */}
+                <div className="absolute -left-[10px] w-3 h-3 bg-blue-500 rounded-full" />
+
+                {/* Content */}
+                <div>
+                  <div className="mb-2 text-sm text-gray-400">{event.step}</div>
+                  <h3 className="text-2xl font-semibold text-white font-orbitron mb-1">
+                    {event.title}
+                  </h3>
+                  <p className="mb-2 text-sm text-gray-400">{event.date}</p>
+                  <p className="text-base text-gray-300 max-w-2xl">{event.description}</p>
+                </div>
+
+                {/* Optional ASCII mascot or decoration */}
+                <div className="absolute right-[-80px] top-0 hidden sm:block opacity-20 text-white text-xs leading-none whitespace-pre font-mono select-none pointer-events-none">
+      {`    .--.
+        |o_o |
+        |:_/ |
+        //   \\ \\
+        (|     | )
+        /'\\_   _/\\'
+        \\___)=(___/`}
+                </div>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      </section>
   );
 };
 

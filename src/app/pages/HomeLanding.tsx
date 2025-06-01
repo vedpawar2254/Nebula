@@ -81,54 +81,11 @@ const HomeLanding: React.FC = () => {
   return (
     <div
         className="ml-[260px] w-full px-4 sm:px-6 lg:px-8"
-        style={{ backgroundColor: "black", minHeight: "100vh", overflowX: "hidden" }}
+        style={{ minHeight: "100vh", overflowX: "hidden" }}
         >  
     <div style={{ position: "relative" }}>
         <NebulaHero />
-        <div
-          style={{
-            position: "absolute",
-            top: "50%",
-            left: "50%",
-            transform: "translate(-50%, -50%)",
-            textAlign: "center",
-            zIndex: 20,
-            padding: "0 1rem",
-            width: "100%",
-            maxWidth: "1000px",
-          }}
-        >
-          <motion.h1
-            variants={fadeUpVariants}
-            initial="hidden"
-            animate={controls}
-            style={{
-              fontSize: "clamp(2rem, 6vw, 3.2rem)",
-              fontWeight: "900",
-              letterSpacing: "0.05em",
-              background: "linear-gradient(90deg, #00aaff, #66ccff)",
-              WebkitBackgroundClip: "text",
-              WebkitTextFillColor: "transparent",
-              marginBottom: "1.5rem",
-              wordBreak: "break-word",
-            }}
-          >
-            <Typewriter
-              words={[
-                "Launch Into Open Source",
-                "Build together with SAST",
-                "Contribute. Collaborate. Create.",
-              ]}
-              loop={0}
-              cursor
-              cursorStyle="_"
-              typeSpeed={70}
-              deleteSpeed={50}
-              delaySpeed={1500}
-            />
-          </motion.h1>
-        </div>
-      </div>
+    </div>
 
       {isDesktop && (
         <div

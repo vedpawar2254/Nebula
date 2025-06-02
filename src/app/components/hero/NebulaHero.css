@@ -12,10 +12,6 @@
   justify-content: center;
 }
 
-.nebula-highlight {
-  filter: brightness(1);
-}
-
 .orbit-container {
   position: absolute;
   width: 100%;
@@ -62,49 +58,4 @@
   font-size: 8rem;
   z-index: 10;
   text-shadow: 2px 2px 20px rgba(255, 255, 255, 0.2);
-}
-.live-button-wrapper {
-  position: absolute;
-  top: 80px; /* Adjust according to your navbar */
-  left: 50%;
-  transform: translateX(-50%);
-  z-index: 10;
-}
-
-.live-button {
-  background-color: #1a1a1a; /* matte black */
-  color: white;
-  border: none;
-  border-radius: 20px;
-  padding: 12px 14px;
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  font-weight: 600;
-  font-size: 14px;
-  cursor: default;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.4);
-}
-
-.green-dot {
-  width: 10px;
-  height: 10px;
-  background-color: #00ff00;
-  border-radius: 50%;
-  animation: blink 1s infinite;
-  box-shadow: 0 0 5px #00ff00;
-}
-
-@keyframes blink {
-  0%, 100% { opacity: 1; }
-  50% { opacity: 0.2; }
-}
-
-.live-text {
-  color: #ffffff;
-}
-
-.live-date {
-  color: #bbbbbb;
-  font-size: 13px;
 }

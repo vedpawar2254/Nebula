@@ -34,9 +34,7 @@ const testimonialsRow1: Testimonial[] = [
   },
 ];
 
-
 const testimonialsRow2: Testimonial[] = [
-  
   {
     id: 4,
     text: "From debugging components to improving responsiveness, every task on Project Nebula was a learning curve. It felt great to build something that represents our community’s passion for space and technology.",
@@ -49,8 +47,7 @@ const testimonialsRow2: Testimonial[] = [
     name: "Prataya Silla",
     title: "UI/UX Lead, SAST",
   },
-  
-  
+
   {
     id: 6,
     text: "“Launching Project Nebula in just one week was intense. From building the website to planning outreach and late-night UI/UX reviews, our team gave it everything. Those sleepless nights showed what real collaboration looks like.”.",

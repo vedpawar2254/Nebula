@@ -1,8 +1,7 @@
 const About = () => {
   return (
     <div className="relative w-full min-h-screen bg-black text-white font-sans overflow-hidden flex flex-col">
-      {/* Background Image & Gradient */}
-      <div className="absolute inset-0 -z-10">
+      <div className="absolute inset-0">
         <div className="w-full h-full bg-gradient-to-l from-black via-black/60 to-transparent absolute z-0" />
         <img
           src="https://lh3.googleusercontent.com/9zE3StG50FuHs9PCo6kMTIhWKyIc3vJ2JqxPZEgaKc8WQ2vzAyWR4wqYYhMZ7zkhc0C893COYflGKt70Sb15e4gg7eI=s1600-w1600-h1000"
@@ -10,32 +9,29 @@ const About = () => {
           className="object-cover w-full h-full opacity-15"
         />
       </div>
-
+      <div className="fp-scrollable-content max-h-full overflow-y-auto px-10 py-20 text-white"></div>
       {/* Main Content */}
-     {/* Main Content */}
-<div className="w-full px-10 py-20 flex justify-start">
-  <div className="max-w-xl">
-    <h1 className="text-5xl lg:text-6xl font-light leading-tight text-white">
-      <span>Welcome to</span>
-      <br />
-      <span className="text-blue-500 font-semibold">SAST&apos;s</span> own
-      <br />
-      <span className="font-semibold">
-        <span className="text-blue-500">Open-Source</span> Contribution Challenge
-      </span>
-    </h1>
+      <div className="w-full px-10 flex justify-start">
+        <div className="max-w-xl">
+          <h1 className="text-5xl lg:text-6xl font-light leading-tight text-white">
+            <span>Welcome to </span>
+            <span className="text-blue-500 font-semibold">SAST&apos;s</span> own
+            <span className="font-semibold">
+              <span className="text-blue-500"> Open-Source</span> Contribution
+              Challenge
+            </span>
+          </h1>
 
-    <a
-      href="https://github.com/SASTxNST/Website_SAST"
-      target="_blank"
-      rel="noopener noreferrer"
-      className="inline-block mt-10 w-fit px-10 py-3 rounded-full text-white text-lg font-medium bg-gradient-to-r from-blue-500 via-blue-600 to-blue-500 shadow-[0_0_16px_rgba(99,102,241,0.2)] backdrop-blur-md border border-white/5 hover:scale-102 transition-transform duration-200"
-    >
-      Contribute
-    </a>
-  </div>
-</div>
-
+          <a
+            href="https://github.com/SASTxNST/Website_SAST"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-block mt-10 w-fit px-10 py-3 rounded-full text-white text-lg font-medium bg-gradient-to-r from-blue-500 via-blue-600 to-blue-500 shadow-[0_0_16px_rgba(99,102,241,0.2)] backdrop-blur-md border border-white/5 hover:scale-102 transition-transform duration-200"
+          >
+            Contribute
+          </a>
+        </div>
+      </div>
 
       {/* Info Boxes Section */}
       <div className="w-full px-8 py-6 bg-black/80 backdrop-blur-md z-20">

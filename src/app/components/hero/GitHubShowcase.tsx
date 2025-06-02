@@ -10,7 +10,7 @@ const GitHubShowcase = () => {
       moto: "Exploring the cosmos through code and collaboration.",
       description:
         "Welcome to the official repository of the SAST website — a collaborative space to build a vibrant platform showcasing our club's spirit, achievements, and events.",
-      logo: "https://media.licdn.com/dms/image/v2/D4E0BAQEvUZGuRCX_jQ/company-logo_200_200/B4EZcdvlImHIAQ-/0/1748550702270/society_for_aerospace_and_space_technology_logo?e=1754524800&v=beta&t=tKTrHt29b4gfNADchwM82ilf2pyZOi4VuPkAaXczvpw",
+      logo: "https://i.postimg.cc/g2G97j2c/society-for-aerospace-and-space-technology-logo.jpg",
       link: "https://github.com/SASTxNST/Website_SAST",
     },
     {

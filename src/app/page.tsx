@@ -1,80 +1,36 @@
-"use client"
+"use client";
 
-import { useEffect, useRef, useState } from "react";
-import fullpage from "fullpage.js";
-import "fullpage.js/dist/fullpage.min.css";
-import Head from 'next/head';
-import CountdownUnit from './components/CountdownUnit';
-import { useRouter } from 'next/navigation';
-import LoginFormPopup from './components/LoginFormPopup';
+import { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
 
-import { useInView } from 'react-intersection-observer';
-
+import FloatingNavbar from "./components/hero/FloatingNavbar";
 import NebulaHero from "./components/hero/NebulaHero";
 import About from "./components/hero/About";
 import GitHubShowcase from "./components/hero/GitHubShowcase";
+import AutoScrollingTestimonials from "./components/hero/AutoScrollingTestimonials";
+import VisualDiary from "./components/hero/VisualDiary";
 import EventsSection from "./components/hero/EventsSection";
 import TeamPage from "./components/hero/TeamPage";
-import AutoScrollingTestimonials from "./components/hero/AutoScrollingTestimonials";
-import FloatingNavbar from "./components/hero/FloatingNavbar";
-import VisualDiary from "./components/hero/VisualDiary";
+import LoginFormPopup from "./components/LoginFormPopup";
+import Footer from "./components/hero/Footer";
 
 function Page() {
-  const fullpageRef = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-  let fpInstance: any;
-
-  const loadFullpage = async () => {
-    if (fullpageRef.current) {
-      const fullpage = (await import("fullpage.js")).default;
-      fpInstance = new fullpage(fullpageRef.current, {
-        autoScrolling: true,
-        navigation: true,
-        anchors: [
-          "home",
-          "about",
-          "showcase",
-          "testimonials",
-          "events",
-          "team",
-        ],
-        menu: "#navbar-menu",
-      });
-    }
-  };
-
-  loadFullpage();
-
-  return () => {
-    if (fpInstance) {
-      fpInstance.destroy("all");
-    }
-  };
-}, []);
-
-  const launchDate = new Date('2025-06-01T06:30:00Z').getTime();
+  const launchDate = new Date("2025-06-01T06:30:00Z").getTime();
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [showLoginPopup, setShowLoginPopup] = useState(false);
-
-  console.log(process);
-
+  const [isClient, setIsClient] = useState(false);
   const [timeRemaining, setTimeRemaining] = useState({
     days: 0,
     hours: 0,
     minutes: 0,
     seconds: 0,
   });
-  const [isClient, setIsClient] = useState(false);
   const [prevSeconds, setPrevSeconds] = useState<number | null>(null);
+
   const router = useRouter();
-  const { ref: aboutRef, inView: aboutInView } = useInView({
-    triggerOnce: true,
-    threshold: 0.2,
-  });
 
   useEffect(() => {
-    const token = localStorage.getItem('token');
+    const token = localStorage.getItem("token");
     setIsLoggedIn(!!token);
   }, []);
 
@@ -87,11 +43,15 @@ function Page() {
 
       if (difference > 0) {
         const days = Math.floor(difference / (1000 * 60 * 60 * 24));
-        const hours = Math.floor((difference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-        const minutes = Math.floor((difference % (1000 * 60 * 60)) / (1000 * 60));
+        const hours = Math.floor(
+          (difference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)
+        );
+        const minutes = Math.floor(
+          (difference % (1000 * 60 * 60)) / (1000 * 60)
+        );
         const seconds = Math.floor((difference % (1000 * 60)) / 1000);
 
-        setTimeRemaining(current => {
+        setTimeRemaining((current) => {
           setPrevSeconds(current.seconds);
           return { days, hours, minutes, seconds };
         });
@@ -108,63 +68,57 @@ function Page() {
 
   const handleContributeClick = () => {
     if (isLoggedIn) {
-      router.push('/contribution-ranks');
+      router.push("/contribution-ranks");
     } else {
       setShowLoginPopup(true);
     }
   };
 
-  const secondsKey =
-    prevSeconds !== null && timeRemaining.seconds !== prevSeconds
-      ? `sec-${timeRemaining.seconds}-${Date.now()}`
-      : `sec-${timeRemaining.seconds}`;
-
   if (!isClient) return null;
 
-  return (<>
-    <div className="relative">
-      {/* Always-floating navbar at the top of the screen */}
-      <FloatingNavbar showLoginState={{setShowLoginPopup}} />
+  return (
+    <>
+      <FloatingNavbar showLoginState={{ setShowLoginPopup }} />
 
-      {/* Fullpage.js container */}
-      <div ref={fullpageRef} id="fullpage">
-        <div className="section">
+      <main className="w-full">
+        <section className="min-h-screen">
           <NebulaHero />
-        </div>
-        <div className="section">
+        </section>
+        <section className="min-h-screen">
           <About />
-        </div>
-        <div className="section">
+        </section>
+        <section className="min-h-screen">
           <GitHubShowcase />
-        </div>
-        <div className="section">
+        </section>
+        <section className="min-h-screen">
           <AutoScrollingTestimonials />
-        </div>
-        <div className="section">
+        </section>
+        <section className="min-h-screen">
           <VisualDiary />
-        </div>
-        <div className="section">
+        </section>
+        <section className="min-h-screen">
           <EventsSection />
-        </div>
-        <div className="section">
+        </section>
+        <section className="min-h-screen">
           <TeamPage />
-        </div>
-      </div>
-    </div>
+        </section>
+        <Footer />
+      </main>
 
-    {showLoginPopup && (
+      {showLoginPopup && (
         <LoginFormPopup
           onClose={() => setShowLoginPopup(false)}
           onLoginSuccess={(token: any, email: string) => {
             setIsLoggedIn(true);
-            localStorage.setItem('token', token);
-            localStorage.setItem('email', email);
+            localStorage.setItem("token", token);
+            localStorage.setItem("email", email);
             setShowLoginPopup(false);
-            router.push('/contribution-ranks');
+            router.push("/contribution-ranks");
           }}
         />
       )}
-  </>);
+    </>
+  );
 }
 
 export default Page;

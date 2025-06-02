@@ -1,7 +1,9 @@
 import { useState, useRef, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
+import { useRouter } from "next/navigation";
 
-const navItems = ["Home", "About", "Contact", "Contribute", "Login"];
+// Updated nav items to include sidebar items
+const navItems = ["Home", "Leaderboard", "Contact", "FAQ", "Idea Box", "Contribute"];
 
 type FloatingNavbarProps = {
   showLoginState?: {
@@ -12,8 +14,16 @@ type FloatingNavbarProps = {
 const FloatingNavbar: React.FC<FloatingNavbarProps> = ({ showLoginState }) => {
   const [hovered, setHovered] = useState<string | null>("Login");
   const [hoverStyle, setHoverStyle] = useState({ left: 0, width: 0 });
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
   const containerRef = useRef<HTMLDivElement>(null);
   const itemRefs = useRef<Record<string, HTMLDivElement | null>>({});
+  const router = useRouter();
+
+  // Check if user is logged in
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+    setIsLoggedIn(!!token);
+  }, []);
 
   useEffect(() => {
     if (hovered && itemRefs.current[hovered] && containerRef.current) {
@@ -27,6 +37,42 @@ const FloatingNavbar: React.FC<FloatingNavbarProps> = ({ showLoginState }) => {
       });
     }
   }, [hovered]);
+
+  const handleNavigation = (item: string) => {
+    switch (item) {
+      case "Home":
+        router.push("/contribution-ranks");
+        break;
+      case "Leaderboard":
+        router.push("/leaderboard-contest");
+        break;
+      case "Contact":
+        router.push("/contribution-ranks?section=contact");
+        break;
+      case "FAQ":
+        router.push("/contribution-ranks?section=faq");
+        break;
+      case "Idea Box":
+        router.push("/ideabox");
+        break;
+      case "Profile":
+        router.push("/contribution-ranks?section=profile");
+        break;
+      case "Contribute":
+        window.open("https://github.com/SASTxNST/Nebula", "_blank");
+        break;
+      default:
+        break;
+    }
+  };
+
+  // Add Profile to nav items if logged in, otherwise add Login
+  const displayNavItems = [...navItems];
+  if (isLoggedIn) {
+    displayNavItems.push("Profile");
+  } else {
+    displayNavItems.push("Login");
+  }
 
   return (
     <div className="fixed top-6 left-1/2 transform -translate-x-1/2 z-50">
@@ -49,38 +95,32 @@ const FloatingNavbar: React.FC<FloatingNavbarProps> = ({ showLoginState }) => {
           />
         </AnimatePresence>
 
-        {navItems.map((item) =>
-          item === "Login" ? (
-            <div
-              key={item}
-              ref={(el) => {
-                itemRefs.current[item] = el;
-              }}
-              onMouseEnter={() => setHovered(item)}
-              onFocus={() => setHovered(item)}
-              onClick={() => showLoginState?.setShowLoginPopup(true)}
-              className={`relative z-10 px-4 py-2 text-sm cursor-pointer text-white`}
-            >
-              {item}
-            </div>
-          ) : (
-            <div
-              key={item}
-              ref={(el) => {
-                itemRefs.current[item] = el;
-              }}
-              onMouseEnter={() => setHovered(item)}
-              onFocus={() => setHovered(item)}
-              className={`relative z-10 px-4 py-2 text-sm cursor-pointer ${
-                item === "Contribute"
-                  ? "text-pink-400 font-semibold"
+        {displayNavItems.map((item) => (
+          <div
+            key={item}
+            ref={(el) => {
+              itemRefs.current[item] = el;
+            }}
+            onMouseEnter={() => setHovered(item)}
+            onFocus={() => setHovered(item)}
+            onClick={() => {
+              if (item === "Login") {
+                showLoginState?.setShowLoginPopup(true);
+              } else {
+                handleNavigation(item);
+              }
+            }}
+            className={`relative z-10 px-4 py-2 text-sm cursor-pointer ${
+              item === "Contribute"
+                ? "text-pink-400 font-semibold"
+                : item === "Profile" 
+                  ? "text-blue-400 font-semibold" 
                   : "text-white"
-              }`}
-            >
-              {item}
-            </div>
-          )
-        )}
+            }`}
+          >
+            {item}
+          </div>
+        ))}
       </div>
     </div>
   );

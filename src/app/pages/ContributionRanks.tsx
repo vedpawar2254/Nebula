@@ -6,6 +6,7 @@ import LeaderboardContest from "./LeaderboardContest";
 import Contact from "./Contact";
 import FAQ from "./FAQ";
 import Profile from './Profile';
+import HomeLanding from "./HomeLanding";
 
 
 type Repo = {
@@ -237,7 +238,7 @@ const ContributionRanks: React.FC = () => {
             </div>
           )}
 
-{activeSection === "home" && (
+{/* {activeSection === "home" && (
             <>
               <div
                 style={{
@@ -353,7 +354,7 @@ const ContributionRanks: React.FC = () => {
                 </button>
               </div>
             </>
-          )}
+          )} */}
 
           {activeSection === 'login' && (
             <div className="flex items-center justify-center min-h-screen p-4 bg-[#0C0C0C]">
@@ -474,6 +475,7 @@ const ContributionRanks: React.FC = () => {
 
           {activeSection === 'profile' && <Profile repositories={repos} />}
           {activeSection === 'contact' && <Contact />}
+          {activeSection === 'home' && <HomeLanding/>}
           
         </div>
       </div>
